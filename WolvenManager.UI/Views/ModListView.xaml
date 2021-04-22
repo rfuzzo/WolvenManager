@@ -8,6 +8,7 @@
                                 xmlns:local="clr-namespace:WolvenManager.UI.Views"
                                 xmlns:reactiveUi="http://reactiveui.net"
                                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                                xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
                                 d:DataContext="{d:DesignInstance Type=viewModels:ModListViewModel}"
                                 mc:Ignorable="d" 
                                 d:DesignHeight="450" d:DesignWidth="800"
@@ -45,9 +46,16 @@
 
         </GroupBox>
 
-        <DataGrid Grid.Row="1" x:Name="ModList" >
+        <Syncfusion:SfDataGrid Grid.Row="1" x:Name="ModList"
+                               AllowSorting="True"
+                               AllowFiltering="True"
+                               AllowResizingColumns="True"
+                               ColumnSizer="Star"
+                               AllowEditing="True"
+                               Padding="5"
+                               >
 
-        </DataGrid>
+        </Syncfusion:SfDataGrid>
 
     </Grid>
 </reactiveUi:ReactiveUserControl>

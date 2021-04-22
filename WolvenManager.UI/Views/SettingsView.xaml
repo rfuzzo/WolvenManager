@@ -1,0 +1,83 @@
+﻿<reactiveUi:ReactiveUserControl x:TypeArguments="viewModels:SettingsViewModel" 
+                                x:Class="WolvenManager.UI.Views.SettingsView"
+                                xmlns:viewModels="clr-namespace:WolvenManager.App.ViewModels;assembly=WolvenManager.App"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                                xmlns:local="clr-namespace:WolvenManager.UI.Views"
+                                xmlns:reactiveUi="http://reactiveui.net"
+                                xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                                d:DataContext="{d:DesignInstance Type=viewModels:SettingsViewModel}"
+                                mc:Ignorable="d" 
+                                d:DesignHeight="250" d:DesignWidth="400"
+                                >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" x:Name="TitleBlock" Content="Settings" FontSize="40" Padding="10" />
+        
+
+        <StackPanel Grid.Row="1">
+            <GroupBox>
+                <StackPanel>
+                    <Label Grid.Column="0" Content="Game Directory"  Padding="1" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="The main Cyberpunk 2077 game directory." Padding="1" VerticalAlignment="Center"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        
+                        <TextBox Grid.Column="0" x:Name="GameDirTextBox" Text="" Padding="1"/>
+                        <Button Grid.Column="1" x:Name="GameDirButton" Padding="5" CommandParameter="{x:Static viewModels:SettingsViewModel.GameDirParameter}">
+                            <Button.Content>
+                                <iconPacks:PackIconCodicons Kind="Search"
+                                                            Width="40"
+                                                            Height="20"
+                                                            Padding="5"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+            </GroupBox>
+
+
+            <GroupBox>
+                <StackPanel>
+                    <Label Grid.Column="0" Content="Mod Library (optional)" Foreground="White" Padding="1" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="A folder where your downloaded mods are located." Foreground="White" Padding="1" VerticalAlignment="Center"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" x:Name="LibraryTextBox" Text="" Padding="1"/>
+                        <Button Grid.Column="1" x:Name="LibraryButton" Padding="5" CommandParameter="{x:Static viewModels:SettingsViewModel.LibraryDirParameter}">
+                            <Button.Content>
+                                <iconPacks:PackIconCodicons Kind="Search"
+                                                            Width="40"
+                                                            Height="20"
+                                                            Padding="5"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+
+
+</StackPanel>
+
+
+    </Grid>
+</reactiveUi:ReactiveUserControl>

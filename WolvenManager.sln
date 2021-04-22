@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31213.239
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolvenManager.UI", "WolvenManager.UI\WolvenManager.UI.csproj", "{760038B4-13D9-45D6-9855-3BFF03662845}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolvenManager.App", "WolvenManager.App\WolvenManager.App.csproj", "{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{760038B4-13D9-45D6-9855-3BFF03662845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{760038B4-13D9-45D6-9855-3BFF03662845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{760038B4-13D9-45D6-9855-3BFF03662845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{760038B4-13D9-45D6-9855-3BFF03662845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F54558B-BA19-4FA2-9182-7BBAE8C5E90C}
+	EndGlobalSection
+EndGlobal

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31213.239
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolvenManager.UI", "WolvenManager.UI\WolvenManager.UI.csproj", "{760038B4-13D9-45D6-9855-3BFF03662845}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenManager.UI", "WolvenManager.UI\WolvenManager.UI.csproj", "{760038B4-13D9-45D6-9855-3BFF03662845}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WolvenManager.App", "WolvenManager.App\WolvenManager.App.csproj", "{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenManager.App", "WolvenManager.App\WolvenManager.App.csproj", "{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

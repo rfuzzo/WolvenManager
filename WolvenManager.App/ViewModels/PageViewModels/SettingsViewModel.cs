@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using ReactiveUI;
 using Splat;
 using WolvenManager.App.Attributes;
 using WolvenManager.App.Services;
 
-namespace WolvenManager.App.ViewModels
+namespace WolvenManager.App.ViewModels.PageViewModels
 {
     [RoutingUrl(Constants.Constants.RoutingIDs.Settings)]
     public class SettingsViewModel : PageViewModel
@@ -24,7 +20,7 @@ namespace WolvenManager.App.ViewModels
         #endregion
 
         #region properties
-        public readonly IAppSettingsService Settings;
+        public readonly ISettingsService Settings;
 
         public ReactiveCommand<string, Unit> BrowseCommand { get; }
 
@@ -34,11 +30,13 @@ namespace WolvenManager.App.ViewModels
 
         public SettingsViewModel(IScreen screen = null) : base(typeof(SettingsViewModel), screen)
         {
-            Settings = Locator.Current.GetService<IAppSettingsService>();
+            Settings = Locator.Current.GetService<ISettingsService>();
 
 
             BrowseCommand = ReactiveCommand.Create<string>(BrowseFolderExecute);
 
+            
+            
         }
 
         #region methods
@@ -73,6 +71,12 @@ namespace WolvenManager.App.ViewModels
 
             Settings.Save();
         }
+
+        #endregion
+
+        #region events
+
+        
 
         #endregion
 

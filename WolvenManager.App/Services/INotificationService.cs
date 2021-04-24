@@ -21,7 +21,7 @@ namespace WolvenManager.App.Services
         Fatal,
     }
 
-    public interface INotificationService
+    public interface INotificationService 
     {
         bool IsShowNotificationsEnabled { get; set; }
         ENotificationCategory NotificationCategory { get; set; }
@@ -29,10 +29,11 @@ namespace WolvenManager.App.Services
         void Error(string message);
         void Fatal(string message);
         void Info(string message);
+        void Success(string message);
+        void Warning(string message);
+
         void ShowAppNotification(string message, ENotificationType type);
         void ShowDesktopNotification(string message, ENotificationType type);
         void ShowNotification(string message, ENotificationType type, ENotificationCategory category);
-        void Success(string message);
-        void Warning(string message);
     }
 }

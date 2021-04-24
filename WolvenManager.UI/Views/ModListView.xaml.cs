@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ReactiveUI;
 using WolvenManager.App.ViewModels;
+using WolvenManager.App.ViewModels.PageViewModels;
 
 namespace WolvenManager.UI.Views
 {
@@ -30,7 +31,7 @@ namespace WolvenManager.UI.Views
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(ViewModel,
-                        viewModel => viewModel.bindingData,
+                        viewModel => viewModel.BindingData,
                         view => view.ModList.ItemsSource)
                     .DisposeWith(disposables);
             });

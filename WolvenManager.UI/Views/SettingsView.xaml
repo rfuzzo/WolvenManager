@@ -1,4 +1,4 @@
-﻿<reactiveUi:ReactiveUserControl x:TypeArguments="viewModels:SettingsViewModel" 
+﻿<reactiveUi:ReactiveUserControl x:TypeArguments="pageViewModels:SettingsViewModel" 
                                 x:Class="WolvenManager.UI.Views.SettingsView"
                                 xmlns:viewModels="clr-namespace:WolvenManager.App.ViewModels;assembly=WolvenManager.App"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -8,7 +8,8 @@
                                 xmlns:local="clr-namespace:WolvenManager.UI.Views"
                                 xmlns:reactiveUi="http://reactiveui.net"
                                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                                d:DataContext="{d:DesignInstance Type=viewModels:SettingsViewModel}"
+                                xmlns:pageViewModels="clr-namespace:WolvenManager.App.ViewModels.PageViewModels;assembly=WolvenManager.App"
+                                d:DataContext="{d:DesignInstance Type=pageViewModels:SettingsViewModel}"
                                 mc:Ignorable="d" 
                                 d:DesignHeight="250" d:DesignWidth="400"
                                 >
@@ -36,7 +37,7 @@
 
                         
                         <TextBox Grid.Column="0" x:Name="GameDirTextBox" Text="" Padding="1"/>
-                        <Button Grid.Column="1" x:Name="GameDirButton" Padding="5" CommandParameter="{x:Static viewModels:SettingsViewModel.GameDirParameter}">
+                        <Button Grid.Column="1" x:Name="GameDirButton" Padding="5" CommandParameter="{x:Static pageViewModels:SettingsViewModel.GameDirParameter}">
                             <Button.Content>
                                 <iconPacks:PackIconCodicons Kind="Search"
                                                             Width="40"
@@ -62,7 +63,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBox Grid.Column="0" x:Name="LibraryTextBox" Text="" Padding="1"/>
-                        <Button Grid.Column="1" x:Name="LibraryButton" Padding="5" CommandParameter="{x:Static viewModels:SettingsViewModel.LibraryDirParameter}">
+                        <Button Grid.Column="1" x:Name="LibraryButton" Padding="5" CommandParameter="{x:Static pageViewModels:SettingsViewModel.LibraryDirParameter}">
                             <Button.Content>
                                 <iconPacks:PackIconCodicons Kind="Search"
                                                             Width="40"
@@ -71,6 +72,11 @@
                             </Button.Content>
                         </Button>
                     </Grid>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Enable Managed Mod Library" Padding="0,0,20,0"/>
+                        <CheckBox x:Name="ModLibraryCheckBox" Padding="2"/>
+                    </StackPanel>
                 </StackPanel>
             </GroupBox>
 

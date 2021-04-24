@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ReactiveUI;
 using WolvenManager.App.ViewModels;
+using WolvenManager.App.ViewModels.PageViewModels;
 
 namespace WolvenManager.UI.Views
 {
@@ -41,12 +42,36 @@ namespace WolvenManager.UI.Views
                     viewModel => viewModel.Settings.GamePath,
                     view => view.GameDirTextBox.Text)
                     .DisposeWith(disposables);
+                this.Bind(ViewModel,
+                        viewModel => viewModel.Settings.DepotPath,
+                        view => view.LibraryTextBox.Text)
+                    .DisposeWith(disposables);
+
+
+                this.Bind(ViewModel,
+                        viewModel => viewModel.Settings.IsLibraryEnabled,
+                        view => view.ModLibraryCheckBox.IsChecked)
+                    .DisposeWith(disposables);
+                this.Bind(ViewModel,
+                        viewModel => viewModel.Settings.IsLibraryEnabled,
+                        view => view.LibraryButton.IsEnabled)
+                    .DisposeWith(disposables);
+                this.Bind(ViewModel,
+                        viewModel => viewModel.Settings.IsLibraryEnabled,
+                        view => view.LibraryTextBox.IsEnabled)
+                    .DisposeWith(disposables);
+
+
 
 
                 // commands
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.BrowseCommand,
                         view => view.GameDirButton)
+                    .DisposeWith(disposables);
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.BrowseCommand,
+                        view => view.LibraryButton)
                     .DisposeWith(disposables);
 
             });

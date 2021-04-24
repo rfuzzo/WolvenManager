@@ -11,7 +11,7 @@ namespace WolvenManager.App.ViewModels
     public class ModItemViewModel : MainViewModel
     {
         [Reactive]
-        public string Path { get; set; }
+        public string FullPath { get; set; }
 
         public ModItemViewModel()
         {

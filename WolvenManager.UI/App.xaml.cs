@@ -10,8 +10,10 @@ using ReactiveUI;
 using Splat;
 using WolvenManager.App.Services;
 using WolvenManager.App.ViewModels;
+using WolvenManager.App.ViewModels.PageViewModels;
 using WolvenManager.UI.Services;
 using WolvenManager.UI.Views;
+using INotificationService = WolvenManager.App.Services.INotificationService;
 
 namespace WolvenManager.UI
 {
@@ -22,14 +24,20 @@ namespace WolvenManager.UI
     {
         public App()
         {
-            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
+            // register Services
+            
+            Locator.CurrentMutable.RegisterConstant(SettingsService.Load(), typeof(ISettingsService));
+            Locator.CurrentMutable.RegisterConstant(new NotificationService(), typeof(INotificationService));
 
+            Locator.CurrentMutable.RegisterConstant(new PluginService(), typeof(IPluginService));
+
+            // register VieModels
+            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
             Locator.CurrentMutable.Register(() => new SettingsView(), typeof(IViewFor<SettingsViewModel>));
             Locator.CurrentMutable.Register(() => new ModListView(), typeof(IViewFor<ModListViewModel>));
 
 
-            Locator.CurrentMutable.RegisterConstant(new AppSettingsService(), typeof(IAppSettingsService));
-            //Locator.CurrentMutable.RegisterConstant(new NotificationService(), typeof(INotificationService));
+            
             
             
 

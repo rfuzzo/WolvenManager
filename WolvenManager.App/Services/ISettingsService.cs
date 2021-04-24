@@ -7,7 +7,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace WolvenManager.App.Services
 {
-    public interface IAppSettingsService
+    public interface ISettingsService
     {
         #region Properties
         string GamePath { get; set; }
@@ -15,14 +15,16 @@ namespace WolvenManager.App.Services
         string CurrentProfile { get; set; }
 
         public string ScriptsDir { get; }
+        public string ModsDir { get; }
+        public bool IsLibraryEnabled { get; set; }
 
         #endregion Properties
 
 
         #region Methods
 
-        public void Save();
-        public bool Load();
+        public Task Save();
+        //public bool Load();
 
         #endregion Methods
 

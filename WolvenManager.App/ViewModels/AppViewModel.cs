@@ -12,22 +12,20 @@ using System.Windows.Input;
 using ReactiveUI;
 using Splat;
 using WolvenManager.App.Services;
+using WolvenManager.App.ViewModels.PageViewModels;
 
 namespace WolvenManager.App.ViewModels
 {
 
     public class AppViewModel : MainViewModel, IScreen
     {
-        private readonly IAppSettingsService settings;
+        private readonly ISettingsService _settingsService;
+        private readonly IPluginService _pluginService;
 
         public AppViewModel()
         {
-
-            settings = Locator.Current.GetService<IAppSettingsService>();
-            settings.Load();
-
-            
-
+            _settingsService = Locator.Current.GetService<ISettingsService>();
+            _pluginService = Locator.Current.GetService<IPluginService>();
 
             // routing
             Router = new RoutingState();
@@ -39,33 +37,15 @@ namespace WolvenManager.App.ViewModels
             Title = $"{productName}-{Version}";
 
 
+            OnStartup();
 
             // commands
             SidebarCommand = ReactiveCommand.Create<Constants.Constants.RoutingIDs>(ExecuteSidebarCommand, CanExecuteRouting);
-
-
-            settings.IsValid().Subscribe(_ =>
-            {
-                Locator.CurrentMutable.RegisterConstant( new WatcherService(), typeof(IWatcherService));
-                Locator.CurrentMutable.RegisterConstant(new ProfileService(), typeof(IProfileService));
-            });
-
-
-            // navigate to settings if game is not found
-            if (string.IsNullOrEmpty(settings.GamePath))
-            {
-                Router.Navigate.Execute(new SettingsViewModel());
-            }
-            else
-            {
-                Router.Navigate.Execute(new ModListViewModel());
-                
-            }
         }
 
         #region properties
 
-        private IObservable<bool> CanExecuteRouting => settings.IsValid();
+        private IObservable<bool> CanExecuteRouting => _settingsService.IsValid();
 
         private string title;
         public string Title
@@ -115,7 +95,46 @@ namespace WolvenManager.App.ViewModels
 
         #endregion
 
+        public void OnStartup()
+        {
+            Task.Run(() => _pluginService.Init());
 
+            // Once 
+            _settingsService.IsValid().Subscribe(isvalid =>
+            {
+                //TODO: bad?
+                if (!isvalid)
+                {
+                    return;
+                }
+
+                Locator.CurrentMutable.RegisterConstant(new WatcherService(), typeof(IWatcherService));
+                // requires IWatcherService
+                Locator.CurrentMutable.RegisterConstant(new LibraryService(), typeof(ILibraryService));
+                // requires ILibraryService
+                Locator.CurrentMutable.RegisterConstant(new ProfileService(), typeof(IProfileService));
+
+
+                var watcher = Locator.Current.GetService<IWatcherService>();
+                // check all loose files
+                watcher.RefreshAsync();
+
+                // check Addons updates
+
+
+            });
+
+
+            // navigate to settings if game is not found
+            if (string.IsNullOrEmpty(_settingsService.GamePath))
+            {
+                Router.Navigate.Execute(new SettingsViewModel());
+            }
+            else
+            {
+                Router.Navigate.Execute(new ModListViewModel());
+            }
+        }
 
     }
 }

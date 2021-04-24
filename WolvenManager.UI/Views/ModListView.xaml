@@ -1,4 +1,4 @@
-﻿<reactiveUi:ReactiveUserControl x:TypeArguments="viewModels:ModListViewModel" 
+﻿<reactiveUi:ReactiveUserControl x:TypeArguments="pageViewModels:ModListViewModel" 
                                 x:Class="WolvenManager.UI.Views.ModListView"
                                 xmlns:viewModels="clr-namespace:WolvenManager.App.ViewModels;assembly=WolvenManager.App"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,7 +9,8 @@
                                 xmlns:reactiveUi="http://reactiveui.net"
                                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                                 xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
-                                d:DataContext="{d:DesignInstance Type=viewModels:ModListViewModel}"
+                                xmlns:pageViewModels="clr-namespace:WolvenManager.App.ViewModels.PageViewModels;assembly=WolvenManager.App"
+                                d:DataContext="{d:DesignInstance Type=pageViewModels:ModListViewModel}"
                                 mc:Ignorable="d" 
                                 d:DesignHeight="450" d:DesignWidth="800"
                                 >

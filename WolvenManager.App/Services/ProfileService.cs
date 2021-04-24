@@ -13,109 +13,60 @@ using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using WolvenManager.App.Models;
 using WolvenManager.App.ViewModels;
 
 namespace WolvenManager.App.Services
 {
     /// <summary>
-    /// Serializable 
+    ///  
     /// </summary>
-    public class ProfileService : ReactiveObject, IProfileService, ISerializable
+    public class ProfileService : ReactiveObject, IProfileService
     {
-        private readonly ReadOnlyObservableCollection<ModItemViewModel> _items;
+        private readonly INotificationService _notificationService;
+        private readonly ISettingsService _settingsService;
+        private readonly ILibraryService _libraryService;
+        private readonly IPluginService _pluginService;
 
-        private readonly SourceCache<ModViewModel, string> _mods = new(t => t.Name);
-        public IObservable<IChangeSet<ModViewModel, string>> Connect() => _mods.Connect();
+        // bound library
+        private readonly ReadOnlyObservableCollection<ModViewModel> _items;
+        public ReadOnlyObservableCollection<ModViewModel> Items => _items;
 
 
         public ProfileService()
         {
-            var watcherService = Locator.Current.GetService<IWatcherService>();
-            watcherService.Connect()
+            _notificationService = Locator.Current.GetService<INotificationService>();
+            _settingsService = Locator.Current.GetService<ISettingsService>();
+            _libraryService = Locator.Current.GetService<ILibraryService>();
+            _pluginService = Locator.Current.GetService<IPluginService>();
+
+
+            _libraryService.Connect()
+                .Transform(_ => new ModViewModel(_))
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out _items)
-                .Subscribe(OnNext);
+                .Subscribe(set =>
+                {
+                    // observe changes in the library
+                });
+
+
 
         }
 
-        private void OnNext(IChangeSet<ModItemViewModel> _)
+        
+
+
+        public async Task Save()
         {
-            foreach (var change in _)
-            {
-                EvaluateChange(change);
-            }
-        }
-
-        private ModViewModel GetModForFile(string path)
-        {
-            var results = _mods.Items.Where(_ => _.Files.Contains(path)).ToList();
-            var count = results.Count;
-
-            return count switch
-            {
-                0 => null,
-                > 1 => throw new AmbiguousMatchException(),
-                _ => results.First(),
-            };
-        }
-
-        private void EvaluateChange(Change<ModItemViewModel> change)
-        {
-            switch (change.Reason)
-            {
-                case ListChangeReason.Add:
-                    break;
-                case ListChangeReason.AddRange:
-                    // new files are added to the watched directory
-                    foreach (var modItemViewModel in change.Range)
-                    {
-                        var fileInfo = new FileInfo(modItemViewModel.Path);
-
-                        // check if in Modlist
-                        if (GetModForFile(fileInfo.FullName) != null)
-                        {
-                            // do nothing?
-                            // could something fancy and hash the file and compare to chached mod 
-                            // meh
-                        }
-                        else
-                        {
-                            // If not found, add a loose file mod
-                            var mod = new ModViewModel()
-                            {
-                                Name = fileInfo.Name,
-                                IsLooseFile = true,
-                                Files = new[] { fileInfo.FullName }
-                            };
-
-                            _mods.AddOrUpdate(mod);
-
-                        }
-                    }
+            
 
 
-                    break;
-                case ListChangeReason.Replace:
-                    break;
-                case ListChangeReason.Remove:
-                    break;
-                case ListChangeReason.RemoveRange:
-                    break;
-                case ListChangeReason.Refresh:
-                    break;
-                case ListChangeReason.Moved:
-                    break;
-                case ListChangeReason.Clear:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
 
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            throw new NotImplementedException();
-        }
+
+
+
     }
 }

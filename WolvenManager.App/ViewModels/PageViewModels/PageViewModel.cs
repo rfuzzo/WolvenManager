@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ReactiveUI;
 using Splat;
 using WolvenManager.App.Attributes;
 
-namespace WolvenManager.App.ViewModels
+namespace WolvenManager.App.ViewModels.PageViewModels
 {
      
     public abstract class PageViewModel : MainViewModel, IRoutableViewModel

@@ -40,7 +40,7 @@ namespace WolvenManager.App.ViewModels
             OnStartup();
 
             // commands
-            SidebarCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar, CanExecuteRouting);
+            RoutingCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar, CanExecuteRouting);
         }
 
         #region properties
@@ -67,14 +67,14 @@ namespace WolvenManager.App.ViewModels
         
 
 
-        public ReactiveCommand<Constants.RoutingIDs, Unit> SidebarCommand { get; }
+        public ReactiveCommand<Constants.RoutingIDs, Unit> RoutingCommand { get; }
 
         private void ExecuteSidebar(Constants.RoutingIDs parameter)
         {
             switch (parameter)
             {
                 case Constants.RoutingIDs.Main:
-                    Router.Navigate.Execute(new ModListViewModel());
+                    Router.Navigate.Execute(new ModListViewModel(this));
                     break;
                 case Constants.RoutingIDs.Library:
                     break;
@@ -83,7 +83,7 @@ namespace WolvenManager.App.ViewModels
                 case Constants.RoutingIDs.Profiles:
                     break;
                 case Constants.RoutingIDs.Settings:
-                    Router.Navigate.Execute(new SettingsViewModel());
+                    Router.Navigate.Execute(new SettingsViewModel(this));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(parameter), parameter, null);
@@ -128,11 +128,11 @@ namespace WolvenManager.App.ViewModels
             // navigate to settings if game is not found
             if (string.IsNullOrEmpty(_settingsService.GamePath))
             {
-                Router.Navigate.Execute(new SettingsViewModel());
+                Router.Navigate.Execute(new SettingsViewModel(this));
             }
             else
             {
-                Router.Navigate.Execute(new ModListViewModel());
+                Router.Navigate.Execute(new ModListViewModel(this));
             }
         }
 

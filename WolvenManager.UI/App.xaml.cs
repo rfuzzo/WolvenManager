@@ -32,7 +32,7 @@ namespace WolvenManager.UI
             Locator.CurrentMutable.RegisterConstant(new PluginService(), typeof(IPluginService));
 
             // register VieModels
-            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
+            Locator.CurrentMutable.Register(() => new MainWindow(), typeof(IViewFor<AppViewModel>));
             Locator.CurrentMutable.Register(() => new SettingsView(), typeof(IViewFor<SettingsViewModel>));
             Locator.CurrentMutable.Register(() => new ModListView(), typeof(IViewFor<ModListViewModel>));
 

@@ -130,8 +130,6 @@ namespace WolvenManager.App.Services
                 case WatcherChangeTypes.Created:
                     break;
                 case WatcherChangeTypes.Deleted:
-                    
-
                     break;
                 case WatcherChangeTypes.Changed:
                     break;

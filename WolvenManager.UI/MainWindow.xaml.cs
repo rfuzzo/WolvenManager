@@ -53,23 +53,23 @@ namespace WolvenManager.UI
             this.WhenActivated(disposableRegistration =>
             {
                 this.BindCommand(ViewModel,
-                        viewModel => viewModel.SidebarCommand,
+                        viewModel => viewModel.RoutingCommand,
                         view => view.MainButton)
                     .DisposeWith(disposableRegistration);
                 this.BindCommand(ViewModel,
-                        viewModel => viewModel.SidebarCommand,
+                        viewModel => viewModel.RoutingCommand,
                         view => view.ExtensionsButton)
                     .DisposeWith(disposableRegistration);
                 this.BindCommand(ViewModel,
-                        viewModel => viewModel.SidebarCommand,
+                        viewModel => viewModel.RoutingCommand,
                         view => view.LibraryButton)
                     .DisposeWith(disposableRegistration);
                 this.BindCommand(ViewModel,
-                        viewModel => viewModel.SidebarCommand,
+                        viewModel => viewModel.RoutingCommand,
                         view => view.ProfilesButton)
                     .DisposeWith(disposableRegistration);
                 this.BindCommand(ViewModel,
-                        viewModel => viewModel.SidebarCommand,
+                        viewModel => viewModel.RoutingCommand,
                         view => view.SettingsButton)
                     .DisposeWith(disposableRegistration);
 

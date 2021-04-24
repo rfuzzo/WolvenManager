@@ -10,15 +10,27 @@
                                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                                 xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
                                 xmlns:pageViewModels="clr-namespace:WolvenManager.App.ViewModels.PageViewModels;assembly=WolvenManager.App"
+                                xmlns:converters="clr-namespace:WolvenManager.UI.Converters"
                                 d:DataContext="{d:DesignInstance Type=pageViewModels:ModListViewModel}"
                                 mc:Ignorable="d" 
                                 d:DesignHeight="450" d:DesignWidth="800"
                                 >
+
+    
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
+
+        <Grid.Resources>
+            <converters:ColorConverter x:Key="converter"/>
+            <Style TargetType="Syncfusion:VirtualizingCellsControl">
+                <Setter Property="Background" Value="{Binding Converter={StaticResource converter}}" />
+            </Style>
+        </Grid.Resources>
 
         <GroupBox Grid.Row="0">
             <Grid >
@@ -51,12 +63,24 @@
                                AllowSorting="True"
                                AllowFiltering="True"
                                AllowResizingColumns="True"
-                               ColumnSizer="Star"
+                               ColumnSizer="AutoWithLastColumnFill"
                                AllowEditing="True"
                                Padding="5"
-                               >
+                               AutoGenerateColumns="false"
+                               AllowDraggingRows="True"
+                               AllowDrop="True"
+                               RowDropIndicatorMode="Line"
+                               SelectionMode="Extended"
+        >
 
+            <Syncfusion:SfDataGrid.Columns>
+
+                <Syncfusion:GridTextColumn MappingName="LoadOrder" AllowEditing="False"/>
+                <Syncfusion:GridCheckBoxColumn MappingName="Enabled"/>
+                <Syncfusion:GridTextColumn MappingName="Name"/>
+                
+            </Syncfusion:SfDataGrid.Columns>
+                
         </Syncfusion:SfDataGrid>
-
     </Grid>
 </reactiveUi:ReactiveUserControl>

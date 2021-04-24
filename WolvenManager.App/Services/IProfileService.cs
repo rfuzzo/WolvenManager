@@ -11,7 +11,6 @@ namespace WolvenManager.App.Services
 {
     public interface IProfileService
     {
-        public ReadOnlyObservableCollection<ModViewModel> Items { get; }
-
+        public IObservable<IChangeSet<ModViewModel, string>> Connect();
     }
 }

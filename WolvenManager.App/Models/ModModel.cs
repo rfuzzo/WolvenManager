@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ProtoBuf;
 using ReactiveUI.Fody.Helpers;
@@ -37,5 +38,10 @@ namespace WolvenManager.App.Models
         [Reactive]
         [ProtoMember(3)]
         public bool IsInLibrary { get; set; }
+
+        [Reactive]
+        [ProtoMember(4)]
+        public bool Installed { get; set; }
+
     }
 }

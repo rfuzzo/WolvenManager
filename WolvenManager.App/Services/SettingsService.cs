@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -23,10 +24,15 @@ namespace WolvenManager.App.Services
 
         public SettingsService()
         {
-            this.WhenAnyValue(x => x.IsLibraryEnabled)
-                .Subscribe(async x => 
+            this.WhenAnyPropertyChanged(
+                    nameof(GamePath), 
+                    nameof(DepotPath), 
+                    nameof(CurrentProfile),
+                    nameof(IsLibraryEnabled)
+                    )
+                .Subscribe(async _ =>
                 {
-                    if (IsLoaded)
+                    if (_isLoaded)
                     {
                         await Save();
                     }
@@ -45,11 +51,7 @@ namespace WolvenManager.App.Services
         public bool IsLibraryEnabled { get; set; }
 
 
-        [JsonIgnore]
-        public bool IsLoaded { get; set; }
-
-
-
+        [JsonIgnore] private bool _isLoaded;
 
 
         public string ScriptsDir
@@ -99,7 +101,7 @@ namespace WolvenManager.App.Services
 
         public static SettingsService Load()
         {
-            SettingsService config = new();
+            SettingsService config = null;
 
             try
             {
@@ -116,13 +118,12 @@ namespace WolvenManager.App.Services
 
             // defaults
             Directory.CreateDirectory(Constants.DefaultDepotPath);
-            config ??= new()
+            config ??= new SettingsService()
             {
                 IsLibraryEnabled = true,
                 DepotPath = Constants.DefaultDepotPath
             };
-
-            config.IsLoaded = true;
+            config._isLoaded = true;
             return config;
         }
 

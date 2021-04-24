@@ -29,8 +29,14 @@ namespace WolvenManager.App.Services
         private readonly IPluginService _pluginService;
 
         // bound library
-        private readonly ReadOnlyObservableCollection<ModViewModel> _items;
-        public ReadOnlyObservableCollection<ModViewModel> Items => _items;
+        //private readonly ReadOnlyObservableCollection<ModViewModel> _items;
+        //public ReadOnlyObservableCollection<ModViewModel> Items => _items;
+        private readonly SourceCache<ModViewModel, string> _modViewModels = new(t => t.Id);
+        /// <summary>
+        /// Connection to the current profile
+        /// </summary>
+        /// <returns></returns>
+        public IObservable<IChangeSet<ModViewModel, string>> Connect() => _modViewModels.Connect();
 
 
         public ProfileService()
@@ -42,22 +48,74 @@ namespace WolvenManager.App.Services
 
 
             _libraryService.Connect()
-                .Transform(_ => new ModViewModel(_))
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Bind(out _items)
+                .Bind(out _)
                 .Subscribe(set =>
                 {
-                    // observe changes in the library
+                    foreach (var change in set)
+                    {
+                        EvaluateChange(change);
+                    }
                 });
-
-
-
         }
 
-        
+        private void EvaluateChange(Change<ModModel, string> change)
+        {
+            var model = change.Current;
+            switch (change.Reason)
+            {
+                case ChangeReason.Add:
+                    // check if already in profile
+                    if (_modViewModels.Keys.Contains(model.Id))
+                    {
+                        // do nothing?
+                        // TODO: could do something fancy and hash the file and compare to chached mod
+                    }
+                    else
+                    {
+                        // a mod was added to the lib but isn't here
+                        var modVm = new ModViewModel(model)
+                        {
+                            LoadOrder = _modViewModels.Count
+                        };
+
+                        // add disabled files :(
+                        foreach (var file in model.Files)
+                        {
+                            var gamefile = Path.Combine(_settingsService.GamePath, $"{file}.disabled");
+                            if (File.Exists(gamefile))
+                            {
+                                modVm.DisabledFiles.Add(file);
+                            }
+                        }
+
+                        // priority
+                        
+
+                        modVm.Enabled = true; //default enable new mods;
+                        _modViewModels.AddOrUpdate(modVm);
+                    }
 
 
-        public async Task Save()
+                    break;
+                case ChangeReason.Update:
+                    break;
+                case ChangeReason.Remove:
+                    break;
+                case ChangeReason.Refresh:
+                    break;
+                case ChangeReason.Moved:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task Serialize()
         {
             
 

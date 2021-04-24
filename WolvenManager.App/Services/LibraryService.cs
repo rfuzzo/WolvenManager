@@ -28,14 +28,15 @@ namespace WolvenManager.App.Services
         private readonly INotificationService _notificationService;
         private readonly ISettingsService _settings;
 
-        // bound mod change set
-        //private readonly ReadOnlyObservableCollection<ModItemViewModel> _items;
-
         // the actual library
         private SourceCache<ModModel, string> _mods = new(t => t.Id);
+        /// <summary>
+        /// Connection to the dynamic mod library
+        /// </summary>
+        /// <returns></returns>
+        public IObservable<IChangeSet<ModModel, string>> Connect() => _mods.Connect();
 
 
-        
         #endregion
 
         public LibraryService()
@@ -58,12 +59,7 @@ namespace WolvenManager.App.Services
                 });
         }
 
-        /// <summary>
-        /// Connection to the dynamic mod library
-        /// </summary>
-        /// <returns></returns>
-        public IObservable<IChangeSet<ModModel, string>> Connect() => _mods.Connect();
-
+        
 
         /// <summary>
         /// Serialize the library to a file
@@ -117,11 +113,19 @@ namespace WolvenManager.App.Services
                     else
                     {
                         // If not found, add a loose file mod
-                        var mod = new ModModel()
+                        var mod = new ModModel();
+
+                        var modfile = fileInfo.FullName;
+                        var modName = Path.GetFileNameWithoutExtension(fileInfo.Name);
+                        if (fileInfo.Extension == ".disabled")
                         {
-                            Name = fileInfo.Name,
-                            Files = new[] { GetRelativeGameFilePath(fileInfo.FullName) }
-                        };
+                            modName = Path.GetFileNameWithoutExtension(modName);
+                            modfile = Path.ChangeExtension(modfile, "").TrimEnd('.');
+                        }
+
+                        mod.Files = new[] {GetRelativeGameFilePath(modfile) };
+                        mod.Name = modName;
+                        
                         _mods.AddOrUpdate(mod);
                     }
                     break;
@@ -145,7 +149,7 @@ namespace WolvenManager.App.Services
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private string GetRelativeGameFilePath(string input) => input.Substring(_settings.GamePath.Length);
+        private string GetRelativeGameFilePath(string input) => input[(_settings.GamePath.Length + 1)..];
 
         /// <summary>
         /// Try get a mod from the library by a given file

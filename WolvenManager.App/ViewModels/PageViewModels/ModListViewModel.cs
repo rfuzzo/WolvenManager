@@ -20,7 +20,10 @@ namespace WolvenManager.App.ViewModels.PageViewModels
         {
             var currentProfile = Locator.Current.GetService<IProfileService>();
 
-            BindingData = currentProfile.Items;
+            currentProfile.Connect()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out BindingData)
+                .Subscribe();
 
             InstallModCommand = ReactiveCommand.Create(InstallMod);
         }

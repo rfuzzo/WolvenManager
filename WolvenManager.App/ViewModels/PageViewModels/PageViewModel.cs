@@ -21,7 +21,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
         }
 
 
-        private static Constants.Constants.RoutingIDs GetAttributes<T>(Type t) where T: Attribute
+        private static Constants.RoutingIDs GetAttributes<T>(Type t) where T: Attribute
         {
             var attribute = (T)Attribute.GetCustomAttribute(t, typeof(T));
 

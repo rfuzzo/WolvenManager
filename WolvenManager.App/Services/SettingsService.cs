@@ -17,16 +17,7 @@ namespace WolvenManager.App.Services
     {
         #region fields
 
-        private static string ConfigurationPath
-        {
-            get
-            {
-                var path = AppDomain.CurrentDomain.BaseDirectory;
-                var filename = Path.GetFileNameWithoutExtension(path);
-                var dir = Path.GetDirectoryName(path);
-                return Path.Combine(dir ?? "", filename + "config.json");
-            }
-        }
+        
 
         #endregion
 
@@ -97,9 +88,6 @@ namespace WolvenManager.App.Services
             }
         }
 
-        public static string DefaultDepotPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-            "WolvenModManager", "Library");
-
         #endregion
 
 
@@ -115,9 +103,9 @@ namespace WolvenManager.App.Services
 
             try
             {
-                if (File.Exists(ConfigurationPath))
+                if (File.Exists(Constants.ConfigurationPath))
                 {
-                    var jsonString = File.ReadAllText(ConfigurationPath);
+                    var jsonString = File.ReadAllText(Constants.ConfigurationPath);
                     config = JsonSerializer.Deserialize<SettingsService>(jsonString);
                 }
             }
@@ -127,11 +115,11 @@ namespace WolvenManager.App.Services
             }
 
             // defaults
-            Directory.CreateDirectory(DefaultDepotPath);
+            Directory.CreateDirectory(Constants.DefaultDepotPath);
             config ??= new()
             {
                 IsLibraryEnabled = true,
-                DepotPath = DefaultDepotPath
+                DepotPath = Constants.DefaultDepotPath
             };
 
             config.IsLoaded = true;
@@ -150,8 +138,12 @@ namespace WolvenManager.App.Services
 
         public async Task Save()
         {
-            await using var createStream = File.Create(ConfigurationPath);
-            await JsonSerializer.SerializeAsync(createStream, this);
+            await using var createStream = File.Create(Constants.ConfigurationPath);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            await JsonSerializer.SerializeAsync(createStream, this, options);
         }
 
         public void CheckSelf(SettingsService config)

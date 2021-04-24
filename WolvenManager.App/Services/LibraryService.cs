@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
@@ -25,6 +26,7 @@ namespace WolvenManager.App.Services
     {
         #region fields
         private readonly INotificationService _notificationService;
+        private readonly ISettingsService _settings;
 
         // bound mod change set
         //private readonly ReadOnlyObservableCollection<ModItemViewModel> _items;
@@ -33,21 +35,13 @@ namespace WolvenManager.App.Services
         private SourceCache<ModModel, string> _mods = new(t => t.Id);
 
 
-        private static string LibraryPath
-        {
-            get
-            {
-                var path = AppDomain.CurrentDomain.BaseDirectory;
-                var filename = Path.GetFileNameWithoutExtension(path);
-                var dir = Path.GetDirectoryName(path);
-                return Path.Combine(dir ?? "", filename + "lib.bin");
-            }
-        }
+        
         #endregion
 
         public LibraryService()
         {
             _notificationService = Locator.Current.GetService<INotificationService>();
+            _settings = Locator.Current.GetService<ISettingsService>();
             var modwatcherService = Locator.Current.GetService<IWatcherService>();
 
             Deserialize();
@@ -76,7 +70,7 @@ namespace WolvenManager.App.Services
         /// </summary>
         private void Serialize()
         {
-            using var file = File.Create(LibraryPath);
+            using var file = File.Create(Constants.LibraryPath);
             Serializer.Serialize(file, _mods.Items);
         }
 
@@ -85,18 +79,20 @@ namespace WolvenManager.App.Services
         /// </summary>
         private void Deserialize()
         {
-            if (File.Exists(LibraryPath))
+            if (!File.Exists(Constants.LibraryPath))
             {
-                using var file = File.OpenRead(LibraryPath);
-                var moditems = Serializer.Deserialize<IEnumerable<ModModel>>(file);
-
-                _mods = new SourceCache<ModModel, string>(_ => _.Id);
-                _mods.Edit(innerCache =>
-                {
-                    innerCache.Clear();
-                    innerCache.AddOrUpdate(moditems);
-                });
+                return;
             }
+
+            using var file = File.OpenRead(Constants.LibraryPath);
+            var moditems = Serializer.Deserialize<IEnumerable<ModModel>>(file);
+
+            _mods = new SourceCache<ModModel, string>(_ => _.Id);
+            _mods.Edit(innerCache =>
+            {
+                innerCache.Clear();
+                innerCache.AddOrUpdate(moditems);
+            });
         }
 
 
@@ -112,12 +108,11 @@ namespace WolvenManager.App.Services
                 case ChangeReason.Add:
                     var fileInfo = new FileInfo(change.Current.FullPath);
 
-                    // check if in Modlist
+                    // check if in library
                     if (GetModForFile(fileInfo.FullName) != null)
                     {
                         // do nothing?
-                        // could something fancy and hash the file and compare to chached mod 
-                        // meh
+                        // TODO: could do something fancy and hash the file and compare to chached mod
                     }
                     else
                     {
@@ -125,11 +120,9 @@ namespace WolvenManager.App.Services
                         var mod = new ModModel()
                         {
                             Name = fileInfo.Name,
-                            Files = new[] { fileInfo.FullName }
+                            Files = new[] { GetRelativeGameFilePath(fileInfo.FullName) }
                         };
-
                         _mods.AddOrUpdate(mod);
-
                     }
                     break;
                 case ChangeReason.Update:
@@ -146,6 +139,13 @@ namespace WolvenManager.App.Services
 
             Serialize();
         }
+
+        /// <summary>
+        /// Calculates the substring of the input string from the GamePath length.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private string GetRelativeGameFilePath(string input) => input.Substring(_settings.GamePath.Length);
 
         /// <summary>
         /// Try get a mod from the library by a given file
@@ -169,3 +169,25 @@ namespace WolvenManager.App.Services
 
     }
 }
+
+
+// and save the mod to Lib
+//if (_settings.IsLibraryEnabled)
+//{
+//    // check if folder exists in library
+
+
+//    // create folder with modname
+//    var moddir = Directory.CreateDirectory(Path.Combine(Constants.LibraryPath, mod.Name));
+//    var zipfile = Path.Combine(moddir.FullName, $"{mod.Name}.zip");
+//    if (File.Exists(zipfile))
+//    {
+//        File.Delete(zipfile);
+//    }
+
+//    // add file to zip
+//    using var archive = ZipFile.Open(zipfile, ZipArchiveMode.Create);
+//    archive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name, CompressionLevel.Optimal);
+
+//    mod.IsInLibrary = true;
+//}

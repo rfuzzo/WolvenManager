@@ -9,9 +9,9 @@ namespace WolvenManager.App.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class RoutingUrlAttribute : Attribute
     {
-        public Constants.Constants.RoutingIDs RoutingId { get; }
+        public Constants.RoutingIDs RoutingId { get; }
 
-        public RoutingUrlAttribute(Constants.Constants.RoutingIDs routingId)
+        public RoutingUrlAttribute(Constants.RoutingIDs routingId)
         {
             this.RoutingId = routingId;
         }

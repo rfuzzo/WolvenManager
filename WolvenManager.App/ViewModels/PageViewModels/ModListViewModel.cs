@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Reactive;
 using System.Reactive.Linq;
 using DynamicData;
 using ReactiveUI;
@@ -10,7 +11,7 @@ using WolvenManager.App.Services;
 
 namespace WolvenManager.App.ViewModels.PageViewModels
 {
-    [RoutingUrl(Constants.Constants.RoutingIDs.Main)]
+    [RoutingUrl(Constants.RoutingIDs.Main)]
     public class ModListViewModel : PageViewModel
     {
         
@@ -20,12 +21,24 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             var currentProfile = Locator.Current.GetService<IProfileService>();
 
             BindingData = currentProfile.Items;
+
+            InstallModCommand = ReactiveCommand.Create(InstallMod);
+        }
+
+        private void InstallMod()
+        {
+            
+
+
         }
 
         #region properties
 
 
         public readonly ReadOnlyObservableCollection<ModViewModel> BindingData;
+
+        public ReactiveCommand<Unit, Unit> InstallModCommand { get; }
+
 
         #endregion
 

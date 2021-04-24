@@ -14,9 +14,9 @@
     xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
     xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
     xmlns:viewModels="clr-namespace:WolvenManager.App.ViewModels;assembly=WolvenManager.App"
-    xmlns:constants="clr-namespace:WolvenManager.App.Constants;assembly=WolvenManager.App"
-    
+
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:constants="clr-namespace:WolvenManager.App;assembly=WolvenManager.App"
 
     d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel}"
 

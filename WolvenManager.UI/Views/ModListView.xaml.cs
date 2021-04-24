@@ -34,6 +34,11 @@ namespace WolvenManager.UI.Views
                         viewModel => viewModel.BindingData,
                         view => view.ModList.ItemsSource)
                     .DisposeWith(disposables);
+
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.InstallModCommand,
+                        view => view.InstallModButton)
+                    .DisposeWith(disposables);
             });
         }
     }

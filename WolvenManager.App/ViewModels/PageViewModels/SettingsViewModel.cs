@@ -8,15 +8,13 @@ using WolvenManager.App.Services;
 
 namespace WolvenManager.App.ViewModels.PageViewModels
 {
-    [RoutingUrl(Constants.Constants.RoutingIDs.Settings)]
+    [RoutingUrl(Constants.RoutingIDs.Settings)]
     public class SettingsViewModel : PageViewModel
     {
 
         #region fields
         public const string GameDirParameter = "GameDirParameter";
         public const string LibraryDirParameter = "LibraryDirParameter";
-
-
         #endregion
 
         #region properties

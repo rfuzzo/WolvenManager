@@ -40,7 +40,7 @@ namespace WolvenManager.App.ViewModels
             OnStartup();
 
             // commands
-            SidebarCommand = ReactiveCommand.Create<Constants.Constants.RoutingIDs>(ExecuteSidebarCommand, CanExecuteRouting);
+            SidebarCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar, CanExecuteRouting);
         }
 
         #region properties
@@ -67,22 +67,22 @@ namespace WolvenManager.App.ViewModels
         
 
 
-        public ReactiveCommand<Constants.Constants.RoutingIDs, Unit> SidebarCommand { get; }
+        public ReactiveCommand<Constants.RoutingIDs, Unit> SidebarCommand { get; }
 
-        private void ExecuteSidebarCommand(Constants.Constants.RoutingIDs parameter)
+        private void ExecuteSidebar(Constants.RoutingIDs parameter)
         {
             switch (parameter)
             {
-                case Constants.Constants.RoutingIDs.Main:
+                case Constants.RoutingIDs.Main:
                     Router.Navigate.Execute(new ModListViewModel());
                     break;
-                case Constants.Constants.RoutingIDs.Library:
+                case Constants.RoutingIDs.Library:
                     break;
-                case Constants.Constants.RoutingIDs.Extensions:
+                case Constants.RoutingIDs.Extensions:
                     break;
-                case Constants.Constants.RoutingIDs.Profiles:
+                case Constants.RoutingIDs.Profiles:
                     break;
-                case Constants.Constants.RoutingIDs.Settings:
+                case Constants.RoutingIDs.Settings:
                     Router.Navigate.Execute(new SettingsViewModel());
                     break;
                 default:

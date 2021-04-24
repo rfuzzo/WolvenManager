@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
-namespace WolvenManager.App.Constants
+namespace WolvenManager.App
 {
     public static class Constants
     {
@@ -17,7 +14,31 @@ namespace WolvenManager.App.Constants
             Settings
         }
 
-        
+        public static string ConfigurationPath
+        {
+            get
+            {
+                var path = AppDomain.CurrentDomain.BaseDirectory;
+                var filename = Path.GetFileNameWithoutExtension(path);
+                var dir = Path.GetDirectoryName(path);
+                return Path.Combine(dir ?? "", filename + "config.json");
+            }
+        }
 
+        public static string LibraryPath
+        {
+            get
+            {
+                var path = AppDomain.CurrentDomain.BaseDirectory;
+                var filename = Path.GetFileNameWithoutExtension(path);
+                var dir = Path.GetDirectoryName(path);
+                return Path.Combine(dir ?? "", filename + "lib.bin");
+            }
+        }
+
+        public static string WorkingDir => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WorkingDir");
+
+        public static string DefaultDepotPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "WolvenModManager", "Library");
     }
 }

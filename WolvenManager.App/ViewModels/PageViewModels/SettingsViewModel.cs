@@ -18,7 +18,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
         #endregion
 
         #region properties
-        public readonly ISettingsService Settings;
+        
 
         public ReactiveCommand<string, Unit> BrowseCommand { get; }
 
@@ -28,7 +28,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
         public SettingsViewModel(IScreen screen = null) : base(typeof(SettingsViewModel), screen)
         {
-            Settings = Locator.Current.GetService<ISettingsService>();
+            
 
 
             BrowseCommand = ReactiveCommand.Create<string>(BrowseFolderExecute);
@@ -58,16 +58,16 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             switch (param)
             {
                 case GameDirParameter:
-                    Settings.GamePath = dir;
+                    _settingsService.GamePath = dir;
                     break;
                 case LibraryDirParameter:
-                    Settings.DepotPath = dir;
+                    _settingsService.DepotPath = dir;
                     break;
                 default:
                     break;
             }
 
-            Settings.Save();
+            _settingsService.Save();
         }
 
         #endregion

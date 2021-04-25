@@ -8,7 +8,7 @@
                                 xmlns:local="clr-namespace:WolvenManager.UI.Views"
                                 xmlns:reactiveUi="http://reactiveui.net"
                                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                                xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+                                xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
                                 xmlns:pageViewModels="clr-namespace:WolvenManager.App.ViewModels.PageViewModels;assembly=WolvenManager.App"
                                 xmlns:converters="clr-namespace:WolvenManager.UI.Converters"
                                 d:DataContext="{d:DesignInstance Type=pageViewModels:ModListViewModel}"
@@ -27,7 +27,7 @@
 
         <Grid.Resources>
             <converters:ColorConverter x:Key="converter"/>
-            <Style TargetType="Syncfusion:VirtualizingCellsControl">
+            <Style TargetType="syncfusion:VirtualizingCellsControl">
                 <Setter Property="Background" Value="{Binding Converter={StaticResource converter}}" />
             </Style>
         </Grid.Resources>
@@ -36,6 +36,7 @@
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
@@ -54,33 +55,62 @@
                     </Button.Content>
                 </Button>
 
-
+                <Button Grid.Column="2" x:Name="SidebarToggleButton">
+                    <Button.Content>
+                        <iconPacks:BootstrapIcons Kind="LayoutSidebar"
+                                                  Width="20"
+                                                  Height="20"
+                        />
+                    </Button.Content>
+                </Button>
             </Grid>
 
         </GroupBox>
 
-        <Syncfusion:SfDataGrid Grid.Row="1" x:Name="ModList"
-                               AllowSorting="True"
-                               AllowFiltering="True"
-                               AllowResizingColumns="True"
-                               ColumnSizer="AutoWithLastColumnFill"
-                               AllowEditing="True"
-                               Padding="5"
-                               AutoGenerateColumns="false"
-                               AllowDraggingRows="True"
-                               AllowDrop="True"
-                               RowDropIndicatorMode="Line"
-                               SelectionMode="Extended"
-        >
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <Syncfusion:SfDataGrid.Columns>
+            <syncfusion:SfDataGrid Grid.Column="0" DockPanel.Dock="Left" 
+                                   x:Name="ModList"
+                                   AllowSorting="True"
+                                   AllowFiltering="True"
+                                   AllowResizingColumns="True"
+                                   ColumnSizer="AutoWithLastColumnFill"
+                                   AllowEditing="True"
+                                   Padding="5"
+                                   AutoGenerateColumns="false"
+                                   AllowDraggingRows="True"
+                                   AllowDrop="True"
+                                   RowDropIndicatorMode="Line"
+                                   SelectionMode="Extended">
 
-                <Syncfusion:GridTextColumn MappingName="LoadOrder" AllowEditing="False"/>
-                <Syncfusion:GridCheckBoxColumn MappingName="Enabled"/>
-                <Syncfusion:GridTextColumn MappingName="Name"/>
-                
-            </Syncfusion:SfDataGrid.Columns>
-                
-        </Syncfusion:SfDataGrid>
+                <syncfusion:SfDataGrid.Columns>
+
+                    <syncfusion:GridTextColumn MappingName="LoadOrder" AllowEditing="False"/>
+                    <syncfusion:GridCheckBoxColumn MappingName="Enabled"/>
+                    <syncfusion:GridTextColumn MappingName="Name"/>
+
+                </syncfusion:SfDataGrid.Columns>
+
+            </syncfusion:SfDataGrid>
+
+            <Grid Grid.Column="1" x:Name="Properties">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="200" MinWidth="200"/>
+                </Grid.ColumnDefinitions>
+
+                <GridSplitter Width="5"
+                              ResizeBehavior="CurrentAndNext" />
+                <TextBox  Grid.Column="1" DockPanel.Dock="Right" 
+                          Background="Aqua" />
+            </Grid>
+            
+        </Grid>
+
+        
     </Grid>
 </reactiveUi:ReactiveUserControl>

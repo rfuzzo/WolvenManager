@@ -2,6 +2,7 @@
 using ReactiveUI;
 using Splat;
 using WolvenManager.App.Attributes;
+using WolvenManager.App.Services;
 
 namespace WolvenManager.App.ViewModels.PageViewModels
 {
@@ -12,8 +13,19 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
         public IScreen HostScreen { get; }
 
+        protected readonly ISettingsService _settingsService;
+        protected readonly IInteractionService _interactionService;
+        protected readonly INotificationService _notificationService;
+        protected readonly ILibraryService _libraryService;
+
+
         protected PageViewModel(Type t, IScreen screen = null)
         {
+            _settingsService = Locator.Current.GetService<ISettingsService>();
+            _interactionService = Locator.Current.GetService<IInteractionService>();
+            _libraryService = Locator.Current.GetService<ILibraryService>();
+            _notificationService = Locator.Current.GetService<INotificationService>();
+
             UrlPathSegment = GetAttributes<RoutingUrlAttribute>(t).ToString();
 
 

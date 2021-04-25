@@ -8,10 +8,9 @@
     xmlns:reactiveui="http://reactiveui.net"
     
     Title="{Binding Title}"
-    Height="450" Width="800"
+    Height="600" Width="1000"
     MinHeight="450" MinWidth="800"
     mc:Ignorable="d"
-    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
     xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
     xmlns:viewModels="clr-namespace:WolvenManager.App.ViewModels;assembly=WolvenManager.App"
 
@@ -28,98 +27,112 @@
     </Window.Style>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
         
 
-        <!-- Sidebar -->
-        <GroupBox Grid.Column="0"
-                  Padding="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+        
+
+            <!-- Sidebar -->
+            <GroupBox Grid.Column="0"
+                      Padding="0">
 
 
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
 
 
-                <Border Height="{Binding Path=TitleBarActualHeight, RelativeSource={RelativeSource AncestorType={x:Type adonisControls:AdonisWindow}}}" />
+                    <Border Height="{Binding Path=TitleBarActualHeight, RelativeSource={RelativeSource AncestorType={x:Type adonisControls:AdonisWindow}}}" />
 
-                <!-- Upper Buttons -->
-                <StackPanel Grid.Row="0">
-                    <Button x:Name="MainButton" CommandParameter="{x:Static constants:Constants+RoutingIDs.Main }" >
-                        <Button.Content>
-                            <iconPacks:PackIconCodicons Kind="Package"
-                                                        Width="40"
-                                                        Height="40"
-                                                        Padding="5"/>
-                        </Button.Content>
+                    <!-- Upper Buttons -->
+                    <StackPanel Grid.Row="0">
+                        <Button x:Name="MainButton" CommandParameter="{x:Static constants:Constants+RoutingIDs.Main }" >
+                            <Button.Content>
+                                <iconPacks:PackIconCodicons Kind="Package"
+                                                            Width="40"
+                                                            Height="40"
+                                                            Padding="5"/>
+                            </Button.Content>
 
-                    </Button>
-                    <Button x:Name="ExtensionsButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Extensions }" >
-                        <Button.Content>
-                            <iconPacks:PackIconCodicons Kind="Extensions"
-                                                        Width="40"
-                                                        Height="40"
-                                                        Padding="5"/>
-                        </Button.Content>
+                        </Button>
+                        <Button x:Name="ExtensionsButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Extensions }" >
+                            <Button.Content>
+                                <iconPacks:PackIconCodicons Kind="Extensions"
+                                                            Width="40"
+                                                            Height="40"
+                                                            Padding="5"/>
+                            </Button.Content>
 
-                    </Button>
+                        </Button>
 
-                    <Button x:Name="LibraryButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Library }" >
-                        <Button.Content>
-                            <iconPacks:PackIconCodicons Kind="Library"
-                                                        Width="40"
-                                                        Height="40"
-                                                        Padding="5"/>
-                        </Button.Content>
+                        <Button x:Name="LibraryButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Library }" >
+                            <Button.Content>
+                                <iconPacks:PackIconCodicons Kind="Library"
+                                                            Width="40"
+                                                            Height="40"
+                                                            Padding="5"/>
+                            </Button.Content>
 
-                    </Button>
+                        </Button>
 
-                </StackPanel>
-
-
-                <!-- Lower Buttons -->
-                <StackPanel Grid.Row="2">
-
-                    <Button x:Name="ProfilesButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Profiles }" >
-                        <Button.Content>
-                            <iconPacks:PackIconCodicons Kind="Account"
-                                                        Width="40"
-                                                        Height="40"
-                                                        Padding="5"/>
-                        </Button.Content>
-                    </Button>
-
-                    <Button x:Name="SettingsButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Settings }" >
-                        <Button.Content>
-                            <iconPacks:PackIconCodicons Kind="SettingsGear"
-                                                        Width="40"
-                                                        Height="40"
-                                                        Padding="5"/>
-                        </Button.Content>
-                    </Button>
-
-                </StackPanel>
-                
+                    </StackPanel>
 
 
+                    <!-- Lower Buttons -->
+                    <StackPanel Grid.Row="2">
+
+                        <Button x:Name="ProfilesButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Profiles }" >
+                            <Button.Content>
+                                <iconPacks:PackIconCodicons Kind="Account"
+                                                            Width="40"
+                                                            Height="40"
+                                                            Padding="5"/>
+                            </Button.Content>
+                        </Button>
+
+                        <Button x:Name="SettingsButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Settings }" >
+                            <Button.Content>
+                                <iconPacks:PackIconCodicons Kind="SettingsGear"
+                                                            Width="40"
+                                                            Height="40"
+                                                            Padding="5"/>
+                            </Button.Content>
+                        </Button>
+
+                    </StackPanel>
+                    
 
 
-            </Grid>
-        </GroupBox>
 
-        <!-- Pages -->
-        <reactiveui:RoutedViewHost Grid.Column="1" 
-            Grid.Row="0" 
-            x:Name="RoutedViewHost"
-            HorizontalContentAlignment="Stretch"
-            VerticalContentAlignment="Stretch" />
+
+                </Grid>
+            </GroupBox>
+
+            <!-- Pages -->
+            <reactiveui:RoutedViewHost Grid.Column="1" 
+                                       x:Name="RoutedViewHost"
+                                       HorizontalContentAlignment="Stretch"
+                                       VerticalContentAlignment="Stretch" />
+
+
+
+        </Grid>
+
+        <StatusBar Grid.Row="1" Background="DodgerBlue">
+
+        </StatusBar>
     </Grid>
 </adonisControls:AdonisWindow>

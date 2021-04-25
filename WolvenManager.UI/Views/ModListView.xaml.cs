@@ -19,8 +19,12 @@ using DynamicData;
 using ReactiveUI;
 using Syncfusion.Data.Extensions;
 using Syncfusion.UI.Xaml.Grid;
+using WolvenManager.App.Utility;
 using WolvenManager.App.ViewModels;
+using WolvenManager.App.ViewModels.Dialogs;
 using WolvenManager.App.ViewModels.PageViewModels;
+using WolvenManager.UI.Implementations;
+using WolvenManager.UI.Views.Dialogs;
 
 namespace WolvenManager.UI.Views
 {
@@ -43,22 +47,48 @@ namespace WolvenManager.UI.Views
                         viewModel => viewModel.BindingData,
                         view => view.ModList.ItemsSource)
                     .DisposeWith(disposables);
+                this.OneWayBind(ViewModel,
+                        viewModel => viewModel.IsSideBarVisible,
+                        view => view.Properties.Visibility)
+                    .DisposeWith(disposables);
 
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.InstallModCommand,
                         view => view.InstallModButton)
                     .DisposeWith(disposables);
-
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.ToggleSidebarCommand,
+                        view => view.SidebarToggleButton)
+                    .DisposeWith(disposables);
 
 
 
             });
 
+            InteractionHelpers.ModViewModelInteraction.RegisterHandler(
+                async interaction =>
+                {
+                    var action = await this.DisplayModSortDialog(interaction.Input);
+
+                    interaction.SetOutput(action);
+                });
 
 
             //this.ModList.AutoGeneratingColumn += dataGrid_AutoGeneratingColumn;
             ModList.RowDragDropController.Dropped += OnRowDropped;
         }
+
+        private async Task<bool> DisplayModSortDialog(IEnumerable<string> input)
+        {
+            var inputDialog = new ModFilesValidationView(new ModFilesValidationViewModel(input));
+            if (inputDialog.ShowDialog() == true)
+            {
+
+            }
+
+            return true;
+        }
+
 
         private void OnRowDropped(object sender, GridRowDroppedEventArgs e)
         {

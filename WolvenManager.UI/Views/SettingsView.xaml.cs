@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ReactiveUI;
+using Splat;
+using WolvenManager.App.Services;
 using WolvenManager.App.ViewModels;
 using WolvenManager.App.ViewModels.PageViewModels;
 
@@ -24,10 +26,13 @@ namespace WolvenManager.UI.Views
     /// </summary>
     public partial class SettingsView : ReactiveUserControl<SettingsViewModel>
     {
+        protected readonly ISettingsService _settingsService;
+
         public SettingsView()
         {
+            _settingsService = Locator.Current.GetService<ISettingsService>();
+
             InitializeComponent();
-            //ViewModel = new SettingsViewModel();
 
             this.WhenActivated(disposables =>
             {
@@ -39,25 +44,25 @@ namespace WolvenManager.UI.Views
 
 
                 this.Bind(ViewModel,
-                    viewModel => viewModel.Settings.GamePath,
+                    viewModel => _settingsService.GamePath,
                     view => view.GameDirTextBox.Text)
                     .DisposeWith(disposables);
                 this.Bind(ViewModel,
-                        viewModel => viewModel.Settings.DepotPath,
+                        viewModel => _settingsService.DepotPath,
                         view => view.LibraryTextBox.Text)
                     .DisposeWith(disposables);
 
 
                 this.Bind(ViewModel,
-                        viewModel => viewModel.Settings.IsLibraryEnabled,
+                        viewModel => _settingsService.IsLibraryEnabled,
                         view => view.ModLibraryCheckBox.IsChecked)
                     .DisposeWith(disposables);
                 this.Bind(ViewModel,
-                        viewModel => viewModel.Settings.IsLibraryEnabled,
+                        viewModel => _settingsService.IsLibraryEnabled,
                         view => view.LibraryButton.IsEnabled)
                     .DisposeWith(disposables);
                 this.Bind(ViewModel,
-                        viewModel => viewModel.Settings.IsLibraryEnabled,
+                        viewModel => _settingsService.IsLibraryEnabled,
                         view => view.LibraryTextBox.IsEnabled)
                     .DisposeWith(disposables);
 

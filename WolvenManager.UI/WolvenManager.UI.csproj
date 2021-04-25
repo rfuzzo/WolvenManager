@@ -18,6 +18,7 @@
     <PackageReference Include="ReactiveUI.WPF" Version="13.2.18" />
     <PackageReference Include="Splat" Version="11.0.1" />
     <PackageReference Include="Syncfusion.SfGrid.WPF" Version="19.1.0.57" />
+    <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="19.1.0.57" />
   </ItemGroup>
 
   <ItemGroup>

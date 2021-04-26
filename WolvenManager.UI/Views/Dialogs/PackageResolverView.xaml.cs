@@ -1,30 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using AdonisUI.Controls;
 using ReactiveUI;
-using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeView;
-using WolvenManager.App.Arguments;
-using WolvenManager.App.Models;
-using WolvenManager.App.ViewModels;
 using WolvenManager.App.ViewModels.Dialogs;
-using WolvenManager.App.ViewModels.PageViewModels;
-using DropPosition = Syncfusion.UI.Xaml.TreeView.DropPosition;
 
 namespace WolvenManager.UI.Views.Dialogs
 {

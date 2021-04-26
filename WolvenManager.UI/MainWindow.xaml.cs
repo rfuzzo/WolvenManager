@@ -16,7 +16,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AdonisUI.Controls;
 using ReactiveUI;
+using WolvenManager.App.Arguments;
+using WolvenManager.App.Models;
+using WolvenManager.App.Utility;
 using WolvenManager.App.ViewModels;
+using WolvenManager.App.ViewModels.Dialogs;
+using WolvenManager.UI.Views.Dialogs;
 
 namespace WolvenManager.UI
 {
@@ -46,9 +51,6 @@ namespace WolvenManager.UI
             InitializeComponent();
             ViewModel = new AppViewModel();
             DataContext = ViewModel;
-
-            
-
 
             this.WhenActivated(disposableRegistration =>
             {
@@ -81,6 +83,36 @@ namespace WolvenManager.UI
                     .DisposeWith(disposableRegistration);
 
             });
+
+
+            InteractionHelpers.ModViewModelInteraction.RegisterHandler(
+                async interaction =>
+                {
+                    var action = await this.DisplayModSortDialog(interaction.Input);
+                    interaction.SetOutput(action);
+                });
+        }
+
+
+        private async Task<ZipModifyArgs> DisplayModSortDialog(IEnumerable<ModFileModel> input)
+        {
+            var inputDialog = new PackageResolverView(new PackageResolverViewModel(input))
+            {
+                Owner = Application.Current.MainWindow
+            };
+            this.Overlay.Opacity = 0.5;
+            this.Overlay.Background = new SolidColorBrush(Colors.White);
+
+            var output = new Dictionary<string, string>();
+            if (inputDialog.ShowDialog() == true)
+            {
+                output = inputDialog.GetOutput().ToDictionary(_ => _.Name, _ => _.ComputedFullName);
+            }
+
+            this.Overlay.Opacity = 1;
+            this.Overlay.Background = new SolidColorBrush(Colors.Transparent);
+
+            return new ZipModifyArgs(output);
         }
     }
 }

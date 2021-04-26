@@ -72,31 +72,9 @@ namespace WolvenManager.UI.Views
 
                 //ModList.RowDragDropController.Dropped += OnRowDropped;
             });
-
-            InteractionHelpers.ModViewModelInteraction.RegisterHandler(
-                async interaction =>
-                {
-                    var action = await this.DisplayModSortDialog(interaction.Input);
-
-                    interaction.SetOutput(action);
-                });
         }
 
-        private async Task<ZipModifyArgs> DisplayModSortDialog(IEnumerable<ModFileModel> input)
-        {
-            var inputDialog = new PackageResolverView(new PackageResolverViewModel(input));
-            if (inputDialog.ShowDialog() == true)
-            {
-                var output = inputDialog.GetOutput().ToDictionary(_ => _.Name, _ => _.ComputedFullName);
-                return new ZipModifyArgs( output); 
-            }
-            else
-            {
-                var output = inputDialog.GetOutput();
-
-            }
-            return new ZipModifyArgs(new Dictionary<string, string>());
-        }
+        
 
 
         private void OnRowDropped(object sender, GridRowDroppedEventArgs e)

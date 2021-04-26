@@ -69,7 +69,7 @@ namespace WolvenManager.UI
                         view => view.ProfilesButton)
                     .DisposeWith(disposableRegistration);
                 this.BindCommand(ViewModel,
-                        viewModel => viewModel.RoutingCommand,
+                        viewModel => viewModel.RoutingSettingsCommand,
                         view => view.SettingsButton)
                     .DisposeWith(disposableRegistration);
 

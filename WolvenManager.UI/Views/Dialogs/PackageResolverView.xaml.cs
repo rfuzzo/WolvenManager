@@ -24,13 +24,14 @@ using WolvenManager.App.Models;
 using WolvenManager.App.ViewModels;
 using WolvenManager.App.ViewModels.Dialogs;
 using WolvenManager.App.ViewModels.PageViewModels;
+using DropPosition = Syncfusion.UI.Xaml.TreeView.DropPosition;
 
 namespace WolvenManager.UI.Views.Dialogs
 {
     /// <summary>
     /// Interaction logic for ModFilesValidationDialog.xaml
     /// </summary>
-    public partial class ModFilesValidationView : AdonisWindow, IViewFor<ModFilesValidationViewModel>
+    public partial class PackageResolverView : AdonisWindow, IViewFor<PackageResolverViewModel>
     {
         #region fields
 
@@ -38,7 +39,7 @@ namespace WolvenManager.UI.Views.Dialogs
 
         #endregion
 
-        public ModFilesValidationView(ModFilesValidationViewModel vm)
+        public PackageResolverView(PackageResolverViewModel vm)
         {
             InitializeComponent();
             this.Owner = Application.Current.MainWindow;
@@ -49,14 +50,14 @@ namespace WolvenManager.UI.Views.Dialogs
 
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(ViewModel,
+                this.Bind(ViewModel,
                         viewModel => viewModel.BoundCollection,
                         view => view.TreeView.ItemsSource)
                     .DisposeWith(disposables);
 
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.OkCommand,
-                        view => view.ButtonOK)
+                        view => view.ButtonOk)
                     .DisposeWith(disposables);
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.CancelCommand,
@@ -78,12 +79,12 @@ namespace WolvenManager.UI.Views.Dialogs
 
         #region properties
 
-        public ModFilesValidationViewModel ViewModel { get; set; }
+        public PackageResolverViewModel ViewModel { get; set; }
 
         object IViewFor.ViewModel
         {
             get => ViewModel;
-            set => ViewModel = (ModFilesValidationViewModel)value;
+            set => ViewModel = (PackageResolverViewModel)value;
         }
 
         #endregion
@@ -97,9 +98,9 @@ namespace WolvenManager.UI.Views.Dialogs
 
         private static void OnItemDragStarting(object sender, TreeViewItemDragStartingEventArgs e)
         {
-            if (e.DraggingNodes[0].Content is FileSystemInfoViewModel
+            if (e.DraggingNodes[0].Content is FileViewModel
             {
-                Name: "r6" or "r6/scripts" or "archive/pc/mod" or "archive/pc" or "archive"
+                FullName: "r6" or "r6/scripts" or "archive/pc/mod" or "archive/pc" or "archive"
             })
             {
                 e.Cancel = true;
@@ -108,18 +109,29 @@ namespace WolvenManager.UI.Views.Dialogs
 
         private static void OnItemDropping(object sender, TreeViewItemDroppingEventArgs e)
         {
-            if (e.TargetNode.Content is FileSystemInfoViewModel
-            {
-                Name: "r6" or "r6/scripts" or "archive"
-            })
+            
+
+            if (e.TargetNode.Content is FileViewModel {IsDirectory: false})
             {
                 e.Handled = true;
+            }
+            if (e.TargetNode.Content is FileViewModel {FullName: "r6" or "archive" or "archive/pc" })
+            {
+                e.Handled = true;
+            }
+
+            if (e.DraggingNodes.Count > 0)
+            {
+                if (e.DraggingNodes.First().Content is FileViewModel draggedNode)
+                {
+                    draggedNode.Parent = e.TargetNode.Content as FileViewModel;
+                }
             }
         }
 
         #endregion
 
-        public IEnumerable<ModFileModel> GetOutput()
+        public IEnumerable<FileViewModel> GetOutput()
         {
             return ViewModel.GetOutput();
 

@@ -65,6 +65,9 @@ namespace WolvenManager.App.Services
 
         }
 
+        public bool IsSuspended { get; set; }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -125,6 +128,13 @@ namespace WolvenManager.App.Services
         /// <param name="e"></param>
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
+            if (IsSuspended)
+            {
+                //Log.Debug("Watching is suspended, ignoring file system watcher change");
+                return;
+            }
+
+
             switch (e.ChangeType)
             {
                 case WatcherChangeTypes.Created:

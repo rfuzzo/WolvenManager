@@ -1,5 +1,5 @@
 ﻿<controls:AdonisWindow
-    x:Class="WolvenManager.UI.Views.Dialogs.ModFilesValidationView"
+    x:Class="WolvenManager.UI.Views.Dialogs.PackageResolverView"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,9 +13,10 @@
                                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:xc="clr-namespace:ExCastle.Wpf"
     xc:DialogCloser.DialogResult="{Binding DialogResult}"                            
-    d:DataContext="{d:DesignInstance Type=dialogs:ModFilesValidationViewModel}"
+    d:DataContext="{d:DesignInstance Type=dialogs:PackageResolverViewModel}"
                                 d:DesignHeight="250" d:DesignWidth="400"
                                 Width="600" Height="300"
+    Title="Mod package resolver"
     MinWidth="400" MinHeight="200"
     
     
@@ -32,9 +33,6 @@
                                ChildPropertyName="Children"
                                ShowLines="True"
         >
-
-
-            
             <syncfusion:SfTreeView.ItemTemplate>
                 <DataTemplate>
                     <Grid x:Name="grid">
@@ -45,7 +43,7 @@
                                 <ColumnDefinition Width="20" />
                             </Grid.ColumnDefinitions>
                             <Grid>
-                                <iconPacks:PackIconCodicons Kind="{Binding IconPath}"
+                                <iconPacks:PackIconCodicons Kind="{Binding IconPath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                             Width="16"
                                                             Height="16"
                                                             />
@@ -62,7 +60,7 @@
                                     <iconPacks:PackIconCodicons Kind="{Binding ValidIconPath}"
                                                                 Width="16"
                                                                 Height="16"
-                                                                Foreground="GreenYellow"
+                                                                Foreground="{Binding ValidIconBrush}"
                                     />
                                 </StackPanel>
                             </Grid>
@@ -71,15 +69,16 @@
                 </DataTemplate>
             </syncfusion:SfTreeView.ItemTemplate>
         </syncfusion:SfTreeView>
+
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                
                 <ColumnDefinition/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1"  Content="OK" x:Name="ButtonOK" 
+            <Button Grid.Column="0"  Content="OK" x:Name="ButtonOk" 
                     Height="30" Width="60"/>
-            <Button Grid.Column="2" Content="Cancel" x:Name="ButtonCancel" 
+            <Button Grid.Column="1" Content="Cancel" x:Name="ButtonCancel" 
                     IsCancel="True" Height="30" Width="60"/>
         </Grid>
     </Grid>

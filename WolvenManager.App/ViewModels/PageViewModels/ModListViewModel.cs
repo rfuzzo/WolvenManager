@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using DynamicData;
 using ReactiveUI;
@@ -48,7 +49,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             foreach (var path in browseFiles.Select(_ => new FileInfo(_)))
             {
                 // extract to mod folder
-                var mod = await InstallMod(path);
+                var mod = await ModInstallHelper.InstallMod(path);
                 if (mod == null)
                 {
                     return;
@@ -82,148 +83,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             }
         }
 
-        private static void ExtractZipMod(string zipPath, string extractPath, ZipModifyArgs e)
-        {
-            using Stream stream = File.OpenRead(zipPath);
-            using var reader = ReaderFactory.Open(stream);
-            while (reader.MoveToNextEntry())
-            {
-                if (!reader.Entry.IsDirectory)
-                {
-                    if (e != null && e.Output.Any(_ => _.Name == reader.Entry.Key))
-                    {
-                        var newEntry = e.Output.First(_ => _.Name == reader.Entry.Key);
-                        string destinationPath = Path.GetFullPath(Path.Combine(extractPath, newEntry.Name));
-                        if (!destinationPath.StartsWith(extractPath, StringComparison.Ordinal))
-                        {
-                            continue;
-                        }
-                        reader.WriteEntryToDirectory(extractPath, new ExtractionOptions()
-                        {
-                            ExtractFullPath = false,
-                            Overwrite = true
-                        });
-                    }
-                    else
-                    {
-                        reader.WriteEntryToDirectory(extractPath, new ExtractionOptions()
-                        {
-                            ExtractFullPath = true,
-                            Overwrite = true
-                        });
-                    }
-                }
-            }
-        }
-
-
-        private static async Task<ModModel> InstallMod(FileInfo zipInfo)
-        {
-            var settingsService = Locator.Current.GetService<ISettingsService>();
-            var notificationService = Locator.Current.GetService<INotificationService>();
-
-            if (settingsService == null)
-            {
-                return null;
-            }
-            var extractPath = Path.GetFullPath(settingsService.GamePath);
-            if (!PathExtensions.IsPathDirectory(extractPath))
-            {
-                extractPath += Path.DirectorySeparatorChar;
-            }
-
-            var entries = TryGetEntries(zipInfo).ToList();
-            var files = entries
-                .Where(_ => !_.IsDirectory)
-                .ToList();
-            ZipModifyArgs recovery = null;
-            // check if mod is malformed
-            if ((files.Any(_ => Path.GetExtension(_.Name) == ".reds") && entries.All(_ => _.Name != "r6/scripts")) || 
-                (files.Any(_ => Path.GetExtension(_.Name) == ".archive") && entries.All(_ => _.Name != "archive/pc/mod")))
-            {
-                // open mod fixer view
-                recovery = await InteractionHelpers.ModViewModelInteraction.Handle(files);
-
-                if (recovery.Output == null)
-                {
-                    // canceled
-                    return null;
-                }
-            }
-
-            // do something about existing files
-
-
-            //extract
-            switch (zipInfo.Extension)
-            {
-                case ".zip":
-                    ExtractZipMod(zipInfo.FullName, extractPath, recovery);
-                    break;
-                case ".7z":
-                    throw new NotImplementedException();
-                    break;
-                default:
-                    break;
-            }
-
-
-            notificationService?.Success($"{Path.GetFileNameWithoutExtension(zipInfo.FullName)} installed.");
-            
-            var modname = Path.GetFileNameWithoutExtension(zipInfo.FullName);
-            // sanitize modname
-            modname = modname.Split('-').FirstOrDefault();
-            //TODO: some user interaction
-
-            return new ModModel()
-            {
-                Installed = true,
-                Files = files.Select(_ => _.Name),
-                Name = modname
-            };
-
-        }
-
-        private static IEnumerable<ModFileModel> TryGetEntries(FileInfo zipInfo)
-        {
-            try
-            {
-                switch (zipInfo.Extension)
-                {
-                    case ".zip":
-                    {
-                        using Stream stream = File.OpenRead(zipInfo.FullName);
-                        using var reader = ReaderFactory.Open(stream);
-                        var zipEntries = new List<ModFileModel>();
-                        while (reader.MoveToNextEntry())
-                        {
-                            zipEntries.Add(new ModFileModel(reader.Entry.Key, reader.Entry.IsDirectory));
-                        }
-
-                        //r6/scripts/
-                        //r6/scripts/holserByTap.reds
-                        return zipEntries;
-                    }
-                    case ".7z":
-                    {
-                        using var archive = SevenZipArchive.Open(zipInfo.FullName);
-                        var entries = archive.Entries
-                            .Select(_ => _.IsDirectory
-                                ? new ModFileModel($"{_.Key}/", _.IsDirectory)
-                                : new ModFileModel(_.Key, _.IsDirectory))
-                            .ToList();
-                        return entries;
-                    }
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
+        
 
 
         #region properties

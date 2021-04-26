@@ -9,12 +9,10 @@ namespace WolvenManager.App.Arguments
 {
     public class ZipModifyArgs : EventArgs
     {
-        public IEnumerable<ModFileModel> Input { get; set; }
-        public IEnumerable<ModFileModel> Output { get; set; }
+        public Dictionary<string, string> Output { get; set; }
 
-        public ZipModifyArgs(IEnumerable<ModFileModel> input, IEnumerable<ModFileModel> output)
+        public ZipModifyArgs(Dictionary<string, string> output)
         {
-            this.Input = input;
             this.Output = output;
         }
     }

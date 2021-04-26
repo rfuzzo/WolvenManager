@@ -21,11 +21,13 @@ namespace WolvenManager.App.ViewModels
     {
         private readonly ISettingsService _settingsService;
         private readonly IPluginService _pluginService;
+        private readonly INotificationService _notificationService;
 
         public AppViewModel()
         {
             _settingsService = Locator.Current.GetService<ISettingsService>();
             _pluginService = Locator.Current.GetService<IPluginService>();
+            _notificationService = Locator.Current.GetService<INotificationService>();
 
             // routing
             Router = new RoutingState();
@@ -40,8 +42,13 @@ namespace WolvenManager.App.ViewModels
             OnStartup();
 
             // commands
+            RoutingSettingsCommand = ReactiveCommand.Create(delegate()
+            {
+                Router.Navigate.Execute(new SettingsViewModel(this));
+            }, CanExecuteRouting);
             RoutingCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar, CanExecuteRouting);
         }
+
 
         #region properties
 
@@ -64,9 +71,9 @@ namespace WolvenManager.App.ViewModels
 
 
         #region commands
-        
 
 
+        public ReactiveCommand<Unit, Unit> RoutingSettingsCommand { get; }
         public ReactiveCommand<Constants.RoutingIDs, Unit> RoutingCommand { get; }
 
         private void ExecuteSidebar(Constants.RoutingIDs parameter)
@@ -75,6 +82,7 @@ namespace WolvenManager.App.ViewModels
             {
                 case Constants.RoutingIDs.Main:
                     Router.Navigate.Execute(new ModListViewModel(this));
+                    _notificationService.Success("ETST");
                     break;
                 case Constants.RoutingIDs.Library:
                     break;

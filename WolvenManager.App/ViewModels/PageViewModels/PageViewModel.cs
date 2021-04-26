@@ -13,7 +13,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
         public IScreen HostScreen { get; }
 
-        protected readonly ISettingsService _settingsService;
+        public readonly ISettingsService _settingsService;
         protected readonly IInteractionService _interactionService;
         protected readonly INotificationService _notificationService;
         protected readonly ILibraryService _libraryService;

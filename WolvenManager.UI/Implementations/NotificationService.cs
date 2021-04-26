@@ -16,7 +16,8 @@ namespace WolvenManager.UI.Services
 
         public NotificationService()
         {
-
+            IsShowNotificationsEnabled = true;
+            NotificationCategory = ENotificationCategory.App;
         }
 
         #endregion
@@ -117,7 +118,7 @@ namespace WolvenManager.UI.Services
         #endregion
 
 
-        private void ShowNotificationInDesktop(string message, ENotificationType type)
+        private static void ShowNotificationInDesktop(string message, ENotificationType type)
         {
             Action action = type switch
             {
@@ -131,7 +132,7 @@ namespace WolvenManager.UI.Services
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
         }
 
-        private void ShowNotificationInApp(string message, ENotificationType type)
+        private static void ShowNotificationInApp(string message, ENotificationType type)
         {
             Action action = type switch
             {

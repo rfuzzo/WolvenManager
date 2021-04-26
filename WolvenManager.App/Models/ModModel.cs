@@ -18,13 +18,13 @@ namespace WolvenManager.App.Models
 
 
         //[ProtoMember(1)]
-        public string Id => $"{Name}_{Hash}";
+        public string Id => $"{Name}_{ContentHash}";
 
         /// <summary>
         /// Calculates a hash over the mod files
         /// TODO: how fast is this
         /// </summary>
-        private int Hash => HashHelpers.GetHashCodeOfList(Files);
+        private int ContentHash => HashHelpers.GetHashCodeOfList(Files);
 
         [Reactive]
         [ProtoMember(1)]
@@ -42,6 +42,9 @@ namespace WolvenManager.App.Models
         [Reactive]
         [ProtoMember(4)]
         public bool Installed { get; set; }
+
+        [ProtoMember(5)]
+        public byte[] ZipHash { get; set; }
 
     }
 }

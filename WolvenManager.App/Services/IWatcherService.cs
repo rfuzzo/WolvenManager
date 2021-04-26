@@ -10,6 +10,8 @@ namespace WolvenManager.App.Services
 {
     public interface IWatcherService
     {
+        public bool IsSuspended { get; set; }
+
         public IObservable<IChangeSet<ModItemViewModel, string>> ConnectMods();
 
         public void RefreshAsync();

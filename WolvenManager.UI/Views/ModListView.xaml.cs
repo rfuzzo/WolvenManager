@@ -84,13 +84,18 @@ namespace WolvenManager.UI.Views
 
         private async Task<ZipModifyArgs> DisplayModSortDialog(IEnumerable<ModFileModel> input)
         {
-            var inputDialog = new ModFilesValidationView(new ModFilesValidationViewModel(input));
+            var inputDialog = new PackageResolverView(new PackageResolverViewModel(input));
             if (inputDialog.ShowDialog() == true)
             {
-                var output = inputDialog.GetOutput();
-                return new ZipModifyArgs(input, output);
+                var output = inputDialog.GetOutput().ToDictionary(_ => _.Name, _ => _.ComputedFullName);
+                return new ZipModifyArgs( output); 
             }
-            return new ZipModifyArgs(null, null);
+            else
+            {
+                var output = inputDialog.GetOutput();
+
+            }
+            return new ZipModifyArgs(new Dictionary<string, string>());
         }
 
 

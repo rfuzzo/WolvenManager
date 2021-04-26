@@ -26,12 +26,8 @@ namespace WolvenManager.UI.Views
     /// </summary>
     public partial class SettingsView : ReactiveUserControl<SettingsViewModel>
     {
-        protected readonly ISettingsService _settingsService;
-
         public SettingsView()
         {
-            _settingsService = Locator.Current.GetService<ISettingsService>();
-
             InitializeComponent();
 
             this.WhenActivated(disposables =>
@@ -44,25 +40,25 @@ namespace WolvenManager.UI.Views
 
 
                 this.Bind(ViewModel,
-                    viewModel => _settingsService.GamePath,
+                    viewModel => viewModel._settingsService.GamePath,
                     view => view.GameDirTextBox.Text)
                     .DisposeWith(disposables);
                 this.Bind(ViewModel,
-                        viewModel => _settingsService.DepotPath,
+                        viewModel => viewModel._settingsService.DepotPath,
                         view => view.LibraryTextBox.Text)
                     .DisposeWith(disposables);
 
 
                 this.Bind(ViewModel,
-                        viewModel => _settingsService.IsLibraryEnabled,
+                        viewModel => viewModel._settingsService.IsLibraryEnabled,
                         view => view.ModLibraryCheckBox.IsChecked)
                     .DisposeWith(disposables);
                 this.Bind(ViewModel,
-                        viewModel => _settingsService.IsLibraryEnabled,
+                        viewModel => viewModel._settingsService.IsLibraryEnabled,
                         view => view.LibraryButton.IsEnabled)
                     .DisposeWith(disposables);
                 this.Bind(ViewModel,
-                        viewModel => _settingsService.IsLibraryEnabled,
+                        viewModel => viewModel._settingsService.IsLibraryEnabled,
                         view => view.LibraryTextBox.IsEnabled)
                     .DisposeWith(disposables);
 

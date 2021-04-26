@@ -30,13 +30,7 @@ namespace WolvenManager.App.Services
 
         // the actual library
         private SourceCache<ModModel, string> _mods = new(t => t.Id);
-        /// <summary>
-        /// Connection to the dynamic mod library
-        /// </summary>
-        /// <returns></returns>
-        public IObservable<IChangeSet<ModModel, string>> Connect() => _mods.Connect();
-
-
+       
         #endregion
 
         public LibraryService()
@@ -57,9 +51,29 @@ namespace WolvenManager.App.Services
                         EvaluateChange(change);
                     }
                 });
+
+
         }
 
-        
+        /// <summary>
+        /// Connection to the dynamic mod library
+        /// </summary>
+        /// <returns></returns>
+        public IObservable<IChangeSet<ModModel, string>> Connect() => _mods.Connect();
+
+        public void AddModToLibrary(ModModel model)
+        {
+            // check if already exists
+            if (_mods.Keys.Contains(model.Id))
+            {
+
+            }
+            else
+            {
+                _mods.AddOrUpdate(model);
+            }
+        }
+
 
         /// <summary>
         /// Serialize the library to a file

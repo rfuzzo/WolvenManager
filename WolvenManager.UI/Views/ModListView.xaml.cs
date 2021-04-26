@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,12 +20,16 @@ using DynamicData;
 using ReactiveUI;
 using Syncfusion.Data.Extensions;
 using Syncfusion.UI.Xaml.Grid;
+using Syncfusion.UI.Xaml.TreeView;
+using WolvenManager.App.Arguments;
+using WolvenManager.App.Models;
 using WolvenManager.App.Utility;
 using WolvenManager.App.ViewModels;
 using WolvenManager.App.ViewModels.Dialogs;
 using WolvenManager.App.ViewModels.PageViewModels;
 using WolvenManager.UI.Implementations;
 using WolvenManager.UI.Views.Dialogs;
+using DropPosition = Syncfusion.UI.Xaml.Grid.DropPosition;
 
 namespace WolvenManager.UI.Views
 {
@@ -61,8 +66,11 @@ namespace WolvenManager.UI.Views
                         view => view.SidebarToggleButton)
                     .DisposeWith(disposables);
 
+                Observable
+                    .FromEventPattern(ModList.RowDragDropController, nameof(ModList.RowDragDropController.Dropped))
+                    .Subscribe(_ => OnRowDropped(_.Sender, _.EventArgs as GridRowDroppedEventArgs));
 
-
+                //ModList.RowDragDropController.Dropped += OnRowDropped;
             });
 
             InteractionHelpers.ModViewModelInteraction.RegisterHandler(
@@ -72,21 +80,17 @@ namespace WolvenManager.UI.Views
 
                     interaction.SetOutput(action);
                 });
-
-
-            //this.ModList.AutoGeneratingColumn += dataGrid_AutoGeneratingColumn;
-            ModList.RowDragDropController.Dropped += OnRowDropped;
         }
 
-        private async Task<bool> DisplayModSortDialog(IEnumerable<string> input)
+        private async Task<ZipModifyArgs> DisplayModSortDialog(IEnumerable<ModFileModel> input)
         {
             var inputDialog = new ModFilesValidationView(new ModFilesValidationViewModel(input));
             if (inputDialog.ShowDialog() == true)
             {
-
+                var output = inputDialog.GetOutput();
+                return new ZipModifyArgs(input, output);
             }
-
-            return true;
+            return new ZipModifyArgs(null, null);
         }
 
 

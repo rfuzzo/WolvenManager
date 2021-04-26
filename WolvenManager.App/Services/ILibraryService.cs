@@ -12,5 +12,7 @@ namespace WolvenManager.App.Services
     public interface ILibraryService
     {
         public IObservable<IChangeSet<ModModel, string>> Connect();
+
+        public void AddModToLibrary(ModModel model);
     }
 }

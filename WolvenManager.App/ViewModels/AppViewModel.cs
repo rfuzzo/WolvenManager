@@ -45,7 +45,7 @@ namespace WolvenManager.App.ViewModels
 
         #region properties
 
-        private IObservable<bool> CanExecuteRouting => _settingsService.IsValid();
+        private IObservable<bool> CanExecuteRouting => _settingsService.IsValid;
 
         private string title;
         public string Title
@@ -100,7 +100,7 @@ namespace WolvenManager.App.ViewModels
             Task.Run(() => _pluginService.Init());
 
             // Once 
-            _settingsService.IsValid().Subscribe(isvalid =>
+            _settingsService.IsValid.Subscribe(isvalid =>
             {
                 //TODO: bad?
                 if (!isvalid)

@@ -127,14 +127,17 @@ namespace WolvenManager.App.Services
             return config;
         }
 
-        public IObservable<bool> IsValid()
+        public IObservable<bool> IsValid
         {
-            return this.WhenAnyValue(
-                x => x.GamePath,
-                (gamepath) =>
-                    !string.IsNullOrEmpty(gamepath) && 
-                    Directory.Exists(gamepath)
-            );
+            get
+            {
+                return this.WhenAnyValue(
+                    x => x.GamePath,
+                    (gamepath) =>
+                        !string.IsNullOrEmpty(gamepath) &&
+                        Directory.Exists(gamepath)
+                );
+            }
         }
 
         public async Task Save()

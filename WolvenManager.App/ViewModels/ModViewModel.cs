@@ -64,7 +64,7 @@ namespace WolvenManager.App.ViewModels
         public string Id => Model.Id;
 
         [Display(AutoGenerateField = false)]
-        public bool IsInLibrary => Model.IsInLibrary;
+        public bool IsInLibrary => Model.IsInPhysicalLibrary;
 
         [Display(AutoGenerateField = false)]
         public bool Installed => Model.Installed;

@@ -37,7 +37,7 @@ namespace WolvenManager.App.Models
 
         [Reactive]
         [ProtoMember(3)]
-        public bool IsInLibrary { get; set; }
+        public bool IsInPhysicalLibrary { get; set; }
 
         [Reactive]
         [ProtoMember(4)]

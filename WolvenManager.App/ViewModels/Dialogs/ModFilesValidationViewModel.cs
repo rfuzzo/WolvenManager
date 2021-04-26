@@ -6,50 +6,70 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using WolvenManager.App.Arguments;
+using WolvenManager.App.Models;
 using WolvenManager.App.Utility;
 
 namespace WolvenManager.App.ViewModels.Dialogs
 {
-    public class ModFilesValidationViewModel : MainViewModel
+    public class ModFilesValidationViewModel : MainViewModel, IDialogViewModel
     {
         private readonly Dictionary<string, FileSystemInfoViewModel> _fileDictionary;
 
         private readonly ReadOnlyObservableCollection<FileSystemInfoViewModel> _derived;
         public ReadOnlyObservableCollection<FileSystemInfoViewModel> BoundCollection => _derived;
 
+        [Reactive]
+        public bool? DialogResult { get; set; }
 
-        public ModFilesValidationViewModel(IEnumerable<string> input)
+        public ModFilesValidationViewModel(IEnumerable<ModFileModel> input)
         {
             _fileDictionary = new Dictionary<string, FileSystemInfoViewModel>();
+            
+            AddFile(new ModFileModel("r6/scripts", true), true);
+            AddFile(new ModFileModel("archive/pc/mod", true), true);
             foreach (var path in input)
             {
                 AddFile(path);
             }
 
-            var topentries = _fileDictionary.Values.Where(_ => _.Parent == null);
             var x = new ObservableCollectionExtended<FileSystemInfoViewModel>();
             x.ToObservableChangeSet().Bind(out _derived).Subscribe();
+            var topentries = _fileDictionary.Values.Where(_ => _.Parent == null);
             x.AddRange(topentries);
 
-            OkCommand = ReactiveCommand.Create(ExecuteOK/*, CanExecuteOK*/);
+            OkCommand = ReactiveCommand.Create(ExecuteOK, CanExecuteOk);
             CancelCommand = ReactiveCommand.Create(() =>
             {
                 DialogResult = false;
             });
+        }
 
+        private IObservable<bool> CanExecuteOk
+        {
+            get
+            {
+                return this.WhenAnyValue(
+                    x => x.BoundCollection,
+                    (item) =>
+                        item.All(_ => _.IsValid)
+                );
+
+            }
         }
 
 
-        private void AddFile(string path)
+        private void AddFile(ModFileModel path, bool overrideFolder = false)
         {
             // first check if an entry with that name is already in the collection
-            if (_fileDictionary.ContainsKey(path))
+            if (_fileDictionary.ContainsKey(path.Name))
             {
                 return;
             }
@@ -59,7 +79,7 @@ namespace WolvenManager.App.ViewModels.Dialogs
             // create substrings
             var splits = new List<string>();
             var word = "";
-            foreach (var c in path)
+            foreach (var c in path.Name)
             {
                 if (c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar)
                 {
@@ -75,7 +95,7 @@ namespace WolvenManager.App.ViewModels.Dialogs
             if (splits.Count <= 1)
             {
                 // just one file
-                var vm = new FileSystemInfoViewModel(splits.First(), false);
+                var vm = new FileSystemInfoViewModel(splits.First(), overrideFolder);
                 _fileDictionary.Add(vm.Name, vm);
             }
             else
@@ -88,7 +108,7 @@ namespace WolvenManager.App.ViewModels.Dialogs
                     if (i == splits.Count - 1)
                     {
                         // last item is a file
-                        vm = new FileSystemInfoViewModel(f, false);
+                        vm = new FileSystemInfoViewModel(f, overrideFolder);
                     }
 
                     if (!string.IsNullOrEmpty(parentName)) // has a parent - is already added
@@ -99,18 +119,10 @@ namespace WolvenManager.App.ViewModels.Dialogs
                             _fileDictionary[parentName].Children.Add(vm);
                         }
                     }
-                    else // has no parent
-                    {
-                        
-                    }
 
                     if (!_fileDictionary.ContainsKey(f))
                     {
                         _fileDictionary.Add(f, vm);
-                    }
-                    else
-                    {
-
                     }
 
                     parentName = f;
@@ -123,43 +135,17 @@ namespace WolvenManager.App.ViewModels.Dialogs
             DialogResult = true;
         }
 
-        public bool? DialogResult { get; set; }
 
-        
 
         public ReactiveCommand<Unit, Unit> OkCommand { get; }
         public ReactiveCommand<Unit, Unit> CancelCommand { get; }
 
-    }
-
-
-    public class FileSystemInfoViewModel : ReactiveObject
-    {
-        public ObservableCollection<FileSystemInfoViewModel> Children { get; private set; }
-
-        public FileSystemInfoViewModel Parent { get; set; }
-
-        public string Name { get; }
-
-        public string FullName => Parent == null 
-            ? Name 
-            : Path.Combine(Parent.FullName, Name);
-
-
-        private readonly bool _isDirectory;
-
-        public string IconPath => _isDirectory 
-            ? Children.Any() ? "FolderOpened" : "Folder" 
-            : "File";
-
-
-        public FileSystemInfoViewModel(string path, bool isDirectory)
+        public IEnumerable<ModFileModel> GetOutput()
         {
-            Children = new ObservableCollection<FileSystemInfoViewModel>();
-            _isDirectory = isDirectory;
-            Name = path;
+
+
+
+            return null;
         }
     }
-
-
 }

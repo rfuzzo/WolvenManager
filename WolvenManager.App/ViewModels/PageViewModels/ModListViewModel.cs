@@ -15,6 +15,7 @@ using SharpCompress.Archives.SevenZip;
 using SharpCompress.Common;
 using SharpCompress.Readers;
 using Splat;
+using WolvenManager.App.Arguments;
 using WolvenManager.App.Attributes;
 using WolvenManager.App.Models;
 using WolvenManager.App.Services;
@@ -47,69 +48,76 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             foreach (var path in browseFiles.Select(_ => new FileInfo(_)))
             {
                 // extract to mod folder
-                await InstallMod(path);
-                
-
-                // move to file lib
-                if (_settingsService.IsLibraryEnabled)
+                var mod = await InstallMod(path);
+                if (mod == null)
                 {
-                    var modname = Path.GetFileNameWithoutExtension(path.FullName);
-                    var modLibDir = Path.Combine(_settingsService.DepotPath, modname);
-                    if (!Directory.Exists(modLibDir))
-                    {
-                        Directory.CreateDirectory(modLibDir);
-                    }
-                    path.MoveTo(Path.Combine(modLibDir, path.Name));
+                    return;
                 }
 
                 // add to library class
+                // and check if it exists
+                _libraryService.AddModToLibrary(mod);
 
+
+                // move zip to file lib
+                if (_settingsService.IsLibraryEnabled)
+                {
+                    try
+                    {
+                        var modname = Path.GetFileNameWithoutExtension(path.FullName);
+                        var modLibDir = Path.Combine(_settingsService.DepotPath, modname);
+                        if (!Directory.Exists(modLibDir))
+                        {
+                            Directory.CreateDirectory(modLibDir);
+                        }
+                        path.MoveTo(Path.Combine(modLibDir, path.Name));
+                        mod.IsInPhysicalLibrary = true;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+                }
             }
         }
 
-        
-
-        private static void Extract7zMod(FileInfo zipInfo)
+        private static void ExtractZipMod(string zipPath, string extractPath, ZipModifyArgs e)
         {
-            
-                
-
-
-            
-
-        }
-
-        private static void ExtractZipMod(FileInfo zipInfo)
-        {
-            //foreach (var entry in entries)
-            //{
-            //    string destinationPath = Path.GetFullPath(Path.Combine(extractPath, entry.FullName));
-            //    if (!destinationPath.StartsWith(extractPath, StringComparison.Ordinal))
-            //    {
-            //        continue;
-            //    }
-
-            //    if (IsPathDirectory(destinationPath))
-            //    {
-            //        if (Directory.Exists(destinationPath))
-            //        {
-            //            continue;
-            //        }
-            //        Directory.CreateDirectory(destinationPath);
-            //    }
-            //    else
-            //    {
-            //        if (File.Exists(destinationPath))
-            //        {
-            //            throw new NotImplementedException();
-            //        }
-            //        entry.ExtractToFile(destinationPath);
-            //    }
-            //}
+            using Stream stream = File.OpenRead(zipPath);
+            using var reader = ReaderFactory.Open(stream);
+            while (reader.MoveToNextEntry())
+            {
+                if (!reader.Entry.IsDirectory)
+                {
+                    if (e != null && e.Output.Any(_ => _.Name == reader.Entry.Key))
+                    {
+                        var newEntry = e.Output.First(_ => _.Name == reader.Entry.Key);
+                        string destinationPath = Path.GetFullPath(Path.Combine(extractPath, newEntry.Name));
+                        if (!destinationPath.StartsWith(extractPath, StringComparison.Ordinal))
+                        {
+                            continue;
+                        }
+                        reader.WriteEntryToDirectory(extractPath, new ExtractionOptions()
+                        {
+                            ExtractFullPath = false,
+                            Overwrite = true
+                        });
+                    }
+                    else
+                    {
+                        reader.WriteEntryToDirectory(extractPath, new ExtractionOptions()
+                        {
+                            ExtractFullPath = true,
+                            Overwrite = true
+                        });
+                    }
+                }
+            }
         }
 
 
-        private async Task<ModModel> InstallMod(FileInfo zipInfo)
+        private static async Task<ModModel> InstallMod(FileInfo zipInfo)
         {
             var settingsService = Locator.Current.GetService<ISettingsService>();
             var notificationService = Locator.Current.GetService<INotificationService>();
@@ -124,71 +132,96 @@ namespace WolvenManager.App.ViewModels.PageViewModels
                 extractPath += Path.DirectorySeparatorChar;
             }
 
-            var entries = GetEntries(zipInfo).ToList();
-            var files = entries.Where(_ => !PathExtensions.IsPathDirectory(_));
+            var entries = TryGetEntries(zipInfo).ToList();
+            var files = entries
+                .Where(_ => !_.IsDirectory)
+                .ToList();
+            ZipModifyArgs recovery = null;
             // check if mod is malformed
-            // it needs to have at least r6 or archive in it
-            // TODO
-            if (!(entries.Any(_ => _ == "r6/scripts") || entries.Any(_ => _ == "archive/pc/mod")))
+            if ((files.Any(_ => Path.GetExtension(_.Name) == ".reds") && entries.All(_ => _.Name != "r6/scripts")) || 
+                (files.Any(_ => Path.GetExtension(_.Name) == ".archive") && entries.All(_ => _.Name != "archive/pc/mod")))
             {
-                var recovery = await InteractionHelpers.ModViewModelInteraction.Handle(files);
+                // open mod fixer view
+                recovery = await InteractionHelpers.ModViewModelInteraction.Handle(files);
 
-                if (recovery)
+                if (recovery.Output == null)
                 {
-
+                    // canceled
+                    return null;
                 }
-
-
-                throw new NotImplementedException();
-                // open a view
-
-                // suggest a structure
-
-                // suggest resaving the new mod in the library
             }
 
-            
             // do something about existing files
 
-            
+
             //extract
-
-
+            switch (zipInfo.Extension)
+            {
+                case ".zip":
+                    ExtractZipMod(zipInfo.FullName, extractPath, recovery);
+                    break;
+                case ".7z":
+                    throw new NotImplementedException();
+                    break;
+                default:
+                    break;
+            }
 
 
             notificationService?.Success($"{Path.GetFileNameWithoutExtension(zipInfo.FullName)} installed.");
+            
+            var modname = Path.GetFileNameWithoutExtension(zipInfo.FullName);
+            // sanitize modname
+            modname = modname.Split('-').FirstOrDefault();
+            //TODO: some user interaction
 
             return new ModModel()
             {
                 Installed = true,
-                Files = files
+                Files = files.Select(_ => _.Name),
+                Name = modname
             };
 
         }
 
-        private static IEnumerable<string> GetEntries(FileInfo zipInfo)
+        private static IEnumerable<ModFileModel> TryGetEntries(FileInfo zipInfo)
         {
-            switch (zipInfo.Extension)
+            try
             {
-                case ".zip":
+                switch (zipInfo.Extension)
                 {
-                    using Stream stream = File.OpenRead(zipInfo.FullName);
-                    using var reader = ReaderFactory.Open(stream);
-                    var zipEntries = new List<string>();
-                    while (reader.MoveToNextEntry())
+                    case ".zip":
                     {
-                        zipEntries.Add(reader.Entry.Key);
-                    }
+                        using Stream stream = File.OpenRead(zipInfo.FullName);
+                        using var reader = ReaderFactory.Open(stream);
+                        var zipEntries = new List<ModFileModel>();
+                        while (reader.MoveToNextEntry())
+                        {
+                            zipEntries.Add(new ModFileModel(reader.Entry.Key, reader.Entry.IsDirectory));
+                        }
 
-                    return zipEntries;
+                        //r6/scripts/
+                        //r6/scripts/holserByTap.reds
+                        return zipEntries;
+                    }
+                    case ".7z":
+                    {
+                        using var archive = SevenZipArchive.Open(zipInfo.FullName);
+                        var entries = archive.Entries
+                            .Select(_ => _.IsDirectory
+                                ? new ModFileModel($"{_.Key}/", _.IsDirectory)
+                                : new ModFileModel(_.Key, _.IsDirectory))
+                            .ToList();
+                        return entries;
+                    }
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
-                case ".7z":
-                {
-                    using var archive = SevenZipArchive.Open(zipInfo.FullName);
-                    return archive.Entries.Select(_ => _.Key);
-                }
-                default:
-                    throw new ArgumentOutOfRangeException();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
 

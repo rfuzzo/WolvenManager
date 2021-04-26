@@ -28,6 +28,6 @@ namespace WolvenManager.App.Services
 
         #endregion Methods
 
-        IObservable<bool> IsValid();
+        IObservable<bool> IsValid { get; }
     }
 }

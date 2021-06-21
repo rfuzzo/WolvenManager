@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
-using CP77Tools.Commands;
 using CP77Tools.Tasks;
 using Microsoft.Extensions.Options;
 using ReactiveUI;
@@ -15,6 +15,7 @@ namespace WolvenManager.Models
 {
     public abstract class CommandModel
     {
+        [Browsable(false)]
         public abstract string Name { get; }
 
         public abstract Task ExecuteAsync(IConsoleFunctions consoleFunctions);
@@ -25,7 +26,7 @@ namespace WolvenManager.Models
 
     public class ArchiveCommandModel : CommandModel
     {
-        public override string Name => ArchiveCommand.Name;
+        public override string Name => "archive";
 
         public string[] Path { get; set; }
         public string Pattern { get; set; }
@@ -38,9 +39,9 @@ namespace WolvenManager.Models
             await Task.Run(() => consoleFunctions.ArchiveTask(Path, Pattern, Regex, Diff, List));
     }
 
-    public class AUnbundleCommandModel : CommandModel
+    public class UnbundleCommandModel : CommandModel
     {
-        public override string Name => UnbundleCommand.Name;
+        public override string Name => "unbundle";
 
         public string[] Path { get; set; }
         public string Outpath { get; set; }

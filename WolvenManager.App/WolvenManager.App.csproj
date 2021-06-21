@@ -19,8 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="X:\GitHub\Traderain\Wolven-kit\WolvenKit.Common\WolvenKit.Common.csproj" />
-    <ProjectReference Include="X:\GitHub\WolvenKit\WolvenKit.CLI\WolvenKit.CLI.csproj" />
     <ProjectReference Include="X:\GitHub\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
     <ProjectReference Include="X:\GitHub\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
   </ItemGroup>

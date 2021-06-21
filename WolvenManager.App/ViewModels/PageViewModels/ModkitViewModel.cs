@@ -32,7 +32,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             Items = new ObservableCollection<CommandModel>
             {
                 new ArchiveCommandModel (),
-                new AUnbundleCommandModel(),
+                new UnbundleCommandModel(),
 
             };
 

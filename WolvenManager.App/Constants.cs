@@ -8,9 +8,8 @@ namespace WolvenManager.App
         public enum RoutingIDs
         {
             Main,
-            Library,
-            Extensions,
-            Profiles,
+            //Library,
+            //Extensions,
             Settings
         }
 
@@ -38,7 +37,6 @@ namespace WolvenManager.App
 
         public static string WorkingDir => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WorkingDir");
 
-        public static string DefaultDepotPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-            "WolvenModManager", "Library");
+        
     }
 }

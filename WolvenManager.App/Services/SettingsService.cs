@@ -25,11 +25,8 @@ namespace WolvenManager.App.Services
         public SettingsService()
         {
             this.WhenAnyPropertyChanged(
-                    nameof(GamePath), 
-                    nameof(DepotPath), 
-                    nameof(CurrentProfile),
-                    nameof(IsLibraryEnabled)
-                    )
+                    nameof(GamePath)
+                )
                 .Subscribe(async _ =>
                 {
                     if (_isLoaded)
@@ -42,13 +39,6 @@ namespace WolvenManager.App.Services
         #region properties
         [Reactive]
         public string GamePath { get; set; }
-        [Reactive]
-        public string DepotPath { get; set; }
-        [Reactive]
-        public string CurrentProfile { get; set; }
-
-        [Reactive]
-        public bool IsLibraryEnabled { get; set; }
 
 
         [JsonIgnore] private bool _isLoaded;
@@ -117,11 +107,9 @@ namespace WolvenManager.App.Services
             }
 
             // defaults
-            Directory.CreateDirectory(Constants.DefaultDepotPath);
             config ??= new SettingsService()
             {
-                IsLibraryEnabled = true,
-                DepotPath = Constants.DefaultDepotPath
+
             };
             config._isLoaded = true;
             return config;
@@ -157,8 +145,6 @@ namespace WolvenManager.App.Services
 
             }
 
-
-            this.DepotPath = config.DepotPath;
             this.GamePath = config.GamePath;
         }
 

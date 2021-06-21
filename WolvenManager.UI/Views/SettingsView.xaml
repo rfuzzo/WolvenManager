@@ -50,39 +50,7 @@
 
             </GroupBox>
 
-
-            <GroupBox>
-                <StackPanel>
-                    <Label Grid.Column="0" Content="Mod Library (optional)" Foreground="White" Padding="1" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="0" Text="A folder where your downloaded mods are located." Foreground="White" Padding="1" VerticalAlignment="Center"/>
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBox Grid.Column="0" x:Name="LibraryTextBox" Text="" Padding="1"/>
-                        <Button Grid.Column="1" x:Name="LibraryButton" Padding="5" CommandParameter="{x:Static pageViewModels:SettingsViewModel.LibraryDirParameter}">
-                            <Button.Content>
-                                <iconPacks:PackIconCodicons Kind="Search"
-                                                            Width="40"
-                                                            Height="20"
-                                                            Padding="5"/>
-                            </Button.Content>
-                        </Button>
-                    </Grid>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Enable Managed Mod Library" Padding="0,0,20,0"/>
-                        <CheckBox x:Name="ModLibraryCheckBox" Padding="2"/>
-                    </StackPanel>
-                </StackPanel>
-            </GroupBox>
-
-
-
-</StackPanel>
+        </StackPanel>
 
 
     </Grid>

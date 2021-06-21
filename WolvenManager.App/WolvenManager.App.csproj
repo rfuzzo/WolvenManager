@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="protobuf-net" Version="3.0.101" />
     <PackageReference Include="protobuf-net.Core" Version="3.0.101" />
     <PackageReference Include="ReactiveUI" Version="13.2.18" />
@@ -14,6 +15,16 @@
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="Octokit.Reactive" Version="0.47.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="X:\GitHub\Traderain\Wolven-kit\WolvenKit.Common\WolvenKit.Common.csproj" />
+    <ProjectReference Include="X:\GitHub\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
+    <ProjectReference Include="X:\GitHub\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
   </ItemGroup>
 
 </Project>

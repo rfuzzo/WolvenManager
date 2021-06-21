@@ -20,13 +20,11 @@ namespace WolvenManager.App.ViewModels
     public class AppViewModel : MainViewModel, IScreen
     {
         private readonly ISettingsService _settingsService;
-        private readonly IPluginService _pluginService;
         private readonly INotificationService _notificationService;
 
         public AppViewModel()
         {
             _settingsService = Locator.Current.GetService<ISettingsService>();
-            _pluginService = Locator.Current.GetService<IPluginService>();
             _notificationService = Locator.Current.GetService<INotificationService>();
 
             // routing
@@ -82,13 +80,6 @@ namespace WolvenManager.App.ViewModels
             {
                 case Constants.RoutingIDs.Main:
                     Router.Navigate.Execute(new ModListViewModel(this));
-                    _notificationService.Success("ETST");
-                    break;
-                case Constants.RoutingIDs.Library:
-                    break;
-                case Constants.RoutingIDs.Extensions:
-                    break;
-                case Constants.RoutingIDs.Profiles:
                     break;
                 case Constants.RoutingIDs.Settings:
                     Router.Navigate.Execute(new SettingsViewModel(this));
@@ -105,8 +96,6 @@ namespace WolvenManager.App.ViewModels
 
         public void OnStartup()
         {
-            Task.Run(() => _pluginService.Init());
-
             // Once 
             _settingsService.IsValid.Subscribe(isvalid =>
             {
@@ -115,17 +104,6 @@ namespace WolvenManager.App.ViewModels
                 {
                     return;
                 }
-
-                Locator.CurrentMutable.RegisterConstant(new WatcherService(), typeof(IWatcherService));
-                // requires IWatcherService
-                Locator.CurrentMutable.RegisterConstant(new LibraryService(), typeof(ILibraryService));
-                // requires ILibraryService
-                Locator.CurrentMutable.RegisterConstant(new ProfileService(), typeof(IProfileService));
-
-
-                var watcher = Locator.Current.GetService<IWatcherService>();
-                // check all loose files
-                watcher.RefreshAsync();
 
                 // check Addons updates
 

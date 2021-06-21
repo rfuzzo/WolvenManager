@@ -60,9 +60,6 @@ namespace WolvenManager.App.ViewModels.PageViewModels
                 case GameDirParameter:
                     _settingsService.GamePath = dir;
                     break;
-                case LibraryDirParameter:
-                    _settingsService.DepotPath = dir;
-                    break;
                 default:
                     break;
             }

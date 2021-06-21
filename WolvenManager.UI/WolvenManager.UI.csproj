@@ -4,7 +4,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-	
+	  <PublishSingleFile>true</PublishSingleFile>
+	  <SelfContained>true</SelfContained>
+	  <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	  <PublishTrimmed>true</PublishTrimmed>
+	  <PublishReadyToRun>true</PublishReadyToRun>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WolvenManager.App\WolvenManager.App.csproj" />
+    <ProjectReference Include="X:\GitHub\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +42,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Dialogs\" />
   </ItemGroup>
 
 </Project>

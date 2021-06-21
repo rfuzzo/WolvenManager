@@ -16,13 +16,13 @@ namespace WolvenManager.UI.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is ModViewModel mod)
+            if (value is ArchiveViewModel mod)
             {
-                var input = mod.Enabled;
+                //var input = mod.Enabled;
 
-                return input 
-                    ? new SolidColorBrush(Colors.DarkSeaGreen) 
-                    : DependencyProperty.UnsetValue;
+                //return input 
+                //    ? new SolidColorBrush(Colors.DarkSeaGreen) 
+                //    : DependencyProperty.UnsetValue;
             }
 
             return DependencyProperty.UnsetValue;

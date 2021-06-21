@@ -43,26 +43,7 @@ namespace WolvenManager.UI.Views
                     viewModel => viewModel._settingsService.GamePath,
                     view => view.GameDirTextBox.Text)
                     .DisposeWith(disposables);
-                this.Bind(ViewModel,
-                        viewModel => viewModel._settingsService.DepotPath,
-                        view => view.LibraryTextBox.Text)
-                    .DisposeWith(disposables);
-
-
-                this.Bind(ViewModel,
-                        viewModel => viewModel._settingsService.IsLibraryEnabled,
-                        view => view.ModLibraryCheckBox.IsChecked)
-                    .DisposeWith(disposables);
-                this.Bind(ViewModel,
-                        viewModel => viewModel._settingsService.IsLibraryEnabled,
-                        view => view.LibraryButton.IsEnabled)
-                    .DisposeWith(disposables);
-                this.Bind(ViewModel,
-                        viewModel => viewModel._settingsService.IsLibraryEnabled,
-                        view => view.LibraryTextBox.IsEnabled)
-                    .DisposeWith(disposables);
-
-
+                
 
 
                 // commands
@@ -70,11 +51,6 @@ namespace WolvenManager.UI.Views
                         viewModel => viewModel.BrowseCommand,
                         view => view.GameDirButton)
                     .DisposeWith(disposables);
-                this.BindCommand(ViewModel,
-                        viewModel => viewModel.BrowseCommand,
-                        view => view.LibraryButton)
-                    .DisposeWith(disposables);
-
             });
         }
     }

@@ -66,7 +66,7 @@
                                 </Button.Content>
 
                             </Button>
-                            <Button x:Name="ExtensionsButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Extensions }" Height="Auto">
+                            <!--<Button x:Name="ExtensionsButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Extensions }" Height="Auto">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Extensions"
                                                                 Width="40"
@@ -84,22 +84,13 @@
                                                                 Padding="5"/>
                                 </Button.Content>
 
-                            </Button>
+                            </Button>-->
 
                         </StackPanel>
 
 
                         <!-- Lower Buttons -->
                         <StackPanel Grid.Row="2">
-
-                            <Button x:Name="ProfilesButton"  Height="Auto" >
-                                <Button.Content>
-                                    <iconPacks:PackIconCodicons Kind="Account"
-                                                                Width="40"
-                                                                Height="40"
-                                                                Padding="5"/>
-                                </Button.Content>
-                            </Button>
 
                             <Button x:Name="SettingsButton"  Height="Auto" >
                                 <Button.Content>

@@ -11,12 +11,9 @@ namespace WolvenManager.App.Services
     {
         #region Properties
         string GamePath { get; set; }
-        string DepotPath { get; set; }
-        string CurrentProfile { get; set; }
 
         public string ScriptsDir { get; }
         public string ModsDir { get; }
-        public bool IsLibraryEnabled { get; set; }
 
         #endregion Properties
 

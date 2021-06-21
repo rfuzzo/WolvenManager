@@ -1,59 +1,136 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Windows;
 using ReactiveUI;
 using Splat;
 using WolvenKit.Common.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Splat.Microsoft.Extensions.DependencyInjection;
+using Splat.Microsoft.Extensions.Logging;
+using CP77.CR2W;
+using CP77Tools.Tasks;
+using WolvenKit.CLI;
+using WolvenKit.Common.Model.Arguments;
+using WolvenKit.Modkit.RED4;
+using WolvenKit.Modkit.RED4.RigFile;
+using WolvenKit.RED4.CR2W;
 using WolvenManager.App.Services;
 using WolvenManager.App.ViewModels;
-using WolvenManager.App.ViewModels.Dialogs;
 using WolvenManager.App.ViewModels.PageViewModels;
 using WolvenManager.UI.Implementations;
 using WolvenManager.UI.Services;
 using WolvenManager.UI.Views;
-using INotificationService = WolvenManager.App.Services.INotificationService;
+using System.Windows;
 
 namespace WolvenManager.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App //: Application
     {
         public App()
         {
             // register synfusion
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDM4Njc4QDMxMzkyZTMxMmUzMG5SV05xYWpUK3lBc3RKZE0vNnJsK09qYmx6YWppRmlFeEZlcjcwSnF2L0E9");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
+                "NDM4Njc4QDMxMzkyZTMxMmUzMG5SV05xYWpUK3lBc3RKZE0vNnJsK09qYmx6YWppRmlFeEZlcjcwSnF2L0E9");
 
-            // register Services
+            Init();
 
-            Locator.CurrentMutable.RegisterConstant(SettingsService.Load(), typeof(ISettingsService));
-            Locator.CurrentMutable.RegisterConstant(new NotificationService(), typeof(INotificationService));
-            Locator.CurrentMutable.RegisterConstant(new InteractionService(), typeof(IInteractionService));
+        }
 
-            Locator.CurrentMutable.RegisterConstant(new LoggerService(), typeof(ILoggerService));
-            Locator.CurrentMutable.RegisterConstant(new HashService(), typeof(IHashService));
+        public IServiceProvider Container { get; private set; }
+        private IHost _host;
 
-            // register VieModels
-            Locator.CurrentMutable.Register(() => new MainWindow(), typeof(IViewFor<AppViewModel>));
-            Locator.CurrentMutable.Register(() => new ModListView(), typeof(IViewFor<ModListViewModel>));
-            Locator.CurrentMutable.Register(() => new SettingsView(), typeof(IViewFor<SettingsViewModel>));
+        void Init()
+        {
+            _host = Host
+                .CreateDefaultBuilder()
+                .ConfigureServices(services =>
+                {
+                    services.UseMicrosoftDependencyResolver();
+                    var resolver = Locator.CurrentMutable;
+                    resolver.InitializeSplat();
+                    resolver.InitializeReactiveUI();
+                })
+                .ConfigureLogging(logging =>
+                {
+                    logging.AddSplat();
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    // local services
+                    services.AddSingleton(typeof(ISettingsService), SettingsService.Load());
+                    services.AddSingleton<INotificationService, NotificationService>();
+                    services.AddSingleton<IInteractionService, InteractionService>();
 
-            //Locator.CurrentMutable.Register(() => new ModFilesValidationView(), typeof(IViewFor<ModFilesValidationViewModel>));
+
+                    // register your personal services here
+                    services.AddScoped<ILoggerService, MicrosoftLoggerService>();
+                    services.AddScoped<IProgress<double>, PercentProgressService>();
+
+                    services.AddSingleton<IHashService, HashService>();
 
 
-            Locator.CurrentMutable.RegisterConstant(
-                new BooleanToVisibilityTypeConverter(),
-                typeof(IBindingTypeConverter)
-            );
+                    services.AddScoped<Red4ParserService>();
+                    services.AddScoped<TargetTools>();      //Cp77FileService
+                    services.AddScoped<RIG>();              //Cp77FileService
+                    services.AddScoped<MeshTools>();        //RIG, Cp77FileService
+
+                    services.AddScoped<ModTools>();         //Cp77FileService, ILoggerService, IProgress, IHashService, Mesh, Target
+
+                    services.AddScoped<ConsoleFunctions>();
 
 
+                    // register viewModels
+                    services.AddSingleton<AppViewModel>();
+                    services.AddSingleton<ModListViewModel>();
+                    services.AddSingleton<SettingsViewModel>();
 
+                    // this passes IScreen resolution through to the previous viewmodel registration.
+                    // this is to prevent multiple instances by mistake.
+
+                    services.AddSingleton<IScreen, AppViewModel>(x => x.GetRequiredService<AppViewModel>());
+
+                    // register views
+                    services.AddSingleton<IViewFor<AppViewModel>, MainWindow>();
+                    services.AddSingleton<IViewFor<ModListViewModel>, ModListView>();
+                    services.AddSingleton<IViewFor<SettingsViewModel>, SettingsView>();
+
+                    ////Locator.CurrentMutable.Register(() => new ModFilesValidationView(), typeof(IViewFor<ModFilesValidationViewModel>));
+
+
+                    //Locator.CurrentMutable.RegisterConstant(
+                    //    new BooleanToVisibilityTypeConverter(),
+                    //    typeof(IBindingTypeConverter)
+                    //);
+                })
+                .UseEnvironment(Environments.Development)
+                .Build();
+
+            // Since MS DI container is a different type,
+            // we need to re-register the built container with Splat again
+            Container = _host.Services;
+            Container.UseMicrosoftDependencyResolver();
+        }
+
+        private async void Application_Startup(object sender, StartupEventArgs e)
+        {
+            await _host.StartAsync();
+
+            var mainWindow = _host.Services.GetService<IViewFor<AppViewModel>>();
+            if (mainWindow is MainWindow window)
+            {
+                window.Show();
+            }
+            
+        }
+
+        private async void Application_Exit(object sender, ExitEventArgs e)
+        {
+            using (_host)
+            {
+                await _host.StopAsync(TimeSpan.FromSeconds(5));
+            }
         }
     }
 }

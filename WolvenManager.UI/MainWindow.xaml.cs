@@ -16,7 +16,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AdonisUI.Controls;
 using ReactiveUI;
+using Splat;
 using WolvenManager.App.Arguments;
+using WolvenManager.App.Services;
 using WolvenManager.App.Utility;
 using WolvenManager.App.ViewModels;
 using WolvenManager.App.ViewModels.Dialogs;
@@ -44,11 +46,12 @@ namespace WolvenManager.UI
         #endregion
 
 
-        public MainWindow()
+        public MainWindow(AppViewModel vm = null)
         {
-            InitializeComponent();
-            ViewModel = new AppViewModel();
+            ViewModel = vm ?? Locator.Current.GetService<AppViewModel>();
             DataContext = ViewModel;
+
+            InitializeComponent();
 
             this.WhenActivated(disposableRegistration =>
             {
@@ -56,14 +59,6 @@ namespace WolvenManager.UI
                         viewModel => viewModel.RoutingCommand,
                         view => view.MainButton)
                     .DisposeWith(disposableRegistration);
-                //this.BindCommand(ViewModel,
-                //        viewModel => viewModel.RoutingCommand,
-                //        view => view.ExtensionsButton)
-                //    .DisposeWith(disposableRegistration);
-                //this.BindCommand(ViewModel,
-                //        viewModel => viewModel.RoutingCommand,
-                //        view => view.LibraryButton)
-                //    .DisposeWith(disposableRegistration);
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.RoutingSettingsCommand,
                         view => view.SettingsButton)

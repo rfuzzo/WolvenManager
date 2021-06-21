@@ -22,10 +22,13 @@ namespace WolvenManager.App.ViewModels
         private readonly ISettingsService _settingsService;
         private readonly INotificationService _notificationService;
 
-        public AppViewModel()
+        public AppViewModel(
+            ISettingsService settingsService,
+            INotificationService notificationService
+            )
         {
-            _settingsService = Locator.Current.GetService<ISettingsService>();
-            _notificationService = Locator.Current.GetService<INotificationService>();
+            _settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
+            _notificationService = notificationService ?? Locator.Current.GetService<INotificationService>();
 
             // routing
             Router = new RoutingState();

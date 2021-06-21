@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Core", "X:\GitHub
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Modkit", "X:\GitHub\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj", "{B8A18E12-EA24-4160-8504-463D3C8CF63C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.CLI", "X:\GitHub\WolvenKit\WolvenKit.CLI\WolvenKit.CLI.csproj", "{8822CAF4-9AEB-4B6A-9BA0-4827C55CCEAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,14 @@ Global
 		{B8A18E12-EA24-4160-8504-463D3C8CF63C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8A18E12-EA24-4160-8504-463D3C8CF63C}.Release|x64.ActiveCfg = Release|Any CPU
 		{B8A18E12-EA24-4160-8504-463D3C8CF63C}.Release|x64.Build.0 = Release|Any CPU
+		{8822CAF4-9AEB-4B6A-9BA0-4827C55CCEAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8822CAF4-9AEB-4B6A-9BA0-4827C55CCEAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8822CAF4-9AEB-4B6A-9BA0-4827C55CCEAB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8822CAF4-9AEB-4B6A-9BA0-4827C55CCEAB}.Debug|x64.Build.0 = Debug|Any CPU
+		{8822CAF4-9AEB-4B6A-9BA0-4827C55CCEAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8822CAF4-9AEB-4B6A-9BA0-4827C55CCEAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8822CAF4-9AEB-4B6A-9BA0-4827C55CCEAB}.Release|x64.ActiveCfg = Release|Any CPU
+		{8822CAF4-9AEB-4B6A-9BA0-4827C55CCEAB}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

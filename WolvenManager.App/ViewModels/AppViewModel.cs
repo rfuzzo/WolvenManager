@@ -45,7 +45,7 @@ namespace WolvenManager.App.ViewModels
             // commands
             RoutingSettingsCommand = ReactiveCommand.Create(delegate()
             {
-                Router.Navigate.Execute(new SettingsViewModel(this));
+                Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
             }, CanExecuteRouting);
             RoutingCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar, CanExecuteRouting);
         }
@@ -82,10 +82,13 @@ namespace WolvenManager.App.ViewModels
             switch (parameter)
             {
                 case Constants.RoutingIDs.Main:
-                    Router.Navigate.Execute(new ModListViewModel(this));
+                    Router.Navigate.Execute(Locator.Current.GetService<ModListViewModel>());
+                    break;
+                case Constants.RoutingIDs.Modkit:
+                    Router.Navigate.Execute(Locator.Current.GetService<ModkitViewModel>());
                     break;
                 case Constants.RoutingIDs.Settings:
-                    Router.Navigate.Execute(new SettingsViewModel(this));
+                    Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(parameter), parameter, null);
@@ -117,11 +120,11 @@ namespace WolvenManager.App.ViewModels
             // navigate to settings if game is not found
             if (string.IsNullOrEmpty(_settingsService.GamePath))
             {
-                Router.Navigate.Execute(new SettingsViewModel(this));
+                Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
             }
             else
             {
-                Router.Navigate.Execute(new ModListViewModel(this));
+                Router.Navigate.Execute(Locator.Current.GetService<ModkitViewModel>());
             }
         }
 

@@ -18,16 +18,13 @@ namespace WolvenManager.App.ViewModels.PageViewModels
         protected readonly INotificationService _notificationService;
 
 
-        protected PageViewModel(Type t, IScreen screen = null)
+        protected PageViewModel(Type t)
         {
             _settingsService = Locator.Current.GetService<ISettingsService>();
             _interactionService = Locator.Current.GetService<IInteractionService>();
             _notificationService = Locator.Current.GetService<INotificationService>();
 
             UrlPathSegment = GetAttributes<RoutingUrlAttribute>(t).ToString();
-
-
-            HostScreen = screen ?? Locator.Current.GetService<IScreen>();
         }
 
 

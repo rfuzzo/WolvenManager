@@ -56,7 +56,17 @@
                         <Border Height="{Binding Path=TitleBarActualHeight, RelativeSource={RelativeSource AncestorType={x:Type adonisControls:AdonisWindow}}}" />
 
                         <!-- Upper Buttons -->
+                        
                         <StackPanel Grid.Row="0">
+                            <Button x:Name="ModkitButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Modkit }" Height="Auto">
+                                <Button.Content>
+                                    <iconPacks:PackIconCodicons Kind ="Bug"
+                                                                Width="40"
+                                                                Height="40"
+                                                                Padding="5"/>
+                                </Button.Content>
+
+                            </Button>
                             <Button x:Name="MainButton" CommandParameter="{x:Static constants:Constants+RoutingIDs.Main }" Height="Auto">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Package"
@@ -66,17 +76,9 @@
                                 </Button.Content>
 
                             </Button>
-                            <!--<Button x:Name="ExtensionsButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Extensions }" Height="Auto">
-                                <Button.Content>
-                                    <iconPacks:PackIconCodicons Kind="Extensions"
-                                                                Width="40"
-                                                                Height="40"
-                                                                Padding="5"/>
-                                </Button.Content>
+                            
 
-                            </Button>
-
-                            <Button x:Name="LibraryButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Library }" Height="Auto" >
+                            <!--<Button x:Name="LibraryButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Library }" Height="Auto" >
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Library"
                                                                 Width="40"

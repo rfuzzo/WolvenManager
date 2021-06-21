@@ -8,6 +8,7 @@ namespace WolvenManager.App
         public enum RoutingIDs
         {
             Main,
+            Modkit,
             //Library,
             //Extensions,
             Settings
@@ -24,19 +25,5 @@ namespace WolvenManager.App
             }
         }
 
-        public static string LibraryPath
-        {
-            get
-            {
-                var path = AppDomain.CurrentDomain.BaseDirectory;
-                var filename = Path.GetFileNameWithoutExtension(path);
-                var dir = Path.GetDirectoryName(path);
-                return Path.Combine(dir ?? "", filename + "lib.bin");
-            }
-        }
-
-        public static string WorkingDir => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WorkingDir");
-
-        
     }
 }

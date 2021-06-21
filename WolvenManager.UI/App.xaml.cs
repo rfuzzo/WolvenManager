@@ -65,26 +65,27 @@ namespace WolvenManager.UI
 
 
                     // register your personal services here
-                    services.AddScoped<ILoggerService, MicrosoftLoggerService>();
-                    services.AddScoped<IProgress<double>, PercentProgressService>();
+                    services.AddSingleton<ILoggerService, ReactiveLoggerService>();
+                    services.AddSingleton<IProgress<double>, PercentProgressService>();
 
                     services.AddSingleton<IHashService, HashService>();
 
 
-                    services.AddScoped<Red4ParserService>();
-                    services.AddScoped<TargetTools>();      //Cp77FileService
-                    services.AddScoped<RIG>();              //Cp77FileService
-                    services.AddScoped<MeshTools>();        //RIG, Cp77FileService
+                    services.AddSingleton<Red4ParserService>();
+                    services.AddSingleton<TargetTools>();      //Cp77FileService
+                    services.AddSingleton<RIG>();              //Cp77FileService
+                    services.AddSingleton<MeshTools>();        //RIG, Cp77FileService
 
-                    services.AddScoped<ModTools>();         //Cp77FileService, ILoggerService, IProgress, IHashService, Mesh, Target
+                    services.AddSingleton<ModTools>();         //Cp77FileService, ILoggerService, IProgress, IHashService, Mesh, Target
 
-                    services.AddScoped<ConsoleFunctions>();
+                    services.AddSingleton<IConsoleFunctions, ConsoleFunctions>();
 
 
                     // register viewModels
                     services.AddSingleton<AppViewModel>();
                     services.AddSingleton<ModListViewModel>();
                     services.AddSingleton<SettingsViewModel>();
+                    services.AddSingleton<ModkitViewModel>();
 
                     // this passes IScreen resolution through to the previous viewmodel registration.
                     // this is to prevent multiple instances by mistake.
@@ -92,6 +93,7 @@ namespace WolvenManager.UI
                     services.AddSingleton<IScreen, AppViewModel>(x => x.GetRequiredService<AppViewModel>());
 
                     // register views
+                    services.AddSingleton<IViewFor<ModkitViewModel>, ModkitView>();
                     services.AddSingleton<IViewFor<AppViewModel>, MainWindow>();
                     services.AddSingleton<IViewFor<ModListViewModel>, ModListView>();
                     services.AddSingleton<IViewFor<SettingsViewModel>, SettingsView>();

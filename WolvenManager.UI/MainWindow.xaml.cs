@@ -63,6 +63,10 @@ namespace WolvenManager.UI
                         viewModel => viewModel.RoutingSettingsCommand,
                         view => view.SettingsButton)
                     .DisposeWith(disposableRegistration);
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.RoutingCommand,
+                        view => view.ModkitButton)
+                    .DisposeWith(disposableRegistration);
 
 
                 // routing

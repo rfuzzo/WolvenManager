@@ -26,7 +26,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
 
 
-        public SettingsViewModel(IScreen screen = null) : base(typeof(SettingsViewModel), screen)
+        public SettingsViewModel() : base(typeof(SettingsViewModel))
         {
             
 

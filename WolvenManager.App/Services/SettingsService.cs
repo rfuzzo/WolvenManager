@@ -18,7 +18,7 @@ namespace WolvenManager.App.Services
     {
         #region fields
 
-        
+        private string OodlePath;
 
         #endregion
 
@@ -39,7 +39,6 @@ namespace WolvenManager.App.Services
         #region properties
         [Reactive]
         public string GamePath { get; set; }
-
 
         [JsonIgnore] private bool _isLoaded;
 
@@ -119,11 +118,10 @@ namespace WolvenManager.App.Services
         {
             get
             {
+                var oodlePath = Path.Combine(GamePath, "bin", "x64", "oo2ext_7_win64.dll");
                 return this.WhenAnyValue(
                     x => x.GamePath,
-                    (gamepath) =>
-                        !string.IsNullOrEmpty(gamepath) &&
-                        Directory.Exists(gamepath)
+                    (gamepath) => !string.IsNullOrEmpty(gamepath) && Directory.Exists(gamepath) && File.Exists(oodlePath)
                 );
             }
         }

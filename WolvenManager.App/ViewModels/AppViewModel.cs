@@ -105,17 +105,11 @@ namespace WolvenManager.App.ViewModels
             // Once 
             _settingsService.IsValid.Subscribe(isvalid =>
             {
-                //TODO: bad?
                 if (!isvalid)
                 {
                     return;
                 }
-
-                // check Addons updates
-
-
             });
-
 
             // navigate to settings if game is not found
             if (string.IsNullOrEmpty(_settingsService.GamePath))

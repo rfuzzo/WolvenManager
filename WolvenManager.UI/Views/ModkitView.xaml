@@ -15,39 +15,37 @@
                                 mc:Ignorable="d" 
                                 d:DataContext="{d:DesignInstance Type=pageViewModels:ModkitViewModel}"
                                 d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
+
+        <Grid.Resources>
+            <converters:LogColorConverter x:Key="converter"/>
+            <Style TargetType="syncfusion:VirtualizingCellsControl">
+                <Setter Property="Background" Value="{Binding Path=Level, Converter={StaticResource converter}}" />
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="0">
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" x:Name="RunButton">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconCodicons Kind="RunAll"
-                                                      Width="40"
-                                                      Height="40"
-                            />
-                            <TextBlock Text="Run Command" 
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center" 
-                                       FontSize="25" 
-                                       Padding="15,0,0,0"/>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
-            </Grid>
-
-        </GroupBox>
+        <Button  Grid.Row="0" x:Name="RunButton">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconCodicons Kind="RunAll"
+                                                Width="40"
+                                                Height="40"
+                    />
+                    <TextBlock Text="Run Command" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" 
+                               FontSize="25" 
+                               Padding="15,0,0,0"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
 
 
         <syncfusion:SfNavigationDrawer Grid.Row="1"
@@ -65,9 +63,19 @@
             </syncfusion:SfNavigationDrawer.ContentView>
         </syncfusion:SfNavigationDrawer>
 
-        <syncfusion:SfDataGrid Grid.Row="2" x:Name="ListView" AutoGenerateColumns="False" ColumnSizer="AutoLastColumnFill">
+        <syncfusion:SfDataGrid Grid.Row="2" x:Name="ListView" 
+                               AutoGenerateColumns="False" 
+                               ColumnSizer="AutoLastColumnFill"
+                               AllowFiltering="True"
+                               AllowEditing="False"
+                               AllowSorting="True"
+                               >
             <syncfusion:SfDataGrid.Columns>
+
+                <syncfusion:GridTextColumn MappingName="Level" />
+
                 <syncfusion:GridTextColumn MappingName="Message" />
+                
             </syncfusion:SfDataGrid.Columns>
         </syncfusion:SfDataGrid>
 

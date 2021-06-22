@@ -6,24 +6,39 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
-    
-    Title="{Binding Title}"
+
     Height="600" Width="1000"
     MinHeight="450" MinWidth="800"
     mc:Ignorable="d"
     xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
     xmlns:viewModels="clr-namespace:WolvenManager.App.ViewModels;assembly=WolvenManager.App"
 
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:constants="clr-namespace:WolvenManager.App;assembly=WolvenManager.App"
-    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:hc="https://handyorg.github.io/handycontrol" 
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel}"
 
+    PlaceTitleBarOverContent="False"
+    IconVisibility="Visible"
     >
 
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>
+
+
+    <adonisControls:AdonisWindow.TitleBarContent>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left">
+            <Menu >
+                <MenuItem Header="View">
+                    <MenuItem Header="View Log"/>
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+    </adonisControls:AdonisWindow.TitleBarContent>
 
     <Grid>
         <Grid>
@@ -31,6 +46,8 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
+
+            
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -113,12 +130,50 @@
                 </GroupBox>
 
                 <!-- Pages -->
-                <reactiveui:RoutedViewHost Grid.Column="1" 
-                                           x:Name="RoutedViewHost"
-                                           HorizontalContentAlignment="Stretch"
-                                           VerticalContentAlignment="Stretch" />
+                <Grid Grid.Column="1" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="200"/>
+                    </Grid.RowDefinitions>
 
 
+                    <reactiveui:RoutedViewHost Grid.Row="0" 
+                        x:Name="RoutedViewHost"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch" />
+
+
+                    <Grid Grid.Row="1" x:Name="ToolsHolder">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="200" MinHeight="200"/>
+                        </Grid.RowDefinitions>
+
+                        <GridSplitter Width="5"
+                                      ResizeBehavior="CurrentAndNext" />
+
+                        <syncfusion:SfDataGrid Grid.Row="0" x:Name="ListView" 
+                                               AutoGenerateColumns="False" 
+                                               ColumnSizer="AutoLastColumnFill"
+                                               AllowFiltering="True"
+                                               AllowEditing="False"
+                                               AllowSorting="True"
+                        >
+                            <syncfusion:SfDataGrid.Columns>
+
+                                <syncfusion:GridTextColumn MappingName="Level" />
+
+                                <syncfusion:GridTextColumn MappingName="Message" />
+
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+
+                    </Grid>
+
+
+                    
+
+                </Grid>
             </Grid>
 
             <StatusBar Grid.Row="1" Background="DodgerBlue">

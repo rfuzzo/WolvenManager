@@ -53,27 +53,40 @@ namespace WolvenManager.UI
 
             InitializeComponent();
 
-            this.WhenActivated(disposableRegistration =>
+            this.WhenActivated(disposables =>
             {
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.RoutingCommand,
                         view => view.MainButton)
-                    .DisposeWith(disposableRegistration);
+                    .DisposeWith(disposables);
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.RoutingSettingsCommand,
                         view => view.SettingsButton)
-                    .DisposeWith(disposableRegistration);
+                    .DisposeWith(disposables);
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.RoutingCommand,
                         view => view.ModkitButton)
-                    .DisposeWith(disposableRegistration);
+                    .DisposeWith(disposables);
 
 
                 // routing
                 this.OneWayBind(ViewModel, 
                         x => x.Router, 
                         x => x.RoutedViewHost.Router)
-                    .DisposeWith(disposableRegistration);
+                    .DisposeWith(disposables);
+
+                // LogView
+                this.OneWayBind(ViewModel,
+                        viewModel => viewModel.LogEntries,
+                        view => view.ListView.ItemsSource)
+                    .DisposeWith(disposables);
+
+
+                this.OneWayBind(ViewModel,
+                    viewModel => viewModel.IsBottomBarVisible,
+                    view => view.ToolsHolder.Visibility)
+                    .DisposeWith(disposables);
+
 
             });
 

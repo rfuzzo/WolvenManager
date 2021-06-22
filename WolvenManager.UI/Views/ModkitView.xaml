@@ -11,7 +11,7 @@
                                 xmlns:converters="clr-namespace:WolvenManager.UI.Converters"
                                 xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
                                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                                syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=MaterialDark}"
+                                syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=FluentDark}"
                                 mc:Ignorable="d" 
                                 d:DataContext="{d:DesignInstance Type=pageViewModels:ModkitViewModel}"
                                 d:DesignHeight="450" d:DesignWidth="800">
@@ -27,7 +27,6 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -56,28 +55,13 @@
            
 
             <syncfusion:SfNavigationDrawer.ContentView>
-                <syncfusion:PropertyGrid x:Name="PropertyGrid">
+                <syncfusion:PropertyGrid x:Name="PropertyGrid"
+                                         >
 
                 </syncfusion:PropertyGrid>
 
             </syncfusion:SfNavigationDrawer.ContentView>
         </syncfusion:SfNavigationDrawer>
-
-        <syncfusion:SfDataGrid Grid.Row="2" x:Name="ListView" 
-                               AutoGenerateColumns="False" 
-                               ColumnSizer="AutoLastColumnFill"
-                               AllowFiltering="True"
-                               AllowEditing="False"
-                               AllowSorting="True"
-                               >
-            <syncfusion:SfDataGrid.Columns>
-
-                <syncfusion:GridTextColumn MappingName="Level" />
-
-                <syncfusion:GridTextColumn MappingName="Message" />
-                
-            </syncfusion:SfDataGrid.Columns>
-        </syncfusion:SfDataGrid>
 
     </Grid>
 </reactiveUi:ReactiveUserControl>

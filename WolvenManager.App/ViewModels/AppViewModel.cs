@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using ReactiveUI;
 using Splat;
+using WolvenKit.Common.Services;
 using WolvenManager.App.Services;
 using WolvenManager.App.ViewModels.PageViewModels;
+using DynamicData;
+using ReactiveUI.Fody.Helpers;
 
 namespace WolvenManager.App.ViewModels
 {
@@ -21,14 +18,22 @@ namespace WolvenManager.App.ViewModels
     {
         private readonly ISettingsService _settingsService;
         private readonly INotificationService _notificationService;
+        private readonly ILoggerService _loggerService;
+
+        
+
+        private string Version { get; set; }
+
 
         public AppViewModel(
             ISettingsService settingsService,
-            INotificationService notificationService
+            INotificationService notificationService,
+            ILoggerService loggerService
             )
         {
             _settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
             _notificationService = notificationService ?? Locator.Current.GetService<INotificationService>();
+            _loggerService = loggerService ?? Locator.Current.GetService<ILoggerService>();
 
             // routing
             Router = new RoutingState();
@@ -48,22 +53,38 @@ namespace WolvenManager.App.ViewModels
                 Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
             }, CanExecuteRouting);
             RoutingCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar, CanExecuteRouting);
-        }
 
+            ToggleBottomBarCommand = ReactiveCommand.Create(() =>
+            {
+                IsBottomBarVisible = !IsBottomBarVisible;
+            });
+
+
+
+
+
+
+            //filter, sort and populate reactive list,
+            _loggerService.Connect() //connect to the cache
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out _logEntries)
+                .Subscribe();
+        }
 
         #region properties
 
-        private IObservable<bool> CanExecuteRouting => _settingsService.IsValid;
+        [Reactive]
+        public bool IsBottomBarVisible { get; set; }
 
-        private string title;
+        private string _title;
         public string Title
         {
-            get => title;
-            set => this.RaiseAndSetIfChanged(ref title, value);
+            get => _title;
+            set => this.RaiseAndSetIfChanged(ref _title, value);
         }
 
-        private string Version { get; set; }
-
+        private readonly ReadOnlyObservableCollection<LogEntry> _logEntries;
+        public ReadOnlyObservableCollection<LogEntry> LogEntries => _logEntries;
 
         public RoutingState Router { get; }
 
@@ -72,6 +93,12 @@ namespace WolvenManager.App.ViewModels
 
 
         #region commands
+
+
+        public ReactiveCommand<Unit, Unit> ToggleBottomBarCommand { get; }
+
+
+        private IObservable<bool> CanExecuteRouting => _settingsService.IsValid;
 
 
         public ReactiveCommand<Unit, Unit> RoutingSettingsCommand { get; }

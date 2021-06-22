@@ -9,6 +9,8 @@ using WolvenManager.App.Attributes;
 using CP77Tools.Tasks;
 using DynamicData;
 using DynamicData.Binding;
+using Splat;
+using Syncfusion.Windows.PropertyGrid;
 using WolvenKit.Common.Services;
 using WolvenManager.App.Services;
 using WolvenManager.Models;
@@ -20,9 +22,6 @@ namespace WolvenManager.App.ViewModels.PageViewModels
     {
         private readonly IConsoleFunctions _consoleFunctions;
         private readonly ILoggerService _loggerService;
-
-        private readonly ReadOnlyObservableCollection<LogEntry> _logEntries;
-        public ReadOnlyObservableCollection<LogEntry> LogEntries => _logEntries;
 
         public ModkitViewModel(IConsoleFunctions consoleFunctions, ILoggerService loggerService) : base(typeof(ModkitViewModel))
         {
@@ -36,16 +35,14 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
             };
 
-            RunCommand = ReactiveCommand.CreateFromTask(RunAsync);
+            RunCommand = ReactiveCommand.CreateFromTask(RunAsync, CanRunAsync);
 
 
-            //filter, sort and populate reactive list,
-            _loggerService.Connect() //connect to the cache
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Bind(out _logEntries)
-                .Subscribe();
+           
 
         }
+
+        public IObservable<bool> CanRunAsync { get; set; }
 
         private async Task RunAsync()
         {
@@ -55,6 +52,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
         #region properties
 
+        public ReactiveCommand<Unit, Unit> RunCommand { get; }
 
         [Reactive]
         public ObservableCollection<CommandModel> Items { get; set; }
@@ -65,7 +63,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
         #endregion
 
 
-        public ReactiveCommand<Unit, Unit> RunCommand { get; }
+       
 
     }
 }

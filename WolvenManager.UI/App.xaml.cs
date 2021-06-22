@@ -19,6 +19,7 @@ using WolvenManager.UI.Implementations;
 using WolvenManager.UI.Services;
 using WolvenManager.UI.Views;
 using System.Windows;
+using WolvenManager.App.Editors;
 
 namespace WolvenManager.UI
 {
@@ -80,11 +81,16 @@ namespace WolvenManager.UI
                     services.AddSingleton<IConsoleFunctions, ConsoleFunctions>();
 
 
+                    // register Editors
+                    //services.AddScoped(typeof(IPathEditor), typeof(PathEditor));
+
+
                     // register viewModels
                     services.AddSingleton<AppViewModel>();
                     services.AddSingleton<ModListViewModel>();
                     services.AddSingleton<SettingsViewModel>();
                     services.AddSingleton<ModkitViewModel>();
+
 
                     // this passes IScreen resolution through to the previous viewmodel registration.
                     // this is to prevent multiple instances by mistake.

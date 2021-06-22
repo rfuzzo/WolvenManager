@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ReactiveUI;
 using Syncfusion.UI.Xaml.NavigationDrawer;
+using Syncfusion.Windows.PropertyGrid;
 using WolvenManager.App.ViewModels.PageViewModels;
 
 namespace WolvenManager.UI.Views
@@ -27,6 +28,7 @@ namespace WolvenManager.UI.Views
         public ModkitView()
         {
             InitializeComponent();
+
             this.WhenAnyValue(x => x.ViewModel)
                 .BindTo(this, x => x.DataContext);
 
@@ -36,6 +38,7 @@ namespace WolvenManager.UI.Views
                         viewModel => viewModel.Items,
                         view => view.navigationDrawer.ItemsSource)
                     .DisposeWith(disposables);
+
                 this.Bind(ViewModel,
                         viewModel => viewModel.SelectedItem,
                         view => view.navigationDrawer.SelectedItem)
@@ -43,10 +46,6 @@ namespace WolvenManager.UI.Views
                 this.Bind(ViewModel,
                         viewModel => viewModel.SelectedItem,
                         view => view.PropertyGrid.SelectedObject)
-                    .DisposeWith(disposables);
-                this.OneWayBind(ViewModel,
-                        viewModel => viewModel.LogEntries,
-                        view => view.ListView.ItemsSource)
                     .DisposeWith(disposables);
 
                 this.BindCommand(ViewModel,

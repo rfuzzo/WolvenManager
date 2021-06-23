@@ -69,11 +69,5 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
         #endregion
 
-        #region events
-
-        
-
-        #endregion
-
     }
 }

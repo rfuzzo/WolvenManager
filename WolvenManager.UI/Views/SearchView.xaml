@@ -1,0 +1,80 @@
+﻿<reactiveUi:ReactiveUserControl 
+    x:TypeArguments="pageViewModels:SearchViewModel"
+    x:Class="WolvenManager.UI.Views.SearchView"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                                xmlns:local="clr-namespace:WolvenManager.UI.Views"
+                                xmlns:reactiveUi="http://reactiveui.net"
+                                xmlns:pageViewModels="clr-namespace:WolvenManager.App.ViewModels.PageViewModels;assembly=WolvenManager.App"
+                                xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+                                mc:Ignorable="d" 
+                                d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <syncfusion:SfTreeNavigator Grid.Column="0"
+                                    Header="Depot"
+                                    x:Name="LeftNavigation"
+                                    NavigationMode="Default"
+                                    SelectionChanged="LeftNavigation_OnSelectionChanged"
+                                    
+                                
+        >
+
+            <syncfusion:SfTreeNavigator.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding SubDirectories}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" 
+                                   Foreground="Green" FontWeight="Bold" 
+                                   VerticalAlignment="Center" Margin="18 0 0 0"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </syncfusion:SfTreeNavigator.ItemTemplate>
+
+        </syncfusion:SfTreeNavigator>
+
+        <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" />
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <syncfusion:SfDataGrid  x:Name="DataGrid" 
+                                    AutoGenerateColumns="False" 
+                                    ColumnSizer="AutoLastColumnFill"
+                                    AllowFiltering="True"
+                                    AllowEditing="False"
+                                    AllowSorting="True"
+                                    AllowResizingColumns="True"
+                                    EnableDataVirtualization="True"
+                                    ItemsSource="{Binding ElementName=dataPager,Path=PagedSource}"
+            >
+
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridNumericColumn  MappingName="Key"/>
+                <syncfusion:GridTextColumn  MappingName="Name"/>
+                <syncfusion:GridTextColumn  MappingName="Extension"/>
+                <syncfusion:GridTextColumn  MappingName="Archive"/>
+                <syncfusion:GridTextColumn  MappingName="FullName"/>
+
+            </syncfusion:SfDataGrid.Columns>
+
+            </syncfusion:SfDataGrid>
+
+            <syncfusion:SfDataPager x:Name="dataPager"
+                                    Grid.Row="1"
+                                    PageSize="500"
+            />
+
+        </Grid>
+
+    </Grid>
+</reactiveUi:ReactiveUserControl>

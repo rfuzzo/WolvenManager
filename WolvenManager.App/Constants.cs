@@ -9,8 +9,8 @@ namespace WolvenManager.App
         {
             Main,
             Modkit,
-            //Library,
-            //Extensions,
+            Library,
+            Search,
             Settings
         }
 

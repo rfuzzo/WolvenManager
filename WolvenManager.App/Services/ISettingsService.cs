@@ -14,6 +14,7 @@ namespace WolvenManager.App.Services
 
         public string ScriptsDir { get; }
         public string ModsDir { get; }
+        public string AppData { get; }
 
         #endregion Properties
 

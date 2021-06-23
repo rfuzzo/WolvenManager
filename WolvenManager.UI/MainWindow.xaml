@@ -17,7 +17,8 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:constants="clr-namespace:WolvenManager.App;assembly=WolvenManager.App"
     xmlns:hc="https://handyorg.github.io/handycontrol" 
-    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
+    xmlns:converters="clr-namespace:WolvenManager.UI.Converters"
     d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel}"
 
     PlaceTitleBarOverContent="False"
@@ -41,6 +42,9 @@
     </adonisControls:AdonisWindow.TitleBarContent>
 
     <Grid>
+        
+
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -73,8 +77,38 @@
                         <Border Height="{Binding Path=TitleBarActualHeight, RelativeSource={RelativeSource AncestorType={x:Type adonisControls:AdonisWindow}}}" />
 
                         <!-- Upper Buttons -->
-                        
                         <StackPanel Grid.Row="0">
+
+                            <Button x:Name="FilesButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Library }" Height="Auto" >
+                                <Button.Content>
+                                    <iconPacks:PackIconCodicons Kind="Files"
+                                                                Width="40"
+                                                                Height="40"
+                                                                Padding="5"/>
+                                </Button.Content>
+
+                            </Button>
+
+                            <Button x:Name="ModsButton" CommandParameter="{x:Static constants:Constants+RoutingIDs.Main }" Height="Auto">
+                                <Button.Content>
+                                    <iconPacks:PackIconCodicons Kind="Library"
+                                                                Width="40"
+                                                                Height="40"
+                                                                Padding="5"/>
+                                </Button.Content>
+
+                            </Button>
+
+                            <Button x:Name="SearchButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Search }" Height="Auto" >
+                                <Button.Content>
+                                    <iconPacks:PackIconCodicons Kind="Search"
+                                                                Width="40"
+                                                                Height="40"
+                                                                Padding="5"/>
+                                </Button.Content>
+
+                            </Button>
+
                             <Button x:Name="ModkitButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Modkit }" Height="Auto">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind ="Bug"
@@ -84,26 +118,10 @@
                                 </Button.Content>
 
                             </Button>
-                            <Button x:Name="MainButton" CommandParameter="{x:Static constants:Constants+RoutingIDs.Main }" Height="Auto">
-                                <Button.Content>
-                                    <iconPacks:PackIconCodicons Kind="Package"
-                                                                Width="40"
-                                                                Height="40"
-                                                                Padding="5"/>
-                                </Button.Content>
+                           
 
-                            </Button>
+                           
                             
-
-                            <!--<Button x:Name="LibraryButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Library }" Height="Auto" >
-                                <Button.Content>
-                                    <iconPacks:PackIconCodicons Kind="Library"
-                                                                Width="40"
-                                                                Height="40"
-                                                                Padding="5"/>
-                                </Button.Content>
-
-                            </Button>-->
 
                         </StackPanel>
 
@@ -133,7 +151,7 @@
                 <Grid Grid.Column="1" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
 
@@ -144,15 +162,23 @@
 
 
                     <Grid Grid.Row="1" x:Name="ToolsHolder">
+                        <Grid.Resources>
+                            <converters:LogColorConverter x:Key="converter"/>
+                            <Style TargetType="syncfusion:VirtualizingCellsControl">
+                                <Setter Property="Background" Value="{Binding Path=Level, Converter={StaticResource converter}}" />
+                            </Style>
+                        </Grid.Resources>
+
+
                         <Grid.RowDefinitions>
                             <RowDefinition/>
-                            <RowDefinition Height="200" MinHeight="200"/>
+                            <RowDefinition Height="200" />
                         </Grid.RowDefinitions>
 
-                        <GridSplitter Width="5"
+                        <GridSplitter Grid.Row="0" Height="5" HorizontalAlignment="Stretch"
                                       ResizeBehavior="CurrentAndNext" />
 
-                        <syncfusion:SfDataGrid Grid.Row="0" x:Name="ListView" 
+                        <syncfusion:SfDataGrid Grid.Row="1" x:Name="ListView" 
                                                AutoGenerateColumns="False" 
                                                ColumnSizer="AutoLastColumnFill"
                                                AllowFiltering="True"
@@ -181,7 +207,7 @@
             </StatusBar>
         </Grid>
 
-        <Canvas x:Name="Overlay" />
+        
 
         <ScrollViewer   
             VerticalScrollBarVisibility="Hidden" 

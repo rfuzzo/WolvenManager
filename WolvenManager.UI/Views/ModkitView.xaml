@@ -18,14 +18,7 @@
 
     <Grid>
 
-        <Grid.Resources>
-            <converters:LogColorConverter x:Key="converter"/>
-            <Style TargetType="syncfusion:VirtualizingCellsControl">
-                <Setter Property="Background" Value="{Binding Path=Level, Converter={StaticResource converter}}" />
-            </Style>
-        </Grid.Resources>
-
-        <Grid.RowDefinitions>
+       <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>

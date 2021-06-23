@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CP77Tools.Tasks;
 using Microsoft.Extensions.Options;
 using ReactiveUI;
+using WolvenKit.Common;
 using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Editors;
 
@@ -22,7 +23,20 @@ namespace WolvenManager.Models
         public abstract Task ExecuteAsync(IConsoleFunctions consoleFunctions);
 
         public override string ToString() => Name;
+
+        protected string[] GetPathArgs(params string[] inputs)
+        {
+            List<string> result = new();
+            result = inputs
+                .Aggregate(result, (current, list) => current.Concat(list.Split(';'))
+                .Where(_ => !string.IsNullOrEmpty(_))
+                .Select(_ => _.TrimStart('\"').TrimEnd('\"'))
+                .ToList());
+
+            return result.ToArray();
+        }
     }
+
 
     [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
     [Editor(nameof(Archives), typeof(MultiFilePathEditor))]
@@ -38,14 +52,7 @@ namespace WolvenManager.Models
         public bool Diff { get; set; }
 
 
-        public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions)
-        {
-            var folders = Folders.Split(';');
-            var archives = Archives.Split(';');
-            var Path = folders.Concat(archives).ToArray();
-
-            await Task.Run(() => consoleFunctions.ArchiveTask(Path, Pattern, Regex, Diff, List));
-        }
+        public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) => await Task.Run(() => consoleFunctions.ArchiveTask(GetPathArgs(Folders, Archives), Pattern, Regex, Diff, List));
     }
 
     [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
@@ -64,14 +71,14 @@ namespace WolvenManager.Models
         public bool DEBUG_decompress { get; set; }
 
 
-        public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions)
-        {
-            var folders = Folders.Split(';');
-            var archives = Archives.Split(';');
-            var Path = folders.Concat(archives).Select(_ => _.TrimStart('\"').TrimEnd('\"')).ToArray();
+        // custom stuff
 
+        public List<ERedExtension> Extensions { get; set; }
+
+
+
+        public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) =>
             await Task.Run(() =>
-                consoleFunctions.UnbundleTask(Path.ToArray(), Outpath, Pattern, Regex, Hash, DEBUG_decompress));
-        }
+                consoleFunctions.UnbundleTask(GetPathArgs(Folders, Archives), Outpath, Hash, Pattern, Regex, DEBUG_decompress));
     }
 }

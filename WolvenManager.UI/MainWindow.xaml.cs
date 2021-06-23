@@ -57,15 +57,25 @@ namespace WolvenManager.UI
             {
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.RoutingCommand,
-                        view => view.MainButton)
-                    .DisposeWith(disposables);
-                this.BindCommand(ViewModel,
-                        viewModel => viewModel.RoutingSettingsCommand,
-                        view => view.SettingsButton)
+                        view => view.FilesButton)
                     .DisposeWith(disposables);
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.RoutingCommand,
                         view => view.ModkitButton)
+                    .DisposeWith(disposables);
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.RoutingCommand,
+                        view => view.ModsButton)
+                    .DisposeWith(disposables);
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.RoutingCommand,
+                        view => view.SearchButton)
+                    .DisposeWith(disposables);
+
+
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.RoutingSettingsCommand,
+                        view => view.SettingsButton)
                     .DisposeWith(disposables);
 
 

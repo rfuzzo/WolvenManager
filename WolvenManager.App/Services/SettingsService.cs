@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ using System.Text.Json.Serialization;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using WolvenKit.Common.Tools.Oodle;
+using WolvenManager.Models;
 
 namespace WolvenManager.App.Services
 {
@@ -36,7 +39,14 @@ namespace WolvenManager.App.Services
                 });
         }
 
+        #region commands
+
+        #endregion
+
+
+
         #region properties
+
         [Reactive]
         public string GamePath { get; set; }
 
@@ -71,6 +81,20 @@ namespace WolvenManager.App.Services
                 }
 
                 var path = Path.Combine(GamePath, "archive", "pc", "mod");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                return path;
+            }
+        }
+        public string AppData
+        {
+            get
+            {
+                var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+                var path = Path.Combine(appdata, "WolvenManager");
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);

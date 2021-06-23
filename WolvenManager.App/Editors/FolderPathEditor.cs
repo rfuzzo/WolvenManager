@@ -13,6 +13,13 @@ using PropertyItem = Syncfusion.Windows.PropertyGrid.PropertyItem;
 namespace WolvenManager.App.Editors
 {
 
+
+
+
+
+
+
+
     //Custom Editor for folder type properties.
     public abstract class FolderPathEditorBase : ITypeEditor
     {

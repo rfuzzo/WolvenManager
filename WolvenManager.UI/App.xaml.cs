@@ -19,6 +19,9 @@ using WolvenManager.UI.Implementations;
 using WolvenManager.UI.Services;
 using WolvenManager.UI.Views;
 using System.Windows;
+using ProtoBuf.Meta;
+using WolvenKit.Common;
+using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Editors;
 
 namespace WolvenManager.UI
@@ -36,6 +39,8 @@ namespace WolvenManager.UI
 
             Init();
 
+            //protobuf
+            RuntimeTypeModel.Default[typeof(IGameArchive)].AddSubType(20, typeof(Archive));
         }
 
         public IServiceProvider Container { get; private set; }
@@ -65,10 +70,12 @@ namespace WolvenManager.UI
 
 
                     // register your personal services here
+                    services.AddSingleton<IHashService, HashService>();
+                    services.AddSingleton<IArchiveService, ArchiveService>();
                     services.AddSingleton<ILoggerService, ReactiveLoggerService>();
                     services.AddSingleton<IProgress<double>, PercentProgressService>();
 
-                    services.AddSingleton<IHashService, HashService>();
+                    
 
 
                     services.AddSingleton<Red4ParserService>();
@@ -85,31 +92,26 @@ namespace WolvenManager.UI
                     //services.AddScoped(typeof(IPathEditor), typeof(PathEditor));
 
 
-                    // register viewModels
-                    services.AddSingleton<AppViewModel>();
-                    services.AddSingleton<ModListViewModel>();
-                    services.AddSingleton<SettingsViewModel>();
-                    services.AddSingleton<ModkitViewModel>();
-
-
                     // this passes IScreen resolution through to the previous viewmodel registration.
                     // this is to prevent multiple instances by mistake.
-
+                    services.AddSingleton<AppViewModel>();
                     services.AddSingleton<IScreen, AppViewModel>(x => x.GetRequiredService<AppViewModel>());
+                    services.AddSingleton<IViewFor<AppViewModel>, MainWindow>();
 
                     // register views
+                    services.AddSingleton<ModkitViewModel>();
                     services.AddSingleton<IViewFor<ModkitViewModel>, ModkitView>();
-                    services.AddSingleton<IViewFor<AppViewModel>, MainWindow>();
+                    
+                    services.AddSingleton<ModListViewModel>();
                     services.AddSingleton<IViewFor<ModListViewModel>, ModListView>();
+
+                    services.AddSingleton<SettingsViewModel>();
                     services.AddSingleton<IViewFor<SettingsViewModel>, SettingsView>();
 
-                    ////Locator.CurrentMutable.Register(() => new ModFilesValidationView(), typeof(IViewFor<ModFilesValidationViewModel>));
+                    services.AddSingleton<SearchViewModel>();
+                    services.AddSingleton<IViewFor<SearchViewModel>, SearchView>();
 
-
-                    //Locator.CurrentMutable.RegisterConstant(
-                    //    new BooleanToVisibilityTypeConverter(),
-                    //    typeof(IBindingTypeConverter)
-                    //);
+                   
                 })
                 .UseEnvironment(Environments.Development)
                 .Build();

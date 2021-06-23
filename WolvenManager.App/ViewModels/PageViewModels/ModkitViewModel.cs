@@ -35,14 +35,14 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
             };
 
-            RunCommand = ReactiveCommand.CreateFromTask(RunAsync, CanRunAsync);
+            var canExecute = this.WhenAnyValue(
+                x => x.SelectedItem,
+                (userName) =>
+                    (CommandModel)userName != null);
 
-
-           
+            RunCommand = ReactiveCommand.CreateFromTask(RunAsync, canExecute);
 
         }
-
-        public IObservable<bool> CanRunAsync { get; set; }
 
         private async Task RunAsync()
         {

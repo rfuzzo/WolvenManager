@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using ReactiveUI;
 using Splat;
 using WolvenKit.Common.Services;
@@ -10,6 +12,7 @@ using WolvenManager.App.Services;
 using WolvenManager.App.ViewModels.PageViewModels;
 using DynamicData;
 using ReactiveUI.Fody.Helpers;
+using WolvenKit.Common.Tools.Oodle;
 
 namespace WolvenManager.App.ViewModels
 {
@@ -19,8 +22,7 @@ namespace WolvenManager.App.ViewModels
         private readonly ISettingsService _settingsService;
         private readonly INotificationService _notificationService;
         private readonly ILoggerService _loggerService;
-
-        
+        private readonly IArchiveService _archiveService;
 
         private string Version { get; set; }
 
@@ -28,12 +30,14 @@ namespace WolvenManager.App.ViewModels
         public AppViewModel(
             ISettingsService settingsService,
             INotificationService notificationService,
-            ILoggerService loggerService
+            ILoggerService loggerService,
+            IArchiveService archiveService
             )
         {
             _settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
             _notificationService = notificationService ?? Locator.Current.GetService<INotificationService>();
             _loggerService = loggerService ?? Locator.Current.GetService<ILoggerService>();
+            _archiveService = archiveService;
 
             // routing
             Router = new RoutingState();
@@ -73,8 +77,7 @@ namespace WolvenManager.App.ViewModels
 
         #region properties
 
-        [Reactive]
-        public bool IsBottomBarVisible { get; set; }
+        [Reactive] public bool IsBottomBarVisible { get; set; } = true;
 
         private string _title;
         public string Title
@@ -117,6 +120,11 @@ namespace WolvenManager.App.ViewModels
                 case Constants.RoutingIDs.Settings:
                     Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
                     break;
+                case Constants.RoutingIDs.Library:
+                    break;
+                case Constants.RoutingIDs.Search:
+                    Router.Navigate.Execute(Locator.Current.GetService<SearchViewModel>());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(parameter), parameter, null);
             }
@@ -127,14 +135,23 @@ namespace WolvenManager.App.ViewModels
 
         #endregion
 
-        public void OnStartup()
+        private void OnStartup()
         {
             // Once 
-            _settingsService.IsValid.Subscribe(isvalid =>
+            _settingsService.IsValid.Subscribe(async isvalid =>
             {
                 if (!isvalid)
                 {
                     return;
+                }
+                else
+                {
+                    // load oodle
+                    var oodlePath = Path.Combine(_settingsService.GamePath, "bin", "x64", "oo2ext_7_win64.dll");
+                    OodleLoadLib.Load(oodlePath);
+
+                    // load managers
+                    await Task.Run( () => _archiveService.Load());
                 }
             });
 

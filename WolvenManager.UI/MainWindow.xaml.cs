@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
@@ -63,19 +63,21 @@ namespace WolvenManager.UI
                         viewModel => viewModel.RoutingCommand,
                         view => view.ModkitButton)
                     .DisposeWith(disposables);
+
+                // search
                 this.BindCommand(ViewModel,
-                        viewModel => viewModel.RoutingCommand,
-                        view => view.ModsButton)
-                    .DisposeWith(disposables);
-                this.BindCommand(ViewModel,
-                        viewModel => viewModel.RoutingCommand,
+                        viewModel => viewModel.RoutingSearchCommand,
                         view => view.SearchButton)
                     .DisposeWith(disposables);
-
-
+                // settings
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.RoutingSettingsCommand,
                         view => view.SettingsButton)
+                    .DisposeWith(disposables);
+                // mods
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.RoutingModsCommand,
+                        view => view.ModsButton)
                     .DisposeWith(disposables);
 
 

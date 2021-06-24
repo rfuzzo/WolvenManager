@@ -89,7 +89,7 @@
 
                             </Button>
 
-                            <Button x:Name="ModsButton" CommandParameter="{x:Static constants:Constants+RoutingIDs.Mods }" Height="Auto">
+                            <Button x:Name="ModsButton" Height="Auto">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Library"
                                                                 Width="40"
@@ -99,8 +99,7 @@
 
                             </Button>
 
-                            <Button x:Name="SearchButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Search }" Height="Auto"
-                                    Visibility="Hidden">
+                            <Button x:Name="SearchButton" Height="Auto" Visibility="Hidden">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Search"
                                                                 Width="40"

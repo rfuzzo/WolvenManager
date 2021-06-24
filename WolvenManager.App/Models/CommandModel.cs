@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.CommandLine;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive.Joins;
 using System.Security.RightsManagement;
@@ -27,6 +29,8 @@ namespace WolvenManager.Models
 
         public override string ToString() => Name;
 
+        protected string GetPathArg(string input) => input.TrimStart('\"').TrimEnd('\"');
+
         protected string[] GetPathArgs(params string[] inputs)
         {
             List<string> result = new();
@@ -38,6 +42,8 @@ namespace WolvenManager.Models
 
             return result.ToArray();
         }
+
+        protected T[] GetEnumArgs<T>(ObservableCollection<object> input) where T : Enum => input.Cast<T>().ToArray();
     }
 
 
@@ -47,15 +53,28 @@ namespace WolvenManager.Models
     {
         public override string Name => "archive";
 
+        [Display(Order = 1)]
+        [Category("Required - Input (One or more)")]
         public string Folders { get; set; } = "";
+        [Display(Order = 2)]
+        [Category("Required - Input (One or more)")]
         public string Archives { get; set; } = "";
-        public string Pattern { get; set; }
-        public string Regex { get; set; }
+
+        [Display(Order = 3)]
+        [Category("Required - Option (One or more)")]
         public bool List { get; set; }
+        [Display(Order = 4)]
+        [Category("Required - Option (One or more)")]
         public bool Diff { get; set; }
 
+        [Category("Optional")]
+        public string Pattern { get; set; }
+        [Category("Optional")]
+        public string Regex { get; set; }
 
-        public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) => await Task.Run(() => consoleFunctions.ArchiveTask(GetPathArgs(Folders, Archives), Pattern, Regex, Diff, List));
+
+        public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) => await Task.Run(() =>
+            consoleFunctions.ArchiveTask(GetPathArgs(Folders, Archives), Pattern, Regex, Diff, List));
     }
 
     [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
@@ -65,13 +84,18 @@ namespace WolvenManager.Models
     {
         public override string Name => "unbundle";
 
+        [Display(Order = 1)]
+        [Category("Required - Input (One or more)")]
         public string Folders { get; set; } = "";
+        [Display(Order = 2)]
+        [Category("Required - Input (One or more)")]
         public string Archives { get; set; } = "";
-        public string Outpath { get; set; }
-        public string Pattern { get; set; }
-        public string Regex { get; set; }
-        public string Hash { get; set; }
-        public bool DEBUG_decompress { get; set; }
+
+        [Category("Optional")] public string Outpath { get; set; }
+        [Category("Optional")] public string Pattern { get; set; }
+        [Category("Optional")] public string Regex { get; set; }
+        [Category("Optional")] public string Hash { get; set; }
+        [Category("Optional")] public bool DEBUG_decompress { get; set; }
 
 
         // custom stuff
@@ -82,7 +106,7 @@ namespace WolvenManager.Models
 
         public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) =>
             await Task.Run(() =>
-                consoleFunctions.UnbundleTask(GetPathArgs(Folders, Archives), Outpath, Hash, Pattern, Regex, DEBUG_decompress));
+                consoleFunctions.UnbundleTask(GetPathArgs(Folders, Archives), GetPathArg(Outpath), Hash, Pattern, Regex, DEBUG_decompress));
     }
 
     [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
@@ -92,37 +116,40 @@ namespace WolvenManager.Models
     {
         public override string Name => "cr2w";
 
-        public string Folders { get; set; } = "";
-        public string Files { get; set; } = "";
-        public string Outpath { get; set; }
-        public string Pattern { get; set; }
-        public string Regex { get; set; }
-        public bool deserialize { get; set; }
-        public bool serialize { get; set; }
-        public ESerializeFormat format { get; set; }
+        [Display(Order = 1)] [Category("Required - Input (One or more)")] public string Folders { get; set; } = "";
+        [Display(Order = 2)] [Category("Required - Input (One or more)")] public string Files { get; set; } = "";
+
+        [Display(Order = 3)] [Category("Required - Option (One or more)")] public bool deserialize { get; set; }
+        [Display(Order = 4)] [Category("Required - Option (One or more)")] public bool serialize { get; set; }
+
+        [Category("Optional")] public string Outpath { get; set; }
+        [Category("Optional")] public string Pattern { get; set; }
+        [Category("Optional")] public string Regex { get; set; }
+        [Category("Optional")] public ESerializeFormat format { get; set; }
 
         public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) =>
             await Task.Run(() =>
-                consoleFunctions.Cr2wTask(GetPathArgs(Folders, Files), Outpath, deserialize, serialize, Pattern, Regex, format));
+                consoleFunctions.Cr2wTask(GetPathArgs(Folders, Files), GetPathArg(Outpath), deserialize, serialize, Pattern, Regex, format));
     }
 
     [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
     [Editor(nameof(Files), typeof(MultiFilePathEditor))]
     [Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
+    [Editor(nameof(forcebuffers), typeof(EnumArrayEditor<ECookedFileFormat>))]
     public class ExportCommandCommandModel : CommandModel
     {
         public override string Name => "export";
 
-        public string Folders { get; set; } = "";
-        public string Files { get; set; } = "";
-        public string Outpath { get; set; }
-        public bool flip { get; set; }
-        public EUncookExtension uext { get; set; }
-        public ECookedFileFormat[] forcebuffers { get; set; }
+        [Display(Order = 1)] [Category("Required - Input (One or more)")] public string Folders { get; set; } = "";
+        [Display(Order = 2)] [Category("Required - Input (One or more)")] public string Files { get; set; } = "";
+        [Category("Optional")] public string Outpath { get; set; }
+        [Category("Optional")] public bool flip { get; set; }
+        [Category("Optional")] public EUncookExtension uext { get; set; }
+        [Category("Optional")] public ObservableCollection<object> forcebuffers { get; set; }
 
         public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) =>
             await Task.Run(() =>
-                consoleFunctions.ExportTask(GetPathArgs(Folders, Files), Outpath, uext, flip, forcebuffers));
+                consoleFunctions.ExportTask(GetPathArgs(Folders, Files), GetPathArg(Outpath), uext, flip, GetEnumArgs<ECookedFileFormat>(forcebuffers)));
     }
 
     [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
@@ -132,14 +159,14 @@ namespace WolvenManager.Models
     {
         public override string Name => "import";
 
-        public string Folders { get; set; } = "";
-        public string Files { get; set; } = "";
-        public string Outpath { get; set; }
-        public bool keep { get; set; }
+        [Display(Order = 1)] [Category("Required - Input (One or more)")] public string Folders { get; set; } = "";
+        [Display(Order = 2)] [Category("Required - Input (One or more)")] public string Files { get; set; } = "";
+        [Category("Optional")] public string Outpath { get; set; }
+        [Category("Optional")] public bool keep { get; set; } = true;
 
         public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) =>
             await Task.Run(() =>
-                consoleFunctions.ImportTask(GetPathArgs(Folders, Files), Outpath, keep));
+                consoleFunctions.ImportTask(GetPathArgs(Folders, Files), GetPathArg(Outpath), keep));
     }
 
     [Editor(nameof(File), typeof(SingleFilePathEditor))]
@@ -148,14 +175,14 @@ namespace WolvenManager.Models
     {
         public override string Name => "oodle";
 
-        public string File { get; set; } = "";
-        public string Outpath { get; set; }
-        public bool decompress { get; set; }
-        public bool compress { get; set; }
+        [Display(Order = 1)] [Category("Required - Input (One or more)")] public string File { get; set; } = "";
+        [Display(Order = 2)] [Category("Required - Input (One or more)")] public string Outpath { get; set; }
+        [Display(Order = 3)] [Category("Required - Option (One or more)")] public bool decompress { get; set; }
+        [Display(Order = 4)] [Category("Required - Option (One or more)")] public bool compress { get; set; }
 
         public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) =>
             await Task.Run(() =>
-                consoleFunctions.OodleTask(File, Outpath, decompress, compress));
+                consoleFunctions.OodleTask(GetPathArg(File), GetPathArg(Outpath), decompress, compress));
     }
 
     [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
@@ -164,40 +191,45 @@ namespace WolvenManager.Models
     {
         public override string Name => "pack";
 
-        public string Folders { get; set; } = "";
-        public string Outpath { get; set; }
+        [Display(Order = 1)] [Category("Required - Input (One or more)")] public string Folders { get; set; } = "";
+        [Category("Optional")] public string Outpath { get; set; }
 
         public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) =>
             await Task.Run(() =>
-                consoleFunctions.PackTask(GetPathArgs(Folders), Outpath));
+                consoleFunctions.PackTask(GetPathArgs(Folders), GetPathArg(Outpath)));
     }
 
     [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
     [Editor(nameof(Files), typeof(MultiFilePathEditor))]
-    [Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
-    [Editor(nameof(raw), typeof(SingleFolderPathEditor))]
-    [Editor(nameof(forcebuffers), typeof(EnumArrayEditor<ECookedFileFormat>))]
+    [Editor(nameof(OutputDirectory), typeof(SingleFolderPathEditor))]
+    [Editor(nameof(RawOutputDirectory), typeof(SingleFolderPathEditor))]
+    [Editor(nameof(Forcebuffers), typeof(EnumArrayEditor<ECookedFileFormat>))]
     public class UncookCommandCommandModel : CommandModel
     {
         public override string Name => "uncook";
 
-        public string Folders { get; set; } = "";
-        public string Files { get; set; } = "";
-        public string Outpath { get; set; }
-        public string raw { get; set; }
-        public string Pattern { get; set; }
-        public string Regex { get; set; }
-        public bool flip { get; set; }
-        public bool unbundle { get; set; }
-        public EUncookExtension uext { get; set; }
-        public List<ECookedFileFormat> forcebuffers { get; set; }
+        [Display(Order = 1)] [Category("Required - Input (One or more)")] public string Folders { get; set; } = "";
+        [Display(Order = 2)] [Category("Required - Input (One or more)")] public string Files { get; set; } = "";
+        [Category("Optional")] public string OutputDirectory { get; set; }
+        [Category("Optional")] public string RawOutputDirectory { get; set; }
+        [Category("Optional")] public string Pattern { get; set; }
+        [Category("Optional")] public string Regex { get; set; }
+        [Category("Optional")] public bool flip { get; set; }
+        [Category("Optional")] public bool unbundle { get; set; }
+        [Category("Optional")] public EUncookExtension uext { get; set; }
+        [Category("Optional")] public ObservableCollection<object> Forcebuffers { get; set; } = new();
         public ulong Hash { get; set; }
 
 
-        public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) =>
+        public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions)
+        {
+            
+
             await Task.Run(() =>
                 consoleFunctions.UncookTask(GetPathArgs(
-                    Folders, Files), Outpath, raw, uext, flip, Hash, Pattern, Regex, unbundle, forcebuffers.ToArray()));
+                        Folders, Files), OutputDirectory, GetPathArg(RawOutputDirectory), uext, flip, Hash, Pattern, Regex,
+                    unbundle, GetEnumArgs<ECookedFileFormat>(Forcebuffers)));
+        }
     }
 
 }

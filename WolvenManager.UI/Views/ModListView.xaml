@@ -1,4 +1,4 @@
-﻿<reactiveUi:ReactiveUserControl x:TypeArguments="pageViewModels:ModListViewModel" 
+<reactiveUi:ReactiveUserControl x:TypeArguments="pageViewModels:ModListViewModel" 
                                 x:Class="WolvenManager.UI.Views.ModListView"
                                 xmlns:viewModels="clr-namespace:WolvenManager.App.ViewModels;assembly=WolvenManager.App"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -51,6 +51,7 @@
                                              />
         </Grid.Resources>
 
+        <!-- Header -->
         <GroupBox Grid.Row="0">
             <Grid >
                 <Grid.ColumnDefinitions>
@@ -59,14 +60,15 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" x:Name="InstallModButton">
+                <Button Grid.Column="0" x:Name="RefreshButton">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
-                            <iconPacks:BootstrapIcons Kind="Download"
+                            <iconPacks:PackIconBootstrapIcons Kind="ArrowCounterclockwise"
+                                                              Foreground="CornflowerBlue"
                                                       Width="40"
                                                       Height="40"
                             />
-                            <TextBlock Text="Install Mod" 
+                            <TextBlock Text="Refresh" 
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center" 
                                        FontSize="25" Padding="15,0,0,0"/>
@@ -86,36 +88,29 @@
 
         </GroupBox>
 
-
-
-
-
+        <!-- Main -->
         <Grid Grid.Row="1" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- ArchivesList -->
-            <syncfusion:SfTreeGrid Grid.Column="0"
+            <syncfusion:SfDataGrid Grid.Column="0"
                                    x:Name="ModList"
                                    Padding="5"
-                                   ChildPropertyName="SubFiles"
-                                   ShowCheckBox="True"
-                                   SelectionMode="Multiple"
+                                   SelectionMode="Extended"
                                    SelectedItems="{Binding SelectedModViewModels}"
+                                   ColumnSizer="AutoLastColumnFill"
+                                   AllowDraggingRows="True"
+                                   AllowDrop="True"
                                    >
 
-                <syncfusion:SfTreeGrid.Columns>
-                    <syncfusion:TreeGridTextColumn HeaderText="ID" 
-                                                   MappingName="Id"  
-                    />
-                    <syncfusion:TreeGridTextColumn HeaderText="NAME" 
-                                                   MappingName="Name"  
-                    />
-                </syncfusion:SfTreeGrid.Columns>
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn HeaderText="#" MappingName="LoadOrder" />
+                    <syncfusion:GridTextColumn HeaderText="NAME" MappingName="Name"  />
+                </syncfusion:SfDataGrid.Columns>
 
-            </syncfusion:SfTreeGrid>
+            </syncfusion:SfDataGrid>
 
             <!-- Conflicts -->
 

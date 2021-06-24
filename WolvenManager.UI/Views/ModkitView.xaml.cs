@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -48,9 +48,14 @@ namespace WolvenManager.UI.Views
                         view => view.PropertyGrid.SelectedObject)
                     .DisposeWith(disposables);
 
+                // button
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.RunCommand,
                         view => view.RunButton)
+                    .DisposeWith(disposables);
+                this.OneWayBind(ViewModel,
+                        viewModel => viewModel.TextBlockText,
+                        view => view.RunTextBlock.Text)
                     .DisposeWith(disposables);
 
             });

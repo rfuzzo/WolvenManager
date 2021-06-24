@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,9 @@ namespace WolvenManager.App.Services
     {
         public IObservable<IChangeSet<FileEntry, ulong>> Connect();
         public IObservable<IChangeSet<GameFileTreeNode, string>> ConnectHierarchy();
+        public IObservable<IChangeSet<Archive, string>> ConnectModArchives();
+
         void Load();
+        public IObservable<bool> IsLoaded { get; }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using WolvenManager.App.Attributes;
@@ -62,13 +63,25 @@ namespace WolvenManager.App.ViewModels.PageViewModels
         [Reactive]
         public ObservableCollection<CommandModel> Items { get; set; }
 
-        [Reactive]
-        public CommandModel SelectedItem { get; set; }
+        //[Reactive]
+        //public CommandModel SelectedItem { get; set; }
+        private CommandModel _selectedItem;
+        public CommandModel SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref this._selectedItem, value);
+                this.RaisePropertyChanged(nameof(TextBlockText));
+            }
+        }
+
+        public string TextBlockText => SelectedItem != null ? $"Run {SelectedItem.Name}" : "Run";
 
         #endregion
 
 
-       
+
 
     }
 }

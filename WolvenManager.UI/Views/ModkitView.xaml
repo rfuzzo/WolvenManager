@@ -1,4 +1,4 @@
-﻿<reactiveUi:ReactiveUserControl x:TypeArguments="pageViewModels:ModkitViewModel" 
+<reactiveUi:ReactiveUserControl x:TypeArguments="pageViewModels:ModkitViewModel" 
                                 x:Class="WolvenManager.UI.Views.ModkitView"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -29,9 +29,10 @@
                     <iconPacks:PackIconCodicons Kind="RunAll"
                                                 Width="40"
                                                 Height="40"
+                                                Foreground="YellowGreen"
                     />
-                    <TextBlock Text="Run Command" 
-                               HorizontalAlignment="Center"
+                    <TextBlock x:Name="RunTextBlock"
+                        HorizontalAlignment="Center"
                                VerticalAlignment="Center" 
                                FontSize="25" 
                                Padding="15,0,0,0"/>
@@ -49,6 +50,9 @@
 
             <syncfusion:SfNavigationDrawer.ContentView>
                 <syncfusion:PropertyGrid x:Name="PropertyGrid"
+                                         EnableGrouping="True"
+                                         SortDirection="{x:Null}"
+                                         LineColor="Gray"
                                          >
 
                 </syncfusion:PropertyGrid>

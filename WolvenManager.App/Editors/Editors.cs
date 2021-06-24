@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
@@ -18,7 +18,7 @@ namespace WolvenManager.App.Editors
     //Custom Editor for folder type properties.
     public class EnumArrayEditor<T> : ITypeEditor where T : Enum
     {
-        protected ComboBoxAdv _wrappedControl;
+        private ComboBoxAdv _wrappedControl;
         public void Attach(PropertyViewItem property, PropertyItem info)
         {
             if (info.CanWrite)

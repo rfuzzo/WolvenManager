@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -138,17 +138,12 @@ namespace WolvenManager.App.Services
             return config;
         }
 
-        public IObservable<bool> IsValid
-        {
-            get
-            {
-                var oodlePath = Path.Combine(GamePath, "bin", "x64", "oo2ext_7_win64.dll");
-                return this.WhenAnyValue(
-                    x => x.GamePath,
-                    (gamepath) => !string.IsNullOrEmpty(gamepath) && Directory.Exists(gamepath) && File.Exists(oodlePath)
-                );
-            }
-        }
+        public IObservable<bool> IsValid =>
+            this.WhenAnyValue(
+                x => x.GamePath,
+                (gamepath) => !string.IsNullOrEmpty(gamepath) &&
+                              Directory.Exists(gamepath) && File.Exists(Path.Combine(GamePath, "bin", "x64", "oo2ext_7_win64.dll"))
+            );
 
         public async Task Save()
         {

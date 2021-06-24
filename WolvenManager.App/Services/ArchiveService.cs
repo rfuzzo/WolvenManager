@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,9 +25,7 @@ namespace WolvenManager.App.Services
         private readonly ISettingsService _settingsService;
         private readonly INotificationService _notificationService;
 
-        
-        
-
+        [Reactive] public bool IsLoadedInternally { get; set; }
 
 
         public ArchiveService(
@@ -42,17 +40,21 @@ namespace WolvenManager.App.Services
 
             _fileCache = new SourceCache<FileEntry, ulong>(t => t.Key);
             _rootCache = new SourceCache<GameFileTreeNode, string>(t => t.FullPath);
+            _modArchiveCache = new SourceCache<Archive, string>(t => t.ArchiveAbsolutePath);
+
         }
 
+        public IObservable<bool> IsLoaded => this.WhenAnyValue(x => x.IsLoadedInternally, (b) => b == true);
+
+        #region Vanilla
+
         public ArchiveManager ArchiveManager { get; private set; }
-        [Reactive] public bool IsLoaded { get; set; }
 
         private readonly SourceCache<FileEntry, ulong> _fileCache;
         public IObservable<IChangeSet<FileEntry, ulong>> Connect() => _fileCache.Connect();
 
         private readonly SourceCache<GameFileTreeNode, string> _rootCache;
         public IObservable<IChangeSet<GameFileTreeNode, string>> ConnectHierarchy() => _rootCache.Connect();
-
 
         public void Load()
         {
@@ -91,8 +93,6 @@ namespace WolvenManager.App.Services
                 Serializer.Serialize(file, ArchiveManager);
             }
 
-            // connect
-            IsLoaded = true;
             _fileCache.Edit(innerCache =>
             {
                 innerCache.Clear();
@@ -106,8 +106,37 @@ namespace WolvenManager.App.Services
                 innerCache.AddOrUpdate(ArchiveManager.RootNode);
             });
 
+            ReloadMods();
+
+            _modArchiveCache.Edit(inner =>
+            {
+                inner.Clear();
+                inner.AddOrUpdate(ModArchiveManager.Archives.Values.Cast<Archive>().ToList());
+            });
+
+
+            IsLoadedInternally = true;
             _notificationService.Success("Finished Loading archives");
 
         }
+        #endregion
+
+
+        #region mods
+
+        public ArchiveManager ModArchiveManager { get; private set; }
+
+        public void ReloadMods()
+        {
+            ModArchiveManager = new ArchiveManager(_hashService);
+            var dir = _settingsService.ModsDir;
+            ModArchiveManager.LoadFromFolder(dir);
+        }
+
+        private readonly SourceCache<Archive, string> _modArchiveCache;
+        public IObservable<IChangeSet<Archive, string>> ConnectModArchives() => _modArchiveCache.Connect();
+
+        #endregion
+
     }
 }

@@ -56,16 +56,21 @@ namespace WolvenManager.App.ViewModels
             {
                 Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
             }, CanExecuteRouting);
+            RoutingModsCommand = ReactiveCommand.Create(delegate ()
+            {
+                Router.Navigate.Execute(Locator.Current.GetService<ModListViewModel>());
+            }, CanExecuteRoutingToMods);
+             RoutingSearchCommand = ReactiveCommand.Create(delegate ()
+            {
+                Router.Navigate.Execute(Locator.Current.GetService<SearchViewModel>());
+            }, CanExecuteRoutingToMods);
             RoutingCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar, CanExecuteRouting);
+
 
             ToggleBottomBarCommand = ReactiveCommand.Create(() =>
             {
                 IsBottomBarVisible = !IsBottomBarVisible;
             });
-
-
-
-
 
 
             //filter, sort and populate reactive list,
@@ -102,18 +107,21 @@ namespace WolvenManager.App.ViewModels
 
 
         private IObservable<bool> CanExecuteRouting => _settingsService.IsValid;
+        private IObservable<bool> CanExecuteRoutingToMods => _archiveService.IsLoaded.ObserveOn(RxApp.MainThreadScheduler);
 
 
         public ReactiveCommand<Unit, Unit> RoutingSettingsCommand { get; }
+        public ReactiveCommand<Unit, Unit> RoutingModsCommand { get; }
+        public ReactiveCommand<Unit, Unit> RoutingSearchCommand { get; }
         public ReactiveCommand<Constants.RoutingIDs, Unit> RoutingCommand { get; }
 
         private void ExecuteSidebar(Constants.RoutingIDs parameter)
         {
             switch (parameter)
             {
-                case Constants.RoutingIDs.Mods:
-                    Router.Navigate.Execute(Locator.Current.GetService<ModListViewModel>());
-                    break;
+                //case Constants.RoutingIDs.Mods:
+                //    Router.Navigate.Execute(Locator.Current.GetService<ModListViewModel>());
+                //    break;
                 case Constants.RoutingIDs.Modkit:
                     Router.Navigate.Execute(Locator.Current.GetService<ModkitViewModel>());
                     break;
@@ -122,9 +130,9 @@ namespace WolvenManager.App.ViewModels
                     break;
                 case Constants.RoutingIDs.Mod:
                     break;
-                case Constants.RoutingIDs.Search:
-                    Router.Navigate.Execute(Locator.Current.GetService<SearchViewModel>());
-                    break;
+                //case Constants.RoutingIDs.Search:
+                //    Router.Navigate.Execute(Locator.Current.GetService<SearchViewModel>());
+                //    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(parameter), parameter, null);
             }

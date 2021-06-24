@@ -1,53 +1,46 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Reactive;
+using System.Threading.Tasks;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using WolvenManager.App.Attributes;
+using WolvenManager.App.Services;
+using System.Reactive.Linq;
+using DynamicData;
 
 namespace WolvenManager.App.ViewModels.PageViewModels
 {
     [RoutingUrl(Constants.RoutingIDs.Mods)]
     public class ModListViewModel : PageViewModel
     {
-        public ModListViewModel() : base(typeof(ModListViewModel))
-        {
-           
+        private readonly IArchiveService _archiveService;
 
-            //InstallModCommand = ReactiveCommand.CreateFromTask(InstallMod);
+
+        private readonly ReadOnlyObservableCollection<ArchiveViewModel> _modArchiveCollection;
+        public ReadOnlyObservableCollection<ArchiveViewModel> ModArchiveCollection => _modArchiveCollection;
+
+        public ModListViewModel(
+            IArchiveService archiveService
+        ) : base(typeof(ModListViewModel))
+        {
+            _archiveService = archiveService;
+
+            RefreshModCommand = ReactiveCommand.CreateFromTask(Refresh);
             //ToggleSidebarCommand = ReactiveCommand.Create(() =>
             //{
             //    IsSideBarVisible = !IsSideBarVisible;
             //});
 
-
-
-            // load all archives
-            var basedir = Environment.CurrentDirectory;
-            
-
-            // check some stuff
-            var modDir = Path.Combine(basedir, "archive", "pc", "mod");
-            if (Directory.Exists(modDir))
-            {
-                var archives = Directory.GetFiles(modDir, "*.archive", SearchOption.AllDirectories);
-                foreach (var archivePath in archives)
-                {
-                    BindingData.Add(new ArchiveViewModel(archivePath));
-                }
-
-
-
-
-            }
+            var disposable = _archiveService.ConnectModArchives()
+                .Transform(_ => new ArchiveViewModel(_))
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out _modArchiveCollection)
+                .Subscribe();
         }
 
-        
-
-
         #region properties
-        
+
         [Reactive]
         public ArchiveViewModel SelectedModViewModel { get; set; }
 
@@ -55,11 +48,17 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
 
 
-        [Reactive]
-        public ObservableCollection<ArchiveViewModel> BindingData { get; set; } = new();
+        #endregion
 
-        public ReactiveCommand<Unit, Unit> InstallModCommand { get; }
+        #region commands
 
+        public ReactiveCommand<Unit, Unit> RefreshModCommand { get; }
+
+        private Task Refresh()
+        {
+
+            return Task.CompletedTask;
+        }
 
         #endregion
 

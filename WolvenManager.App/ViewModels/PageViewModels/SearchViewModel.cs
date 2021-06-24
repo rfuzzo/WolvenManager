@@ -66,6 +66,9 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
     }
 
+
+
+
     public class FileEntryViewModel : ReactiveObject
     {
         private readonly FileEntry _fileEntry;

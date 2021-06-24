@@ -32,7 +32,12 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             {
                 new ArchiveCommandModel (),
                 new UnbundleCommandModel(),
-
+                new CR2WCommandCommandModel(),
+                new ExportCommandCommandModel(),
+                new ImportCommandCommandModel(),
+                new OodleCommandCommandModel(),
+                new PackCommandCommandModel(),
+                new UncookCommandCommandModel(),
             };
 
             var canExecute = this.WhenAnyValue(

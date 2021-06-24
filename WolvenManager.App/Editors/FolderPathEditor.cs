@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Data;
 using MS.WindowsAPICodePack.Internal;
@@ -7,17 +9,57 @@ using Splat;
 using Syncfusion.Windows.Controls.Input;
 using Syncfusion.Windows.PropertyGrid;
 using Syncfusion.Windows.Tools.Controls;
+using WolvenKit.Common;
 using WolvenManager.App.ViewModels.PageViewModels;
 using PropertyItem = Syncfusion.Windows.PropertyGrid.PropertyItem;
 
 namespace WolvenManager.App.Editors
 {
+    //Custom Editor for folder type properties.
+    public class EnumArrayEditor<T> : ITypeEditor where T : Enum
+    {
+        protected ComboBoxAdv _wrappedControl;
+        public void Attach(PropertyViewItem property, PropertyItem info)
+        {
+            if (info.CanWrite)
+            {
+                var binding = new Binding("Value")
+                {
+                    Mode = BindingMode.TwoWay,
+                    Source = info,
+                    ValidatesOnExceptions = true,
+                    ValidatesOnDataErrors = true
+                };
+                BindingOperations.SetBinding(_wrappedControl, ComboBoxAdv.SelectedItemsProperty, binding);
+            }
+            else
+            {
+                _wrappedControl.IsEnabled = false;
+                var binding = new Binding("Value")
+                {
+                    Source = info,
+                    ValidatesOnExceptions = true,
+                    ValidatesOnDataErrors = true
+                };
+                BindingOperations.SetBinding(_wrappedControl, ComboBoxAdv.SelectedItemsProperty, binding);
+            }
+        }
 
+        public object Create(PropertyInfo propertyInfo)
+        {
+            var type = typeof(T);
+            var vals = type.GetEnumValues();
+            var values = vals.OfType<T>();
 
-
-
-
-
+            _wrappedControl = new ComboBoxAdv()
+            {
+                AllowMultiSelect = true,
+                ItemsSource = values.ToList()
+            };
+            return _wrappedControl;
+        }
+        public void Detach(PropertyViewItem property) { }
+    }
 
 
     //Custom Editor for folder type properties.

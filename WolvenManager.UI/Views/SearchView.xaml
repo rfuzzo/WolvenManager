@@ -10,6 +10,8 @@
                                 xmlns:pageViewModels="clr-namespace:WolvenManager.App.ViewModels.PageViewModels;assembly=WolvenManager.App"
                                 xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
                                 mc:Ignorable="d" 
+                                xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+                                syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=FluentDark}"
                                 d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,9 +32,7 @@
             <syncfusion:SfTreeNavigator.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding SubDirectories}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" 
-                                   Foreground="Green" FontWeight="Bold" 
-                                   VerticalAlignment="Center" Margin="18 0 0 0"/>
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="18 0 0 0"/>
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </syncfusion:SfTreeNavigator.ItemTemplate>

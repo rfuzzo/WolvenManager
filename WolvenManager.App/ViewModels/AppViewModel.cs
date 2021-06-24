@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Reactive;
@@ -111,7 +111,7 @@ namespace WolvenManager.App.ViewModels
         {
             switch (parameter)
             {
-                case Constants.RoutingIDs.Main:
+                case Constants.RoutingIDs.Mods:
                     Router.Navigate.Execute(Locator.Current.GetService<ModListViewModel>());
                     break;
                 case Constants.RoutingIDs.Modkit:
@@ -120,7 +120,7 @@ namespace WolvenManager.App.ViewModels
                 case Constants.RoutingIDs.Settings:
                     Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
                     break;
-                case Constants.RoutingIDs.Library:
+                case Constants.RoutingIDs.Mod:
                     break;
                 case Constants.RoutingIDs.Search:
                     Router.Navigate.Execute(Locator.Current.GetService<SearchViewModel>());

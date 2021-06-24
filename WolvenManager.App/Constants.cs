@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace WolvenManager.App
@@ -7,10 +7,10 @@ namespace WolvenManager.App
     {
         public enum RoutingIDs
         {
-            Main,
-            Modkit,
-            Library,
-            Search,
+            Mods,
+            Modkit, 
+            Mod,
+            Search, //disabled
             Settings
         }
 

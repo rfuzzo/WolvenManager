@@ -8,7 +8,7 @@ using WolvenManager.App.Attributes;
 
 namespace WolvenManager.App.ViewModels.PageViewModels
 {
-    [RoutingUrl(Constants.RoutingIDs.Main)]
+    [RoutingUrl(Constants.RoutingIDs.Mods)]
     public class ModListViewModel : PageViewModel
     {
         public ModListViewModel() : base(typeof(ModListViewModel))

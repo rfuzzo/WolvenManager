@@ -1,4 +1,4 @@
-﻿<reactiveUi:ReactiveUserControl 
+<reactiveUi:ReactiveUserControl 
     x:TypeArguments="pageViewModels:SearchViewModel"
     x:Class="WolvenManager.UI.Views.SearchView"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -20,7 +20,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <syncfusion:SfTreeNavigator Grid.Column="0"
+        <!--<syncfusion:SfTreeNavigator Grid.Column="0"
                                     Header="Depot"
                                     x:Name="LeftNavigation"
                                     NavigationMode="Default"
@@ -37,9 +37,24 @@
                 </HierarchicalDataTemplate>
             </syncfusion:SfTreeNavigator.ItemTemplate>
 
-        </syncfusion:SfTreeNavigator>
+        </syncfusion:SfTreeNavigator>-->
 
-        <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" />
+        <syncfusion:SfTreeGrid Grid.Column="0"
+            x:Name="LeftNavigation"
+            AllowFiltering="True"
+            SelectionChanged="LeftNavigation_OnSelectionChanged"
+            ChildPropertyName="SubDirectories"
+            AutoGenerateColumns="False"
+            ColumnSizer="AutoFillColumn"
+            FilterLevel="Extended"
+            >
+
+            <syncfusion:SfTreeGrid.Columns>
+                <syncfusion:TreeGridTextColumn MappingName="Name"/>
+            </syncfusion:SfTreeGrid.Columns>
+        </syncfusion:SfTreeGrid>
+
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
 
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -59,11 +74,11 @@
             >
 
             <syncfusion:SfDataGrid.Columns>
-                <syncfusion:GridNumericColumn  MappingName="Key"/>
+                    <syncfusion:GridTextColumn  MappingName="Key"/>
                 <syncfusion:GridTextColumn  MappingName="Name"/>
                 <syncfusion:GridTextColumn  MappingName="Extension"/>
                 <syncfusion:GridTextColumn  MappingName="Archive"/>
-                <syncfusion:GridTextColumn  MappingName="FullName"/>
+                <!--<syncfusion:GridTextColumn  MappingName="FullName"/>-->
 
             </syncfusion:SfDataGrid.Columns>
 

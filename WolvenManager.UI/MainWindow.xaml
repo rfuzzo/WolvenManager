@@ -1,4 +1,4 @@
-﻿<adonisControls:AdonisWindow 
+<adonisControls:AdonisWindow 
     x:Class="WolvenManager.UI.MainWindow"
     
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -79,7 +79,7 @@
                         <!-- Upper Buttons -->
                         <StackPanel Grid.Row="0">
 
-                            <Button x:Name="FilesButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Library }" Height="Auto" >
+                            <Button x:Name="FilesButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Mod }" Height="Auto" >
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Files"
                                                                 Width="40"
@@ -89,7 +89,7 @@
 
                             </Button>
 
-                            <Button x:Name="ModsButton" CommandParameter="{x:Static constants:Constants+RoutingIDs.Main }" Height="Auto">
+                            <Button x:Name="ModsButton" CommandParameter="{x:Static constants:Constants+RoutingIDs.Mods }" Height="Auto">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Library"
                                                                 Width="40"
@@ -99,7 +99,8 @@
 
                             </Button>
 
-                            <Button x:Name="SearchButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Search }" Height="Auto" >
+                            <Button x:Name="SearchButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Search }" Height="Auto"
+                                    Visibility="Hidden">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Search"
                                                                 Width="40"

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
@@ -22,11 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="X:\GitHub\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
-    <ProjectReference Include="X:\GitHub\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Editors\PathEditorView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -41,6 +36,12 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\Editors\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
+    <ProjectReference Include="..\..\WolvenKit\WolvenKit.Core\WolvenKit.Core.csproj" />
+    <ProjectReference Include="..\..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
   </ItemGroup>
 
 </Project>

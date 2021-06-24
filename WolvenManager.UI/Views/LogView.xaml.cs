@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ReactiveUI;
+using Splat;
 using Syncfusion.UI.Xaml.NavigationDrawer;
 using Syncfusion.Windows.PropertyGrid;
 using WolvenManager.App.ViewModels.Controls;
@@ -29,6 +30,9 @@ namespace WolvenManager.UI.Views
         public LogView()
         {
             InitializeComponent();
+
+            ViewModel = Locator.Current.GetService<LogViewModel>();
+            DataContext = ViewModel;
 
             this.WhenActivated(disposables =>
             {

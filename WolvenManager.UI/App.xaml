@@ -1,4 +1,4 @@
-﻿<Application x:Class="WolvenManager.UI.App"
+<Application x:Class="WolvenManager.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WolvenManager.UI"
@@ -13,6 +13,9 @@
                 <hc:Theme/>
                 <ResourceDictionary Source="pack://application:,,,/AdonisUI;component/ColorSchemes/Dark.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/Resources.xaml"/>
+
+                <ResourceDictionary Source="pack://application:,,,/Syncfusion.Themes.MaterialDark.WPF;Component/tabcontrolext/tabcontrolext.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

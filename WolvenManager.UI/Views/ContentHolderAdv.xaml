@@ -6,29 +6,35 @@
              xmlns:local="clr-namespace:WolvenManager.UI.Views"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-             xmlns:syncfusionskin ="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
-             syncfusionskin:SfSkinManager.Theme="{syncfusionskin:SkinManagerExtension ThemeName=FluentDark}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
 
+        
+
+        <syncfusion:TabControlExt Background="{DynamicResource Background}" Name="tabControl"
+                                  CloseButtonType="Hide"
+                                  >
+            <syncfusion:TabItemExt Header="ERROR LOG" >
+                <local:LogView/>
+            </syncfusion:TabItemExt>
+            <syncfusion:TabItemExt Header="MOD INTEGRATION" >
+                
+            </syncfusion:TabItemExt>
+        </syncfusion:TabControlExt>
+
         <Button
             x:Name="CloseButton"
-            Grid.Column="3"
-            Height="Auto">
+            Height="Auto"
+            VerticalAlignment="Top" HorizontalAlignment="Right"
+            >
             <Button.Content>
                 <iconPacks:PackIconCodicons
-                    Width="20"
-                    Height="20"
-                    Padding="3"
+                    Width="10"
+                    Height="10"
                     Kind="Close" />
             </Button.Content>
         </Button>
-
-        <syncfusion:TabControlExt Background="{DynamicResource Background}" Name="tabControl">
-            <syncfusion:TabItemExt Header="ERROR LOG" />
-            <syncfusion:TabItemExt Header="MOD INTEGRATION" />
-        </syncfusion:TabControlExt>
     </Grid>
 </UserControl>

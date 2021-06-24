@@ -18,7 +18,8 @@
     xmlns:constants="clr-namespace:WolvenManager.App;assembly=WolvenManager.App"
     xmlns:hc="https://handyorg.github.io/handycontrol" 
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
-    xmlns:converters="clr-namespace:WolvenManager.UI.Converters"
+    xmlns:converters="clr-namespace:WolvenManager.UI.Converters" 
+    xmlns:views="clr-namespace:WolvenManager.UI.Views"
     d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel}"
 
     PlaceTitleBarOverContent="False"
@@ -161,15 +162,8 @@
                         VerticalContentAlignment="Stretch" />
 
 
-                    <Grid Grid.Row="1" x:Name="ToolsHolder">
-                        <Grid.Resources>
-                            <converters:LogColorConverter x:Key="converter"/>
-                            <Style TargetType="syncfusion:VirtualizingCellsControl">
-                                <Setter Property="Background" Value="{Binding Path=Level, Converter={StaticResource converter}}" />
-                            </Style>
-                        </Grid.Resources>
-
-
+                    <Grid Grid.Row="1" x:Name="BottomContent">
+                        
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition Height="200" />
@@ -178,22 +172,8 @@
                         <GridSplitter Grid.Row="0" Height="5" HorizontalAlignment="Stretch"
                                       ResizeBehavior="CurrentAndNext" />
 
-                        <syncfusion:SfDataGrid Grid.Row="1" x:Name="ListView" 
-                                               AutoGenerateColumns="False" 
-                                               ColumnSizer="AutoLastColumnFill"
-                                               AllowFiltering="True"
-                                               AllowEditing="False"
-                                               AllowSorting="True"
-                        >
-                            <syncfusion:SfDataGrid.Columns>
-
-                                <syncfusion:GridTextColumn MappingName="Level" />
-
-                                <syncfusion:GridTextColumn MappingName="Message" />
-
-                            </syncfusion:SfDataGrid.Columns>
-                        </syncfusion:SfDataGrid>
-
+                        <views:ContentHolderAdv Grid.Row="1"/>
+                        
                     </Grid>
 
 

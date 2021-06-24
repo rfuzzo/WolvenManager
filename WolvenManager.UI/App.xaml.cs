@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ReactiveUI;
 using Splat;
 using WolvenKit.Common.Services;
@@ -23,6 +23,7 @@ using ProtoBuf.Meta;
 using WolvenKit.Common;
 using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Editors;
+using WolvenManager.App.ViewModels.Controls;
 
 namespace WolvenManager.UI
 {
@@ -110,6 +111,9 @@ namespace WolvenManager.UI
 
                     services.AddSingleton<SearchViewModel>();
                     services.AddSingleton<IViewFor<SearchViewModel>, SearchView>();
+
+                    services.AddSingleton<LogViewModel>();
+                    services.AddSingleton<IViewFor<LogViewModel>, LogView>();
 
                    
                 })

@@ -87,16 +87,10 @@ namespace WolvenManager.UI
                         x => x.RoutedViewHost.Router)
                     .DisposeWith(disposables);
 
-                // LogView
+                // bottom content holder
                 this.OneWayBind(ViewModel,
-                        viewModel => viewModel.LogEntries,
-                        view => view.ListView.ItemsSource)
-                    .DisposeWith(disposables);
-
-
-                this.OneWayBind(ViewModel,
-                    viewModel => viewModel.IsBottomBarVisible,
-                    view => view.ToolsHolder.Visibility)
+                    viewModel => viewModel.IsBottomContentVisible,
+                    view => view.BottomContent.Visibility)
                     .DisposeWith(disposables);
 
 

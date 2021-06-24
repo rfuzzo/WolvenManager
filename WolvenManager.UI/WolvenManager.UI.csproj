@@ -57,9 +57,4 @@
     </Page>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Dialogs\" />
-    <Folder Include="Views\Editors\" />
-  </ItemGroup>
-
 </Project>

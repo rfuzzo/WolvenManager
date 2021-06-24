@@ -69,20 +69,16 @@ namespace WolvenManager.App.ViewModels
 
             ToggleBottomBarCommand = ReactiveCommand.Create(() =>
             {
-                IsBottomBarVisible = !IsBottomBarVisible;
+                IsBottomContentVisible = !IsBottomContentVisible;
             });
 
 
-            //filter, sort and populate reactive list,
-            _loggerService.Connect() //connect to the cache
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Bind(out _logEntries)
-                .Subscribe();
+           
         }
 
         #region properties
 
-        [Reactive] public bool IsBottomBarVisible { get; set; } = true;
+        [Reactive] public bool IsBottomContentVisible { get; set; } = true;
 
         private string _title;
         public string Title
@@ -90,9 +86,6 @@ namespace WolvenManager.App.ViewModels
             get => _title;
             set => this.RaiseAndSetIfChanged(ref _title, value);
         }
-
-        private readonly ReadOnlyObservableCollection<LogEntry> _logEntries;
-        public ReadOnlyObservableCollection<LogEntry> LogEntries => _logEntries;
 
         public RoutingState Router { get; }
 

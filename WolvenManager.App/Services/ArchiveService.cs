@@ -58,8 +58,8 @@ namespace WolvenManager.App.Services
 
         public void Load()
         {
-            var archiveDir = Path.Combine(_settingsService.GamePath, "archive", "pc", "content");
-            var chachePath = Path.Combine(_settingsService.AppData, "archives.bin");
+            var archiveDir = Path.Combine(_settingsService.GetGameRootPath(), "archive", "pc", "content");
+            var chachePath = Path.Combine(_settingsService.GetAppData(), "archives.bin");
 
             try
             {
@@ -129,7 +129,7 @@ namespace WolvenManager.App.Services
         public void ReloadMods()
         {
             ModArchiveManager = new ArchiveManager(_hashService);
-            var dir = _settingsService.ModsDir;
+            var dir = _settingsService.GetModsDirectoryPath();
             ModArchiveManager.LoadFromFolder(dir);
         }
 

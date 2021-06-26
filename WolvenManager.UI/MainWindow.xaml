@@ -100,7 +100,7 @@
 
                             </Button>
 
-                            <Button x:Name="SearchButton" Height="Auto" Visibility="Visible">
+                            <Button x:Name="SearchButton" Height="Auto" Visibility="Hidden">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Search"
                                                                 Width="40"

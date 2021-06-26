@@ -39,7 +39,7 @@
 
         </syncfusion:SfTreeNavigator>-->
 
-        <syncfusion:SfTreeGrid Grid.Column="0"
+        <!--<syncfusion:SfTreeGrid Grid.Column="0"
             x:Name="LeftNavigation"
             AllowFiltering="True"
             SelectionChanged="LeftNavigation_OnSelectionChanged"
@@ -52,7 +52,15 @@
             <syncfusion:SfTreeGrid.Columns>
                 <syncfusion:TreeGridTextColumn MappingName="Name"/>
             </syncfusion:SfTreeGrid.Columns>
-        </syncfusion:SfTreeGrid>
+        </syncfusion:SfTreeGrid>-->
+
+        <syncfusion:SfTreeView Grid.Column="0"
+                               x:Name="LeftNavigation"
+                               ShowLines="True"
+                               SelectionChanged="LeftNavigation_OnSelectionChanged"
+                               ChildPropertyName="SubDirectories"
+                               
+        />
 
         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
 

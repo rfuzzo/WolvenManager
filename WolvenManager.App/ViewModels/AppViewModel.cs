@@ -13,6 +13,7 @@ using WolvenManager.App.ViewModels.PageViewModels;
 using DynamicData;
 using ReactiveUI.Fody.Helpers;
 using WolvenKit.Common.Tools.Oodle;
+using WolvenManager.App.Utility;
 
 namespace WolvenManager.App.ViewModels
 {
@@ -64,7 +65,8 @@ namespace WolvenManager.App.ViewModels
             {
                 Router.Navigate.Execute(Locator.Current.GetService<SearchViewModel>());
             }, CanExecuteRoutingToMods);
-            RoutingCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar, CanExecuteRouting);
+            RoutingCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar,
+                CanExecuteRouting);
 
 
             ToggleBottomBarCommand = ReactiveCommand.Create(() =>
@@ -148,7 +150,7 @@ namespace WolvenManager.App.ViewModels
                 else
                 {
                     // load oodle
-                    var oodlePath = Path.Combine(_settingsService.GamePath, "bin", "x64", "oo2ext_7_win64.dll");
+                    var oodlePath = _settingsService.GetOodlePath();
                     OodleLoadLib.Load(oodlePath);
 
                     // load managers
@@ -157,13 +159,14 @@ namespace WolvenManager.App.ViewModels
             });
 
             // navigate to settings if game is not found
-            if (string.IsNullOrEmpty(_settingsService.GamePath))
+            var foundGamePath = _settingsService.GetGameRootPath();
+            if (!string.IsNullOrEmpty(foundGamePath) && Directory.Exists(foundGamePath) && CommonHelpers.IsMainFolder(foundGamePath))
             {
-                Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
+                Router.Navigate.Execute(Locator.Current.GetService<SearchViewModel>());
             }
             else
             {
-                Router.Navigate.Execute(Locator.Current.GetService<ModkitViewModel>());
+                Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
             }
         }
 

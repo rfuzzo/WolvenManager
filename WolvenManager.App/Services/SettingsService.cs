@@ -12,31 +12,54 @@ using System.Text.Json.Serialization;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Extensions;
+using ReactiveUI.Validation.Helpers;
 using WolvenKit.Common.Tools.Oodle;
 using WolvenManager.Models;
 
 namespace WolvenManager.App.Services
 {
-    public class SettingsService : ReactiveObject, ISettingsService
+    public class SettingsService : ReactiveValidationObject, ISettingsService
     {
         #region fields
 
-        private string OodlePath;
+        private bool _isLoaded;
 
         #endregion
 
         public SettingsService()
         {
             this.WhenAnyPropertyChanged(
-                    nameof(GamePath)
+                    nameof(RED4ExecutablePath)
                 )
                 .Subscribe(async _ =>
                 {
                     if (_isLoaded)
                     {
-                        await Save();
+                        //await SaveAsync();
                     }
                 });
+
+            this.ValidationRule(
+                self => self.RED4ExecutablePath,
+                name =>
+                {
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        return false;
+                    }
+
+                    if (!File.Exists(name))
+                    {
+                        return false;
+                    }
+
+                    RED4ExecutablePath = name;
+                    Save();
+                    return true;
+
+                },
+                "File must be \"Cyberpunk2077.exe\"");
         }
 
         #region commands
@@ -47,67 +70,70 @@ namespace WolvenManager.App.Services
 
         #region properties
 
-        [Reactive]
-        public string GamePath { get; set; }
-
-        [JsonIgnore] private bool _isLoaded;
-
-
-        public string ScriptsDir
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(GamePath))
-                {
-                    return null;
-                }
-
-                var path = Path.Combine(GamePath, "r6", "scripts");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                return path;
-            }
-        }
-
-        public string ModsDir
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(GamePath))
-                {
-                    return null;
-                }
-
-                var path = Path.Combine(GamePath, "archive", "pc", "mod");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                return path;
-            }
-        }
-        public string AppData
-        {
-            get
-            {
-                var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-                var path = Path.Combine(appdata, "WolvenManager");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                return path;
-            }
-        }
+        [Reactive] public string RED4ExecutablePath { get; set; }
 
         #endregion
 
 
         #region methods
 
+        public string GetAppData()
+        {
+            var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            var path = Path.Combine(appdata, "WolvenManager");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return path;
+        }
+
+        public string GetOodlePath() => string.IsNullOrEmpty(GetGameRootPath()) ? null : Path.Combine(GetGameRootPath(), "bin", "x64", "oo2ext_7_win64.dll");
+
+        public string GetScriptsDirectoryPath()
+        {
+            if (string.IsNullOrEmpty(GetGameRootPath()))
+            {
+                return null;
+            }
+
+            var path = Path.Combine(GetGameRootPath(), "r6", "scripts");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return path;
+        }
+
+        public string GetModsDirectoryPath()
+        {
+            if (string.IsNullOrEmpty(GetGameRootPath()))
+            {
+                return null;
+            }
+
+            var path = Path.Combine(GetGameRootPath(), "archive", "pc", "mod");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return path;
+        }
+
+        public string GetGameRootPath()
+        {
+            if (string.IsNullOrEmpty(RED4ExecutablePath))
+            {
+                return null;
+            }
+
+            var fi = new FileInfo(RED4ExecutablePath);
+            return fi.Directory is {Parent: {Parent: { }}} ? Path.Combine(fi.Directory.Parent.Parent.FullName) : null;
+        }
 
 
 
@@ -121,7 +147,11 @@ namespace WolvenManager.App.Services
                 if (File.Exists(Constants.ConfigurationPath))
                 {
                     var jsonString = File.ReadAllText(Constants.ConfigurationPath);
-                    config = JsonSerializer.Deserialize<SettingsService>(jsonString);
+                    var dto = JsonSerializer.Deserialize<SettingsDto>(jsonString);
+                    if (dto != null)
+                    {
+                        config = FromDto(dto);
+                    }
                 }
             }
             catch (Exception)
@@ -138,38 +168,64 @@ namespace WolvenManager.App.Services
             return config;
         }
 
+        private static SettingsService FromDto(SettingsDto dto)
+        {
+            var config = new SettingsService()
+            {
+                RED4ExecutablePath = dto.RED4ExecutablePath
+            };
+            return config;
+        }
+
+
         public IObservable<bool> IsValid =>
             this.WhenAnyValue(
-                x => x.GamePath,
-                (gamepath) => !string.IsNullOrEmpty(gamepath) &&
-                              Directory.Exists(gamepath) && File.Exists(Path.Combine(GamePath, "bin", "x64", "oo2ext_7_win64.dll"))
+                x => x.RED4ExecutablePath,
+                (exepath) => !string.IsNullOrEmpty(exepath) &&
+                              File.Exists(exepath)
             );
 
-        public async Task Save()
+        public void Save()
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            };
+            var json = JsonSerializer.Serialize(new SettingsDto(this), options);
+            File.WriteAllText(Constants.ConfigurationPath ,json);
+        }
+
+        public async Task SaveAsync()
         {
             await using var createStream = File.Create(Constants.ConfigurationPath);
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
             };
-            await JsonSerializer.SerializeAsync(createStream, this, options);
-        }
-
-        public void CheckSelf(SettingsService config)
-        {
-            if (!Directory.Exists(config.GamePath))
-            {
-
-            }
-
-            this.GamePath = config.GamePath;
+            await JsonSerializer.SerializeAsync(createStream, new SettingsDto(this), options);
         }
 
         #endregion methods
 
+    }
 
+    public class SettingsDto : ISettingsDto
+    {
+        private readonly SettingsService _settings;
 
-        
+        public SettingsDto()
+        {
+            
+        }
+
+        public SettingsDto(SettingsService settings)
+        {
+            _settings = settings;
+
+            RED4ExecutablePath = _settings.RED4ExecutablePath;
+        }
+
+        public string RED4ExecutablePath { get; set; }
 
     }
 }

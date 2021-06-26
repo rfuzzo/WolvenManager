@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,22 +7,26 @@ using ReactiveUI.Fody.Helpers;
 
 namespace WolvenManager.App.Services
 {
-    public interface ISettingsService
+    public interface ISettingsDto
     {
-        #region Properties
-        string GamePath { get; set; }
-
-        public string ScriptsDir { get; }
-        public string ModsDir { get; }
-        public string AppData { get; }
-
-        #endregion Properties
+        public string RED4ExecutablePath { get; set; }
 
 
+
+    }
+
+    public interface ISettingsService : ISettingsDto
+    {
         #region Methods
 
-        public Task Save();
-        //public bool Load();
+        public Task SaveAsync();
+
+        string GetGameRootPath();
+        string GetScriptsDirectoryPath();
+        string GetModsDirectoryPath();
+        string GetAppData();
+
+        string GetOodlePath();
 
         #endregion Methods
 

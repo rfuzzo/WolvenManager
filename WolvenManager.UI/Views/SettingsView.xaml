@@ -1,4 +1,4 @@
-﻿<reactiveUi:ReactiveUserControl x:TypeArguments="pageViewModels:SettingsViewModel" 
+<reactiveUi:ReactiveUserControl x:TypeArguments="pageViewModels:SettingsViewModel" 
                                 x:Class="WolvenManager.UI.Views.SettingsView"
                                 xmlns:viewModels="clr-namespace:WolvenManager.App.ViewModels;assembly=WolvenManager.App"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,6 +9,7 @@
                                 xmlns:reactiveUi="http://reactiveui.net"
                                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                                 xmlns:pageViewModels="clr-namespace:WolvenManager.App.ViewModels.PageViewModels;assembly=WolvenManager.App"
+                                xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
                                 d:DataContext="{d:DesignInstance Type=pageViewModels:SettingsViewModel}"
                                 mc:Ignorable="d" 
                                 d:DesignHeight="250" d:DesignWidth="400"
@@ -35,17 +36,21 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        
-                        <TextBox Grid.Column="0" x:Name="GameDirTextBox" Text="" Padding="1"/>
-                        <Button Grid.Column="1" x:Name="GameDirButton" Padding="5" CommandParameter="{x:Static pageViewModels:SettingsViewModel.GameDirParameter}">
-                            <Button.Content>
-                                <iconPacks:PackIconCodicons Kind="Search"
-                                                            Width="40"
-                                                            Height="20"
-                                                            Padding="5"/>
-                            </Button.Content>
+
+                        <TextBox Grid.Column="0"
+                                 x:Name="GameDirTextBox"
+                                 Padding="1"
+                                 
+                                 />
+                        <Button Grid.Column="1" x:Name="GameDirButton" Padding="5"
+                                CommandParameter="{x:Static pageViewModels:SettingsViewModel.GameDirParameter}">
+                            <iconPacks:PackIconCodicons Kind="Search"
+                                                        Width="40"
+                                                        Height="20"
+                                                        Padding="5"/>
                         </Button>
                     </Grid>
+                    <Label x:Name="GameDirTextBoxValidationLabel" Foreground="OrangeRed"/>
                 </StackPanel>
 
             </GroupBox>

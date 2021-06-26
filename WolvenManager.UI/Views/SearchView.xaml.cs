@@ -117,5 +117,24 @@ namespace WolvenManager.UI.Views
                     .Select(_ => new FileEntryViewModel(_ as FileEntry));
             }
         }
+
+        private void LeftNavigation_OnSelectionChanged(object? sender, ItemSelectionChangedEventArgs e)
+        {
+            if (!e.AddedItems.Any())
+            {
+                return;
+            }
+
+            if (ViewModel == null)
+            {
+                return;
+            }
+
+            if (e.AddedItems.First() is GameFileTreeNode model )
+            {
+                ViewModel.SelectedFiles = model.Files.Values.SelectMany(_ => _)
+                    .Select(_ => new FileEntryViewModel(_ as FileEntry));
+            }
+        }
     }
 }

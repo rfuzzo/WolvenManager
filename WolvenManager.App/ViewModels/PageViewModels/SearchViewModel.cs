@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,7 +34,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
         public ReadOnlyObservableCollection<FileEntryViewModel> BindingData => _bindingData;
 
         private readonly ReadOnlyObservableCollection<GameFileTreeNode> _bindingHData;
-        public ReadOnlyObservableCollection<GameFileTreeNode> BindingHData => _bindingHData;
+        [Reactive] public ObservableCollection<GameFileTreeNode> BindingHData { get; set; } = new();
 
         [Reactive] public GameFileTreeNode SelectedItem { get; set; }
         [Reactive] public IEnumerable<FileEntryViewModel> SelectedFiles { get; set; }
@@ -61,9 +61,13 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             var disposable = _archiveService.ConnectHierarchy()
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out _bindingHData)
-                .Subscribe();
+                .Subscribe(OnNext);
         }
 
+        private void OnNext(IChangeSet<GameFileTreeNode, string> obj)
+        {
+            BindingHData = new ObservableCollection<GameFileTreeNode>(_bindingHData);
+        }
     }
 
 

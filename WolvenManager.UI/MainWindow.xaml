@@ -80,7 +80,8 @@
                         <!-- Upper Buttons -->
                         <StackPanel Grid.Row="0">
 
-                            <Button x:Name="FilesButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Mod }" Height="Auto" >
+                            <Button x:Name="FilesButton"  CommandParameter="{x:Static constants:Constants+RoutingIDs.Mod }" Height="Auto"
+                                    Visibility="Collapsed">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Files"
                                                                 Width="40"
@@ -100,7 +101,7 @@
 
                             </Button>
 
-                            <Button x:Name="SearchButton" Height="Auto" Visibility="Hidden">
+                            <Button x:Name="SearchButton" Height="Auto" Visibility="Collapsed">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="Search"
                                                                 Width="40"

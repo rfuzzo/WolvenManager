@@ -126,7 +126,8 @@ namespace WolvenManager.App.Editors
             return _wrappedControl;
         }
     }
-//Custom Editor for file type properties.
+
+    //Custom Editor for file type properties.
     public class SingleFilePathEditor : FolderPathEditorBase
     {
         public override object Create(PropertyInfo propertyInfo)

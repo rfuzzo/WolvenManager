@@ -10,7 +10,7 @@ namespace WolvenManager.App.Utility
     public static class CommonHelpers
     {
         public static bool IsMainFolder(string path) =>
-            Directory.Exists(path) && Path.GetDirectoryName(path).Equals("Cyberpunk 2077");
+            Directory.Exists(path) && new DirectoryInfo(path).Name.Equals("Cyberpunk 2077");
 
     }
 }

@@ -29,7 +29,7 @@ namespace WolvenManager.Models
 
         public override string ToString() => Name;
 
-        protected string GetPathArg(string input) => input.TrimStart('\"').TrimEnd('\"');
+        protected string GetPathArg(string input) => string.IsNullOrEmpty(input) ? "" : input.TrimStart('\"').TrimEnd('\"');
 
         protected string[] GetPathArgs(params string[] inputs)
         {

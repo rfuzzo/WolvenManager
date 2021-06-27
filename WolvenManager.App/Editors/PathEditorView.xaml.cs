@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows;
@@ -58,7 +58,14 @@ namespace WolvenManager.App.Editors
             Text = "";
             foreach (var s in results)
             {
-                Text += $"\"{s}\"";
+                if (_multiselect)
+                {
+                    Text += $"\"{s}\";";
+                }
+                else
+                {
+                    Text = s;
+                }
             }
 
         }

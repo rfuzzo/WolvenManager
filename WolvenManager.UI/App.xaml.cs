@@ -115,6 +115,9 @@ namespace WolvenManager.UI
                     services.AddSingleton<LogViewModel>();
                     services.AddSingleton<IViewFor<LogViewModel>, LogView>();
 
+                    services.AddSingleton<ModIntegrationViewModel>();
+                    services.AddSingleton<IViewFor<ModIntegrationViewModel>, ModIntegrationView>();
+
                    
                 })
                 .UseEnvironment(Environments.Development)

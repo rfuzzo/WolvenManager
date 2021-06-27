@@ -20,7 +20,7 @@
                 <local:LogView/>
             </syncfusion:TabItemExt>
             <syncfusion:TabItemExt Header="MOD INTEGRATION" >
-                
+                <local:ModIntegrationView/>
             </syncfusion:TabItemExt>
         </syncfusion:TabControlExt>
 

@@ -10,9 +10,8 @@ namespace WolvenManager.App.Services
     public interface ISettingsDto
     {
         public string RED4ExecutablePath { get; set; }
-
-
-
+        public string LocalModFolder { get; set; }
+        public bool IsModIntegrationEnabled { get; set; }
     }
 
     public interface ISettingsService : ISettingsDto

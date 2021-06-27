@@ -162,7 +162,7 @@ namespace WolvenManager.App.ViewModels
             var foundGamePath = _settingsService.GetGameRootPath();
             if (!string.IsNullOrEmpty(foundGamePath) && Directory.Exists(foundGamePath) && CommonHelpers.IsMainFolder(foundGamePath))
             {
-                Router.Navigate.Execute(Locator.Current.GetService<SearchViewModel>());
+                Router.Navigate.Execute(Locator.Current.GetService<ModkitViewModel>());
             }
             else
             {

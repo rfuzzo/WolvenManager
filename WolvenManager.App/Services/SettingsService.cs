@@ -58,8 +58,27 @@ namespace WolvenManager.App.Services
                     Save();
                     return true;
 
-                },
-                "File must be \"Cyberpunk2077.exe\"");
+                }, "File must be \"Cyberpunk2077.exe\"");
+
+            this.ValidationRule(
+                self => self.LocalModFolder,
+                name =>
+                {
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        return false;
+                    }
+
+                    if (!Directory.Exists(name))
+                    {
+                        return false;
+                    }
+
+                    LocalModFolder = name;
+                    Save();
+                    return true;
+
+                }, "Not a valid folder path");
         }
 
         #region commands
@@ -71,6 +90,16 @@ namespace WolvenManager.App.Services
         #region properties
 
         [Reactive] public string RED4ExecutablePath { get; set; }
+
+
+
+        [Reactive]
+        public bool IsModIntegrationEnabled
+        {
+            get;
+            set;
+        }
+        [Reactive] public string LocalModFolder { get; set; }
 
         #endregion
 
@@ -168,14 +197,7 @@ namespace WolvenManager.App.Services
             return config;
         }
 
-        private static SettingsService FromDto(SettingsDto dto)
-        {
-            var config = new SettingsService()
-            {
-                RED4ExecutablePath = dto.RED4ExecutablePath
-            };
-            return config;
-        }
+       
 
 
         public IObservable<bool> IsValid =>
@@ -207,6 +229,17 @@ namespace WolvenManager.App.Services
 
         #endregion methods
 
+        private static SettingsService FromDto(SettingsDto dto)
+        {
+            var config = new SettingsService()
+            {
+                RED4ExecutablePath = dto.RED4ExecutablePath,
+                LocalModFolder = dto.LocalModFolder,
+                IsModIntegrationEnabled = dto.IsModIntegrationEnabled,
+            };
+            return config;
+        }
+
     }
 
     public class SettingsDto : ISettingsDto
@@ -223,9 +256,12 @@ namespace WolvenManager.App.Services
             _settings = settings;
 
             RED4ExecutablePath = _settings.RED4ExecutablePath;
+            LocalModFolder = _settings.LocalModFolder;
+            IsModIntegrationEnabled = _settings.IsModIntegrationEnabled;
         }
 
         public string RED4ExecutablePath { get; set; }
-
+        public string LocalModFolder { get; set; }
+        public bool IsModIntegrationEnabled { get; set; }
     }
 }

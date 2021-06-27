@@ -123,7 +123,7 @@ namespace WolvenManager.App.Services
 
         #region methods
 
-        public string GetAppData()
+        private static string GetAppDataFolder()
         {
             var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
@@ -135,6 +135,12 @@ namespace WolvenManager.App.Services
 
             return path;
         }
+
+        private static string GetConfigurationPath() => Path.Combine(GetAppDataFolder(), "config.json");
+
+
+        public string GetAppData() => GetAppDataFolder();
+
 
         public string GetOodlePath() => string.IsNullOrEmpty(GetGameRootPath()) ? null : Path.Combine(GetGameRootPath(), "bin", "x64", "oo2ext_7_win64.dll");
 
@@ -206,9 +212,9 @@ namespace WolvenManager.App.Services
 
             try
             {
-                if (File.Exists(Constants.ConfigurationPath))
+                if (File.Exists(GetConfigurationPath()))
                 {
-                    var jsonString = File.ReadAllText(Constants.ConfigurationPath);
+                    var jsonString = File.ReadAllText(GetConfigurationPath());
                     var dto = JsonSerializer.Deserialize<SettingsDto>(jsonString);
                     if (dto != null)
                     {
@@ -230,7 +236,7 @@ namespace WolvenManager.App.Services
             return config;
         }
 
-       
+        
 
 
         public IObservable<bool> IsValid =>
@@ -247,12 +253,12 @@ namespace WolvenManager.App.Services
                 WriteIndented = true,
             };
             var json = JsonSerializer.Serialize(new SettingsDto(this), options);
-            File.WriteAllText(Constants.ConfigurationPath ,json);
+            File.WriteAllText(GetConfigurationPath(), json);
         }
 
         public async Task SaveAsync()
         {
-            await using var createStream = File.Create(Constants.ConfigurationPath);
+            await using var createStream = File.Create(GetConfigurationPath());
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,

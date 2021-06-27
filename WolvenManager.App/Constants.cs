@@ -14,16 +14,5 @@ namespace WolvenManager.App
             Settings
         }
 
-        public static string ConfigurationPath
-        {
-            get
-            {
-                var path = AppDomain.CurrentDomain.BaseDirectory;
-                var filename = Path.GetFileNameWithoutExtension(path);
-                var dir = Path.GetDirectoryName(path);
-                return Path.Combine(dir ?? "", filename + "config.json");
-            }
-        }
-
     }
 }

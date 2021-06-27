@@ -30,13 +30,13 @@ namespace WolvenManager.App.Services
         public SettingsService()
         {
             this.WhenAnyPropertyChanged(
-                    nameof(RED4ExecutablePath)
+                    nameof(IsModIntegrationEnabled)
                 )
-                .Subscribe(async _ =>
+                .Subscribe(_ =>
                 {
                     if (_isLoaded)
                     {
-                        //await SaveAsync();
+                        Save();
                     }
                 });
 
@@ -112,12 +112,8 @@ namespace WolvenManager.App.Services
 
 
 
-        [Reactive]
-        public bool IsModIntegrationEnabled
-        {
-            get;
-            set;
-        }
+        [Reactive] public bool IsModIntegrationEnabled { get; set; }
+
         [Reactive] public string LocalModFolder { get; set; }
 
         [Reactive] public string LocalRawFolder { get; set; }

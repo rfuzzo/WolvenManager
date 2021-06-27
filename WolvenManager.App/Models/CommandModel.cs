@@ -138,8 +138,18 @@ namespace WolvenManager.Models
                 }
             }
 
-            var chosenextension = GetEnumArgs<ECookedFileFormat>(Extensions);
+            var chosenextension = GetEnumArgs<ERedExtension>(Extensions);
+            if (chosenextension.Any())
+            {
+                var innerRegex = "";
+                foreach (var format in chosenextension)
+                {
+                    innerRegex += $".*\\.{format}|";
+                }
 
+                Regex = $"^{innerRegex.TrimEnd('|')}$";
+            }
+            
 
             await Task.Run(() =>
                 consoleFunctions.UnbundleTask(inputs.ToArray(), GetPathArg(Outpath), Hash, Pattern, Regex,
@@ -256,6 +266,18 @@ namespace WolvenManager.Models
                 {
                     inputs.Add(fullArchivePath);
                 }
+            }
+
+            var chosenextension = GetEnumArgs<ERedExtension>(Extensions);
+            if (chosenextension.Any())
+            {
+                var innerRegex = "";
+                foreach (var format in chosenextension)
+                {
+                    innerRegex += $".*\\.{format}|";
+                }
+
+                Regex = $"^{innerRegex.TrimEnd('|')}$";
             }
 
             await Task.Run(() =>

@@ -28,13 +28,14 @@ namespace WolvenManager.App.ViewModels.Controls
             _settingsService = settingsService;
 
             ModDirBrowseCommand = ReactiveCommand.Create<string>(ModDirBrowseExecute);
+            RawDirBrowseCommand = ReactiveCommand.Create<string>(RawDirBrowseExecute);
         }
 
         #region properties
 
 
         public ReactiveCommand<string, Unit> ModDirBrowseCommand { get; }
-        //[Reactive] public bool IsEnabled { get; set; }
+        public ReactiveCommand<string, Unit> RawDirBrowseCommand { get; }
 
         #endregion
 
@@ -62,6 +63,29 @@ namespace WolvenManager.App.ViewModels.Controls
             }
 
             _settingsService.LocalModFolder = dir;
+        }
+        private void RawDirBrowseExecute(string param)
+        {
+            var openFolder = new CommonOpenFileDialog
+            {
+                AllowNonFileSystemItems = true,
+                Multiselect = false,
+                IsFolderPicker = true,
+                Title = "Select folders"
+            };
+
+            if (openFolder.ShowDialog() != CommonFileDialogResult.Ok)
+            {
+                return;
+            }
+
+            var dir = openFolder.FileNames.FirstOrDefault();
+            if (string.IsNullOrEmpty(dir))
+            {
+                return;
+            }
+
+            _settingsService.LocalRawFolder = dir;
         }
 
         #endregion

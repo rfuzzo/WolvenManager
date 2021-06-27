@@ -17,7 +17,7 @@
         <Grid.Resources>
             <converters:LogColorConverter x:Key="converter"/>
             <Style TargetType="syncfusion:VirtualizingCellsControl">
-                <Setter Property="Background" Value="{Binding Path=Level, Converter={StaticResource converter}}" />
+                <Setter Property="Foreground" Value="{Binding Path=Level, Converter={StaticResource converter}}" />
             </Style>
         </Grid.Resources>
 

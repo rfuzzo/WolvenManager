@@ -11,54 +11,68 @@
                                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                                 mc:Ignorable="d" 
                                 d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+    <ScrollViewer>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
 
-        </Grid.RowDefinitions>
+            </Grid.RowDefinitions>
 
-        
-        <!-- Enable Mod integration -->
-        <GroupBox Grid.Row="0">
-            <StackPanel>
-                <CheckBox Grid.Column="0" Padding="10, 0" VerticalAlignment="Center" x:Name="IsEnabledCheckbox">
-                    <Label Content="Use mod integration"/>
-                </CheckBox>
-                <TextBlock Grid.Column="0" Text="Lock command parameters to the selected mod folder" Padding="1" VerticalAlignment="Center"/>
-            </StackPanel>
-        </GroupBox>
+            
 
-        <StackPanel Grid.Row="1" x:Name="MainPanel">
+            <!-- Enable Mod integration -->
+            <GroupBox Grid.Row="0">
+                <StackPanel>
+                    <CheckBox Grid.Column="0" Padding="10, 0" VerticalAlignment="Center" x:Name="IsEnabledCheckbox">
+                        <Label Content="Use mod integration"/>
+                    </CheckBox>
+                    <TextBlock Grid.Column="0" Text="Lock command parameters to the selected mod folder" Padding="1" VerticalAlignment="Center"/>
+                </StackPanel>
+            </GroupBox>
+
+
+            <StackPanel  Grid.Row="1"  x:Name="MainPanel">
             <!-- Mod Folder -->
             <GroupBox>
                 <StackPanel>
                     <Label Grid.Column="0" Content="Mod Directory"  Padding="1" VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="0" Text="Your mod folder" Padding="1" VerticalAlignment="Center"/>
-
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBox Grid.Column="0"
-                                 x:Name="GameDirTextBox"
-                                 Padding="1"
-                                 
-                        />
-                        <Button Grid.Column="1" x:Name="GameDirButton" Padding="5"
-                                >
-                            <iconPacks:PackIconCodicons Kind="Search"
-                                                        Width="40"
-                                                        Height="20"
-                                                        Padding="5"/>
+                        <TextBox Grid.Column="0" x:Name="GameDirTextBox" Padding="1"/>
+                        <Button Grid.Column="1" x:Name="GameDirButton" Padding="5">
+                            <iconPacks:PackIconCodicons Kind="Search" Width="40" Height="20" Padding="5"/>
                         </Button>
                     </Grid>
                     <Label x:Name="GameDirTextBoxValidationLabel" Foreground="OrangeRed"/>
                 </StackPanel>
             </GroupBox>
+            <!-- Raw Folder -->
+            <GroupBox>
+                <StackPanel>
+                    <Label Grid.Column="0" Content="Raw Files Directory"  Padding="1" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="Your folder for raw files (dds etc. )" Padding="1" VerticalAlignment="Center"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
+                        <TextBox Grid.Column="0" x:Name="RawDirTextBox" Padding="1"/>
+                        <Button Grid.Column="1" x:Name="RawDirButton" Padding="5">
+                            <iconPacks:PackIconCodicons Kind="Search" Width="40" Height="20" Padding="5"/>
+                        </Button>
+                    </Grid>
+                    <Label x:Name="RawDirTextBoxValidationLabel" Foreground="OrangeRed"/>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
-    </Grid>
+       
+        </Grid>
+    </ScrollViewer>
 </reactiveUi:ReactiveUserControl>

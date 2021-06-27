@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Helpers;
 
 namespace WolvenManager.App.Services
 {
@@ -11,6 +12,7 @@ namespace WolvenManager.App.Services
     {
         public string RED4ExecutablePath { get; set; }
         public string LocalModFolder { get; set; }
+        public string LocalRawFolder { get; set; }
         public bool IsModIntegrationEnabled { get; set; }
     }
 
@@ -23,6 +25,7 @@ namespace WolvenManager.App.Services
         string GetGameRootPath();
         string GetScriptsDirectoryPath();
         string GetModsDirectoryPath();
+        string GetArchiveDirectoryPath();
         string GetAppData();
 
         string GetOodlePath();
@@ -30,5 +33,6 @@ namespace WolvenManager.App.Services
         #endregion Methods
 
         IObservable<bool> IsValid { get; }
+        
     }
 }

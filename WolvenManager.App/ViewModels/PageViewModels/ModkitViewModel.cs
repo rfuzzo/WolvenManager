@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -23,22 +24,42 @@ namespace WolvenManager.App.ViewModels.PageViewModels
     {
         private readonly IConsoleFunctions _consoleFunctions;
         private readonly ILoggerService _loggerService;
+        private readonly ISettingsService _settingsService;
+        private readonly INotificationService _notificationService;
 
-        public ModkitViewModel(IConsoleFunctions consoleFunctions, ILoggerService loggerService) : base(typeof(ModkitViewModel))
+        
+        
+
+        
+        
+
+
+        public ModkitViewModel(
+            IConsoleFunctions consoleFunctions,
+            ILoggerService loggerService,
+            ISettingsService settingsService,
+            INotificationService notificationService
+            ) : base(typeof(ModkitViewModel))
         {
             _consoleFunctions = consoleFunctions;
             _loggerService = loggerService;
+            _settingsService = settingsService;
+            _notificationService = notificationService;
 
             Items = new ObservableCollection<CommandModel>
             {
-                new ArchiveCommandModel (),
-                new UnbundleCommandModel(),
-                new CR2WCommandCommandModel(),
-                new ExportCommandCommandModel(),
-                new ImportCommandCommandModel(),
-                new OodleCommandCommandModel(),
-                new PackCommandCommandModel(),
-                new UncookCommandCommandModel(),
+                new UnbundleCommandModel(_settingsService, _notificationService),
+                new UncookCommandCommandModel(_settingsService, _notificationService),
+
+                new PackCommandCommandModel(_settingsService, _notificationService),
+
+                new ExportCommandCommandModel(_settingsService, _notificationService),
+                new ImportCommandCommandModel(_settingsService, _notificationService),
+
+                new ArchiveCommandModel(_settingsService, _notificationService),
+                new CR2WCommandCommandModel(_settingsService, _notificationService),
+
+                new OodleCommandCommandModel(_settingsService, _notificationService),
             };
 
             var canExecute = this.WhenAnyValue(
@@ -47,6 +68,8 @@ namespace WolvenManager.App.ViewModels.PageViewModels
                     (CommandModel)userName != null);
 
             RunCommand = ReactiveCommand.CreateFromTask(RunAsync, canExecute);
+
+            SelectedItem = Items.First();
 
         }
 

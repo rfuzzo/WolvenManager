@@ -52,7 +52,8 @@
                 <syncfusion:PropertyGrid x:Name="PropertyGrid"
                                          EnableGrouping="True"
                                          SortDirection="{x:Null}"
-                                         LineColor="Gray"
+                                         LineColor="DodgerBlue"
+                                         AutoGeneratingPropertyGridItem="PropertyGrid_OnAutoGeneratingPropertyGridItem"
                                          >
 
                 </syncfusion:PropertyGrid>

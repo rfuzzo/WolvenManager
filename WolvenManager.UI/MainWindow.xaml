@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveui="http://reactiveui.net"
 
-    Height="600" Width="1000"
+    Height="800" Width="1200"
     MinHeight="450" MinWidth="800"
     mc:Ignorable="d"
     xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
@@ -167,7 +167,7 @@
                         
                         <Grid.RowDefinitions>
                             <RowDefinition/>
-                            <RowDefinition Height="200" />
+                            <RowDefinition Height="300" />
                         </Grid.RowDefinitions>
 
                         <GridSplitter Grid.Row="0" Height="5" HorizontalAlignment="Stretch"

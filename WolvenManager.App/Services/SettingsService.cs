@@ -79,6 +79,25 @@ namespace WolvenManager.App.Services
                     return true;
 
                 }, "Not a valid folder path");
+            this.ValidationRule(
+                self => self.LocalRawFolder,
+                name =>
+                {
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        return false;
+                    }
+
+                    if (!Directory.Exists(name))
+                    {
+                        return false;
+                    }
+
+                    LocalRawFolder = name;
+                    Save();
+                    return true;
+
+                }, "Not a valid folder path");
         }
 
         #region commands
@@ -100,6 +119,8 @@ namespace WolvenManager.App.Services
             set;
         }
         [Reactive] public string LocalModFolder { get; set; }
+
+        [Reactive] public string LocalRawFolder { get; set; }
 
         #endregion
 
@@ -129,6 +150,22 @@ namespace WolvenManager.App.Services
             }
 
             var path = Path.Combine(GetGameRootPath(), "r6", "scripts");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return path;
+        }
+
+        public string GetArchiveDirectoryPath()
+        {
+            if (string.IsNullOrEmpty(GetGameRootPath()))
+            {
+                return null;
+            }
+
+            var path = Path.Combine(GetGameRootPath(), "archive", "pc", "content");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -236,6 +273,7 @@ namespace WolvenManager.App.Services
                 RED4ExecutablePath = dto.RED4ExecutablePath,
                 LocalModFolder = dto.LocalModFolder,
                 IsModIntegrationEnabled = dto.IsModIntegrationEnabled,
+                LocalRawFolder = dto.LocalRawFolder,
             };
             return config;
         }
@@ -258,10 +296,12 @@ namespace WolvenManager.App.Services
             RED4ExecutablePath = _settings.RED4ExecutablePath;
             LocalModFolder = _settings.LocalModFolder;
             IsModIntegrationEnabled = _settings.IsModIntegrationEnabled;
+            LocalRawFolder = _settings.LocalRawFolder;
         }
 
         public string RED4ExecutablePath { get; set; }
         public string LocalModFolder { get; set; }
+        public string LocalRawFolder { get; set; }
         public bool IsModIntegrationEnabled { get; set; }
     }
 }

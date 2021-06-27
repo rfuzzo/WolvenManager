@@ -39,7 +39,6 @@ namespace WolvenManager.UI.Views
                         viewModel => viewModel._settingsService.IsModIntegrationEnabled,
                         view => view.MainPanel.IsEnabled)
                     .DisposeWith(disposables);
-
                 this.Bind(ViewModel,
                         viewModel => viewModel._settingsService.IsModIntegrationEnabled,
                         view => view.IsEnabledCheckbox.IsChecked)
@@ -51,15 +50,28 @@ namespace WolvenManager.UI.Views
                         view => view.GameDirTextBox.Text)
                     .DisposeWith(disposables);
                 this.BindValidation(ViewModel,
-                        vm => vm._settingsService.RED4ExecutablePath,
+                        vm => vm._settingsService.LocalModFolder,
                         view => view.GameDirTextBoxValidationLabel.Content)
                     .DisposeWith(disposables);
-
-                // commands
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.ModDirBrowseCommand,
                         view => view.GameDirButton)
                     .DisposeWith(disposables);
+
+                // Raw Folder Textbox
+                this.Bind(ViewModel,
+                        viewModel => viewModel._settingsService.LocalRawFolder,
+                        view => view.RawDirTextBox.Text)
+                    .DisposeWith(disposables);
+                this.BindValidation(ViewModel,
+                        vm => vm._settingsService.LocalRawFolder,
+                        view => view.RawDirTextBoxValidationLabel.Content)
+                    .DisposeWith(disposables);
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.RawDirBrowseCommand,
+                        view => view.RawDirButton)
+                    .DisposeWith(disposables);
+
 
             });
         }

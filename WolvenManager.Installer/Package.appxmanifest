@@ -9,7 +9,7 @@
   <Identity
     Name="e3b3bc7b-b594-42e6-9119-87e6877b4458"
     Publisher="CN=rfuzzo"
-    Version="1.0.3.0" />
+    Version="1.0.5.0" />
 
   <Properties>
     <DisplayName>Wolven Manager</DisplayName>

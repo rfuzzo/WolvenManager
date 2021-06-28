@@ -369,7 +369,25 @@ namespace WolvenManager.Models
         [Display(Order = 1)]
         [Category("Required - Input (One or more)")]
         [Description("Input folder path. Can be a folder or a list of folders")]
-        public string Folders { get; set; } = "";
+        public string Folders
+        {
+            get => _settingsService.IsModIntegrationEnabled
+                ? string.IsNullOrEmpty(_settingsService.LocalRawFolder) || !Directory.Exists(_settingsService.LocalRawFolder)
+                    ? _settingsService.LocalModFolder
+                    : _settingsService.LocalRawFolder
+                : _folders;
+            set
+            {
+                if (!_settingsService.IsModIntegrationEnabled)
+                {
+                    _folders = value;
+                }
+                else
+                {
+                    _settingsService.LocalRawFolder = value;
+                }
+            }
+        }
 
         [Display(Order = 2)]
         [Category("Required - Input (One or more)")]
@@ -377,6 +395,8 @@ namespace WolvenManager.Models
         public string Files { get; set; } = "";
 
         private string _outpath;
+        private string _folders = "";
+
         [Category("Optional")]
         [Description("Output directory. If used with --keep, this is the folder for the redengine files to rebuild.")]
         public string Outpath
@@ -409,6 +429,9 @@ namespace WolvenManager.Models
             settingsService
                 .WhenAnyValue(x => x.LocalModFolder)
                 .Subscribe(s => this.RaisePropertyChanged(nameof(Outpath)));
+            settingsService
+                .WhenAnyValue(x => x.LocalRawFolder)
+                .Subscribe(s => this.RaisePropertyChanged(nameof(_folders)));
         }
     }
 

@@ -41,10 +41,6 @@
     <Compile Update="Editors\PathEditorControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\SettingsView - Copy.xaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>SettingsView.xaml.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>

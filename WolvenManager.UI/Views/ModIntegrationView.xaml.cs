@@ -57,6 +57,10 @@ namespace WolvenManager.UI.Views
                         viewModel => viewModel.ModDirBrowseCommand,
                         view => view.GameDirButton)
                     .DisposeWith(disposables);
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.ModDirOpenCommand,
+                        view => view.GameDirOpenButton)
+                    .DisposeWith(disposables);
 
                 // Raw Folder Textbox
                 this.Bind(ViewModel,
@@ -71,7 +75,10 @@ namespace WolvenManager.UI.Views
                         viewModel => viewModel.RawDirBrowseCommand,
                         view => view.RawDirButton)
                     .DisposeWith(disposables);
-
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.RawDirOpenCommand,
+                        view => view.GameDirOpenButton)
+                    .DisposeWith(disposables);
 
             });
         }

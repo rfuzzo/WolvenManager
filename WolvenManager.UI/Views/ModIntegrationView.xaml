@@ -42,11 +42,15 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBox Grid.Column="0" x:Name="GameDirTextBox" Padding="1"/>
-                        <Button Grid.Column="1" x:Name="GameDirButton" Padding="5">
+                            <Button Grid.Column="1" x:Name="GameDirButton" Padding="5" ToolTip="Browse">
                             <iconPacks:PackIconCodicons Kind="Search" Width="40" Height="20" Padding="5"/>
+                        </Button>
+                        <Button Grid.Column="2" x:Name="GameDirOpenButton" Padding="5" ToolTip="Go to folder">
+                            <iconPacks:PackIconCodicons Kind="FolderOpened" Width="40" Height="20" Padding="5"/>
                         </Button>
                     </Grid>
                     <Label x:Name="GameDirTextBoxValidationLabel" Foreground="OrangeRed"/>
@@ -61,13 +65,17 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBox Grid.Column="0" x:Name="RawDirTextBox" Padding="1"/>
-                        <Button Grid.Column="1" x:Name="RawDirButton" Padding="5">
+                            <TextBox Grid.Column="0" x:Name="RawDirTextBox" Padding="1"/>
+                            <Button Grid.Column="1" x:Name="RawDirButton" Padding="5" ToolTip="Browse">
                             <iconPacks:PackIconCodicons Kind="Search" Width="40" Height="20" Padding="5"/>
                         </Button>
-                    </Grid>
+                        <Button Grid.Column="2" x:Name="RawDirOpenButton" Padding="5" ToolTip="Go to folder">
+                            <iconPacks:PackIconCodicons Kind="FolderOpened" Width="40" Height="20" Padding="5"/>
+                        </Button>
+                        </Grid>
                     <Label x:Name="RawDirTextBoxValidationLabel" Foreground="OrangeRed"/>
                 </StackPanel>
             </GroupBox>

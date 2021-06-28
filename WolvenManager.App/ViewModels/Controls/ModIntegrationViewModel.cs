@@ -1,5 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -29,6 +31,8 @@ namespace WolvenManager.App.ViewModels.Controls
 
             ModDirBrowseCommand = ReactiveCommand.Create<string>(ModDirBrowseExecute);
             RawDirBrowseCommand = ReactiveCommand.Create<string>(RawDirBrowseExecute);
+            ModDirOpenCommand = ReactiveCommand.Create<string>(ModDirOpenExecute);
+            RawDirOpenCommand = ReactiveCommand.Create<string>(RawDirOpenExecute);
         }
 
         #region properties
@@ -36,10 +40,28 @@ namespace WolvenManager.App.ViewModels.Controls
 
         public ReactiveCommand<string, Unit> ModDirBrowseCommand { get; }
         public ReactiveCommand<string, Unit> RawDirBrowseCommand { get; }
+        public ReactiveCommand<string, Unit> ModDirOpenCommand { get; }
+        public ReactiveCommand<string, Unit> RawDirOpenCommand { get; }
 
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// Show the given folder in the windows explorer.
+        /// </summary>
+        /// <param name="path">The file/folder to show.</param>
+        public static void ShowFolderInExplorer(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                Process.Start("explorer.exe", "\"" + path + "\"");
+            }
+        }
+
+        private void ModDirOpenExecute(string param) => ShowFolderInExplorer(_settingsService.LocalModFolder);
+
+        private void RawDirOpenExecute(string param) => ShowFolderInExplorer(_settingsService.LocalRawFolder);
 
         private void ModDirBrowseExecute(string param)
         {

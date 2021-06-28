@@ -131,13 +131,34 @@
                         <!-- Lower Buttons -->
                         <StackPanel Grid.Row="2">
 
-                            <Button x:Name="SettingsButton"  Height="Auto" >
+                            <!--<Menu Name="SettingsMenu">
+                                <MenuItem>
+                                    <MenuItem.Header>
+                                        <iconPacks:PackIconCodicons Kind="SettingsGear"
+                                                                    Width="40"
+                                                                    Height="40"
+                                                                    Padding="5"/>
+                                    </MenuItem.Header>
+                                    <MenuItem Header="Settings"/>
+                                    <MenuItem Header="Check for Updates..."/>
+                                </MenuItem>
+                            </Menu>-->
+
+                            <Button x:Name="SettingsButton"  Height="Auto" Click="SettingsButton_OnClick">
                                 <Button.Content>
                                     <iconPacks:PackIconCodicons Kind="SettingsGear"
                                                                 Width="40"
                                                                 Height="40"
                                                                 Padding="5"/>
                                 </Button.Content>
+
+                                <Button.ContextMenu>
+                                    <ContextMenu x:Name="SettingsContextMenu">
+                                        <MenuItem Header="Settings" x:Name="SettingsMenuItem"/>
+                                        <MenuItem Header="Check for Updates..." x:Name="CheckForUpdatesMenuItem"/>
+
+                                    </ContextMenu>
+                                </Button.ContextMenu>
                             </Button>
 
                         </StackPanel>

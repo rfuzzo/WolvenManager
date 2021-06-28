@@ -69,11 +69,6 @@ namespace WolvenManager.UI
                         viewModel => viewModel.RoutingSearchCommand,
                         view => view.SearchButton)
                     .DisposeWith(disposables);
-                // settings
-                this.BindCommand(ViewModel,
-                        viewModel => viewModel.RoutingSettingsCommand,
-                        view => view.SettingsButton)
-                    .DisposeWith(disposables);
                 // mods
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.RoutingModsCommand,
@@ -93,7 +88,15 @@ namespace WolvenManager.UI
                     view => view.BottomContent.Visibility)
                     .DisposeWith(disposables);
 
-
+                // settings
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.RoutingSettingsCommand,
+                        view => view.SettingsMenuItem)
+                    .DisposeWith(disposables);
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.CheckForUpdatesCommand,
+                        view => view.CheckForUpdatesMenuItem)
+                    .DisposeWith(disposables);
             });
 
 
@@ -126,5 +129,6 @@ namespace WolvenManager.UI
 
         //    return new ZipModifyArgs(output);
         //}
+        private void SettingsButton_OnClick(object sender, RoutedEventArgs e) => SettingsContextMenu.IsOpen = true;
     }
 }

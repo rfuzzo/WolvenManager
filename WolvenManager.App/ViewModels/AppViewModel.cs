@@ -1,10 +1,13 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using ReactiveUI;
 using Splat;
 using WolvenKit.Common.Services;
@@ -74,9 +77,33 @@ namespace WolvenManager.App.ViewModels
                 IsBottomContentVisible = !IsBottomContentVisible;
             });
 
+            CheckForUpdatesCommand = ReactiveCommand.CreateFromTask(CheckForUpdatesAsync);
 
-           
+
         }
+
+        private async Task CheckForUpdatesAsync()
+        {
+            var http = new HttpClient();
+            var versionString = await http.GetStringAsync(new Uri("https://rfuzzo.github.io/Installer/latest.txt"));
+            var latestVersion = new Version(versionString);
+
+            //get my own version to compare against latest.
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var myVersion = new Version(fvi.ProductVersion);
+
+            if (latestVersion > myVersion)
+            {
+                if (System.Windows.MessageBox.Show(
+                    $"You've got version {myVersion} of WolvenManager. Would you like to update to the latest version {latestVersion}?",
+                    "Update SecretStartup?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    
+                }
+            }
+        }
+
 
         #region properties
 
@@ -106,6 +133,7 @@ namespace WolvenManager.App.ViewModels
 
 
         public ReactiveCommand<Unit, Unit> RoutingSettingsCommand { get; }
+        public ReactiveCommand<Unit, Unit> CheckForUpdatesCommand { get; }
         public ReactiveCommand<Unit, Unit> RoutingModsCommand { get; }
         public ReactiveCommand<Unit, Unit> RoutingSearchCommand { get; }
         public ReactiveCommand<Constants.RoutingIDs, Unit> RoutingCommand { get; }

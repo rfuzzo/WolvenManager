@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenManager.UI", "WolvenM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenManager.App", "WolvenManager.App\WolvenManager.App.csproj", "{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}"
 EndProject
-Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "WolvenManager.Installer", "WolvenManager.Installer\WolvenManager.Installer.wapproj", "{223E6547-141D-4DC6-BB5B-0E165F737CFD}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A7E81C31-BB0E-49F4-B74C-A23AD8F23C5E}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -19,6 +17,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Common", "..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj", "{CAA3997E-B52A-4F68-AFA9-944780EA90B7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Modkit", "..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj", "{AB2989CB-CEC4-49C5-8BB6-F9D7BBE774DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InnoSetup", "InnoSetup", "{AD2326C0-A795-4C98-B5C3-0186DA8CA07D}"
+	ProjectSection(SolutionItems) = preProject
+		InnoSetup\installer.iss = InnoSetup\installer.iss
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,36 +77,6 @@ Global
 		{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}.Release|x64.Build.0 = Release|Any CPU
 		{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}.Release|x86.ActiveCfg = Release|Any CPU
 		{B69B9FBB-1A42-4CC9-BB3C-E41AC6A26E2E}.Release|x86.Build.0 = Release|Any CPU
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|ARM.ActiveCfg = Debug|ARM
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|ARM.Build.0 = Debug|ARM
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|ARM.Deploy.0 = Debug|ARM
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|ARM64.ActiveCfg = Debug|ARM64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|ARM64.Build.0 = Debug|ARM64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|ARM64.Deploy.0 = Debug|ARM64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|x64.ActiveCfg = Debug|x64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|x64.Build.0 = Debug|x64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|x64.Deploy.0 = Debug|x64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|x86.ActiveCfg = Debug|x86
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|x86.Build.0 = Debug|x86
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Debug|x86.Deploy.0 = Debug|x86
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|ARM.ActiveCfg = Release|ARM
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|ARM.Build.0 = Release|ARM
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|ARM.Deploy.0 = Release|ARM
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|ARM64.ActiveCfg = Release|ARM64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|ARM64.Build.0 = Release|ARM64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|ARM64.Deploy.0 = Release|ARM64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|x64.ActiveCfg = Release|x64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|x64.Build.0 = Release|x64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|x64.Deploy.0 = Release|x64
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|x86.ActiveCfg = Release|x86
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|x86.Build.0 = Release|x86
-		{223E6547-141D-4DC6-BB5B-0E165F737CFD}.Release|x86.Deploy.0 = Release|x86
 		{0FD81E73-F205-45BB-B6DE-B65C0F92E2B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0FD81E73-F205-45BB-B6DE-B65C0F92E2B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FD81E73-F205-45BB-B6DE-B65C0F92E2B5}.Debug|ARM.ActiveCfg = Debug|Any CPU

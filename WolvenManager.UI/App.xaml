@@ -16,7 +16,7 @@
                 <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/Resources.xaml"/>
 
                 <ResourceDictionary Source="pack://application:,,,/Syncfusion.Themes.MaterialDark.WPF;Component/tabcontrolext/tabcontrolext.xaml" />
-
+                
             </ResourceDictionary.MergedDictionaries>
 
             

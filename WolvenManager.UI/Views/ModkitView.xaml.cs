@@ -62,7 +62,7 @@ namespace WolvenManager.UI.Views
 
         }
 
-        private void PropertyGrid_OnAutoGeneratingPropertyGridItem(object? sender, AutoGeneratingPropertyGridItemEventArgs e)
+        private void PropertyGrid_OnAutoGeneratingPropertyGridItem(object sender, AutoGeneratingPropertyGridItemEventArgs e)
         {
             // hide certain inherited properties from propertygrid
             if (e.DisplayName is

@@ -5,10 +5,14 @@
 #define MyAppPublisher "WolvenKit"
 #define MyAppURL "https://github.com/rfuzzo/WolvenManager"
 #define MyAppExeName "WolvenManager.UI.exe"
-#define MyAppPath "..\publish\full\" + MyAppExeName
-#define MyAppVersion RemoveFileExt(GetVersionNumbersString(MyAppPath))
+
 
 [Setup]
+#ifndef MyAppBaseDir
+# define MyAppBaseDir "..\..\publish\full\"
+#endif
+#define MyAppPath MyAppBaseDir + MyAppExeName
+#define MyAppVersion RemoveFileExt(GetVersionNumbersString(MyAppPath))
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{7ADB3751-78A3-4983-BB58-5795FC8A24FE}
@@ -40,7 +44,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: {#MyAppPath}; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\publish\full\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#MyAppBaseDir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

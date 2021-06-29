@@ -40,11 +40,11 @@ jobs:
       uses: naminodarie/get-net-sdk-project-versions-action@v1
       id: get-version
       with:
-        proj-path: .\WolvenManager.UI\WolvenManager.UI.csproj
+        proj-path: ./WolvenManager.UI/WolvenManager.UI.csproj
     - run: echo "${{steps.get-version.outputs.version}}"
       
     - name: Publish
-      run: dotnet publish .\WolvenManager.UI\WolvenManager.UI.csproj -o publish\full\wolvenmanager-${{steps.get-version.outputs.version}} --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
+      run: dotnet publish ./WolvenManager.UI/WolvenManager.UI.csproj -o publish/full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
       
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
@@ -59,7 +59,7 @@ jobs:
         dest: wolvenmanager-${{steps.get-version.outputs.version}}.zip
         
     - name: Create Installer
-      run: ./InnoSetup/iscc.exe ./InnoSetup/installer.iss
+      run: ./WolvenManager.Installer/InnoSetup/ISCC/ISCC.exe /dMyAppBaseDir="../../publish/full/" ./WolvenManager.Installer/InnoSetup/installer.iss
         
     - name: Upload App
       uses: actions/upload-release-asset@v1
@@ -76,6 +76,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{needs.create-release.outputs.upload_url }}
-        asset_path: ./InnoSetup/Output/WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
+        asset_path: ./WolvenManager.Installer/InnoSetup/Output/WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
         asset_name: WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
         asset_content_type: application/zip

@@ -9,6 +9,10 @@ namespace WolvenManager.Installer
     {
         static int Main(string[] args)
         {
+
+
+
+
             var rootCommand = new RootCommand
             {
                 new Option<FileInfo>(

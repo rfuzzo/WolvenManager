@@ -46,9 +46,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
-    <ProjectReference Include="..\..\WolvenKit\WolvenKit.Core\WolvenKit.Core.csproj" />
-    <ProjectReference Include="..\..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
+    <ProjectReference Include="..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
+    <ProjectReference Include="..\WolvenKit\WolvenKit.Core\WolvenKit.Core.csproj" />
+    <ProjectReference Include="..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
   </ItemGroup>
 
 </Project>

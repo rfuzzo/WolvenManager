@@ -12,11 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Core", "..\WolvenKit\WolvenKit.Core\WolvenKit.Core.csproj", "{0FD81E73-F205-45BB-B6DE-B65C0F92E2B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Core", "WolvenKit\WolvenKit.Core\WolvenKit.Core.csproj", "{0FD81E73-F205-45BB-B6DE-B65C0F92E2B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Common", "..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj", "{CAA3997E-B52A-4F68-AFA9-944780EA90B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Common", "WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj", "{CAA3997E-B52A-4F68-AFA9-944780EA90B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Modkit", "..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj", "{AB2989CB-CEC4-49C5-8BB6-F9D7BBE774DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Modkit", "WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj", "{AB2989CB-CEC4-49C5-8BB6-F9D7BBE774DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InnoSetup", "InnoSetup", "{AD2326C0-A795-4C98-B5C3-0186DA8CA07D}"
 	ProjectSection(SolutionItems) = preProject

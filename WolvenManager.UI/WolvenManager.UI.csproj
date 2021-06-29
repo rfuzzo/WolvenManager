@@ -9,6 +9,7 @@
       <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <DebugType>embedded</DebugType>
+      <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>

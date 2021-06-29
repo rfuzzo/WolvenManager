@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>TaskBarIcon.ico</ApplicationIcon>
-      <Version>1.0.0.1</Version>
+      <Version>1.0.0.2</Version>
       <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <DebugType>embedded</DebugType>

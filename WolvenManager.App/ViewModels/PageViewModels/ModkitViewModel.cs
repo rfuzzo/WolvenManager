@@ -24,27 +24,16 @@ namespace WolvenManager.App.ViewModels.PageViewModels
     {
         private readonly IConsoleFunctions _consoleFunctions;
         private readonly ILoggerService _loggerService;
-        private readonly ISettingsService _settingsService;
-        private readonly INotificationService _notificationService;
 
-        
-        
-
-        
-        
 
 
         public ModkitViewModel(
             IConsoleFunctions consoleFunctions,
-            ILoggerService loggerService,
-            ISettingsService settingsService,
-            INotificationService notificationService
-            ) : base(typeof(ModkitViewModel))
+            ILoggerService loggerService
+        ) : base(typeof(ModkitViewModel))
         {
             _consoleFunctions = consoleFunctions;
             _loggerService = loggerService;
-            _settingsService = settingsService;
-            _notificationService = notificationService;
 
             Items = new ObservableCollection<CommandModel>
             {

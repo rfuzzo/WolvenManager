@@ -15,7 +15,6 @@ namespace WolvenManager.App.ViewModels
 {
     public class ArchiveViewModel : ReactiveObject
     {
-        private readonly IHashService _hashService;
         private readonly Archive _archive;
 
         public ArchiveViewModel(Archive archive)

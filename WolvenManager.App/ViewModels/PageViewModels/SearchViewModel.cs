@@ -30,7 +30,9 @@ namespace WolvenManager.App.ViewModels.PageViewModels
         private readonly ILoggerService _loggerService;
         private readonly IArchiveService _archiveService;
 
+#pragma warning disable 649
         private readonly ReadOnlyObservableCollection<FileEntryViewModel> _bindingData;
+#pragma warning restore 649
         public ReadOnlyObservableCollection<FileEntryViewModel> BindingData => _bindingData;
 
         private readonly ReadOnlyObservableCollection<GameFileTreeNode> _bindingHData;
@@ -48,7 +50,6 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             _consoleFunctions = consoleFunctions;
             _loggerService = loggerService;
             _archiveService = archiveService;
-
 
 
             //var disposable = _archiveService.Connect()

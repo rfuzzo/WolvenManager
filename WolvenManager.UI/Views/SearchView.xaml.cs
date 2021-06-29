@@ -99,7 +99,7 @@ namespace WolvenManager.UI.Views
                 .Select(_ => new FileEntryViewModel(_ as FileEntry));
         }
 
-        private void LeftNavigation_OnSelectionChanged(object? sender, GridSelectionChangedEventArgs e)
+        private void LeftNavigation_OnSelectionChanged(object sender, GridSelectionChangedEventArgs e)
         {
             if (!e.AddedItems.Any())
             {
@@ -118,7 +118,7 @@ namespace WolvenManager.UI.Views
             }
         }
 
-        private void LeftNavigation_OnSelectionChanged(object? sender, ItemSelectionChangedEventArgs e)
+        private void LeftNavigation_OnSelectionChanged(object sender, ItemSelectionChangedEventArgs e)
         {
             if (!e.AddedItems.Any())
             {

@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
 	  <UseWPF>true</UseWPF>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <NoWarn>NU1701</NoWarn>
+      <DebugType>embedded</DebugType>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +20,9 @@
     <PackageReference Include="SharpCompress" Version="0.28.3" />
     <PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="19.1.0.69" />
     <PackageReference Include="Syncfusion.SfInput.WPF" Version="19.1.0.69" />
-    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" >
+        
+    </PackageReference>
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="Octokit.Reactive" Version="0.47.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21216.1" />

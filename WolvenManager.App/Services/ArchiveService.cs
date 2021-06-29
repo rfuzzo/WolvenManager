@@ -83,7 +83,7 @@ namespace WolvenManager.App.Services
                     Serializer.Serialize(file, ArchiveManager);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 ArchiveManager = new ArchiveManager(_hashService);
                

@@ -90,8 +90,8 @@ namespace WolvenManager.App.ViewModels
 
             //get my own version to compare against latest.
             var assembly = Assembly.GetExecutingAssembly();
-            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            var myVersion = new Version(fvi.ProductVersion);
+            var productName = ((AssemblyProductAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyProductAttribute), false))?.Product;
+            var myVersion = assembly.GetName().Version;
 
             if (latestVersion > myVersion)
             {

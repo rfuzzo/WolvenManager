@@ -6,7 +6,7 @@
 #define MyAppURL "https://github.com/rfuzzo/WolvenManager"
 #define MyAppExeName "WolvenManager.UI.exe"
 #define MyAppPath "..\publish\full\" + MyAppExeName
-#define MyAppVersion RemoveFileExt(GetFileVersion(MyAppPath))
+#define MyAppVersion RemoveFileExt(GetVersionNumbersString(MyAppPath))
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -16,7 +16,7 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
 VersionInfoVersion={#MyAppVersion}
-OutputBaseFilename={#MyAppName}-{#MyAppVersion}-Windows
+OutputBaseFilename={#MyAppName}-installer-{#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}

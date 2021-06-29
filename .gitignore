@@ -268,3 +268,4 @@ docs/doxygen_doc_html/*
 docs/doxygen.warnings
 WolvenManager.UI/Output/mysetup.exe
 
+InnoSetup/Output/

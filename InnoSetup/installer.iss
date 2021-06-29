@@ -5,7 +5,7 @@
 #define MyAppPublisher "WolvenKit"
 #define MyAppURL "https://github.com/rfuzzo/WolvenManager"
 #define MyAppExeName "WolvenManager.UI.exe"
-#define MyAppPath "..\publish\" + MyAppExeName
+#define MyAppPath "..\publish\full\" + MyAppExeName
 #define MyAppVersion RemoveFileExt(GetFileVersion(MyAppPath))
 
 [Setup]
@@ -40,7 +40,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: {#MyAppPath}; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\publish\full\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

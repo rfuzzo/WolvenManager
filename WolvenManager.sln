@@ -18,10 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Common", "WolvenK
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenKit.Modkit", "WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj", "{AB2989CB-CEC4-49C5-8BB6-F9D7BBE774DC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InnoSetup", "InnoSetup", "{AD2326C0-A795-4C98-B5C3-0186DA8CA07D}"
-	ProjectSection(SolutionItems) = preProject
-		InnoSetup\installer.iss = InnoSetup\installer.iss
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolvenManager.Installer", "WolvenManager.Installer\WolvenManager.Installer.csproj", "{913EDB53-2521-4DA2-9F6C-025B240160D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +134,26 @@ Global
 		{AB2989CB-CEC4-49C5-8BB6-F9D7BBE774DC}.Release|x64.Build.0 = Release|Any CPU
 		{AB2989CB-CEC4-49C5-8BB6-F9D7BBE774DC}.Release|x86.ActiveCfg = Release|Any CPU
 		{AB2989CB-CEC4-49C5-8BB6-F9D7BBE774DC}.Release|x86.Build.0 = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|ARM.Build.0 = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|x64.Build.0 = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|ARM.Build.0 = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|ARM64.Build.0 = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|x64.ActiveCfg = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|x64.Build.0 = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{913EDB53-2521-4DA2-9F6C-025B240160D7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

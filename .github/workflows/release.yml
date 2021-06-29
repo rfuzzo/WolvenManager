@@ -59,7 +59,7 @@ jobs:
         dest: wolvenmanager-${{steps.get-version.outputs.version}}.zip
         
     - name: Create Installer
-      run: ./InnoSetup/iscc.exe ./installer.iss
+      run: ./InnoSetup/iscc.exe ./InnoSetup/installer.iss
         
     - name: Upload App
       uses: actions/upload-release-asset@v1

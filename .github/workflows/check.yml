@@ -1,0 +1,32 @@
+name: Check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: dotnet clean
+      run: dotnet clean --configuration Release && dotnet nuget locals all --clear
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build .\WolvenManager.UI\WolvenManager.UI.csproj --no-restore
+    - name: Publish
+      run: dotnet publish .\WolvenManager.UI\WolvenManager.UI.csproj -o publish\full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal

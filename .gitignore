@@ -269,3 +269,4 @@ docs/doxygen.warnings
 WolvenManager.UI/Output/mysetup.exe
 
 InnoSetup/Output/
+WolvenManager.Installer/InnoSetup/Output/

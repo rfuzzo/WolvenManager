@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -88,7 +89,7 @@ namespace WolvenManager.App.ViewModels
         private static async Task CheckForUpdatesAsync()
         {
             var http = new HttpClient();
-            var manifestJson = await http.GetStringAsync(new Uri("https://github.com/rfuzzo/WolvenManager/releases/latest/download/manifest.json"));
+            var manifestJson = await http.GetStringAsync(new Uri(Constants.RemoteManifest));
 
             var manifest = JsonSerializer.Deserialize<Manifest>(manifestJson);
             if (manifest == null)

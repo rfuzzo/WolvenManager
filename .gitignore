@@ -270,3 +270,4 @@ WolvenManager.UI/Output/mysetup.exe
 
 InnoSetup/Output/
 WolvenManager.Installer/InnoSetup/Output/
+WolvenManager.Installer/Properties/launchSettings.json

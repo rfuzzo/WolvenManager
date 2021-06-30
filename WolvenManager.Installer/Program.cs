@@ -138,7 +138,10 @@ namespace WolvenManager.Installer
                     var installerHash = HashFile(installerPath, mySha256);
                     fileHashes.Add(installerPath.Name, installerHash);
                 }
-
+                else
+                {
+                    Console.WriteLine($"Could not find installer to hash.");
+                }
 
                 // hash additional files
                 if (files != null)
@@ -189,6 +192,7 @@ namespace WolvenManager.Installer
                 var hashStr = "";
                 if (!fInfo.Exists)
                 {
+                    Console.WriteLine($"Tried to hashe {fInfo.FullName} but no such file exists");
                     return "";
                 }
 

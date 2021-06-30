@@ -1,6 +1,8 @@
 @echo off
 
-echo "Inno Setup ..."
-.\WolvenManager.Installer\InnoSetup\ISCC\ISCC.exe /dMyAppBaseDir="..\..\publish\full\" .\WolvenManager.Installer\InnoSetup\installer.iss
+call publish.bat
 
-echo "The program has completed"
+echo "Inno Setup ..."
+.\WolvenManager.Installer\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\..\publish\full\" .\WolvenManager.Installer\InnoSetup\installer.iss
+
+echo "setup completed"

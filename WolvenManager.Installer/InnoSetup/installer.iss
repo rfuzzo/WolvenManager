@@ -20,6 +20,7 @@ AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
 VersionInfoVersion={#MyAppVersion}
+OutputDir=MyOutput
 OutputBaseFilename={#MyAppName}-installer-{#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}

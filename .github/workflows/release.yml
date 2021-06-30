@@ -43,7 +43,7 @@ jobs:
         proj-path: ./WolvenManager.UI/WolvenManager.UI.csproj
     - run: echo "${{steps.get-version.outputs.version}}"
       
-    - name: Publish
+    - name: Publish app
       run: dotnet publish ./WolvenManager.UI/WolvenManager.UI.csproj -o publish/full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
       
     - name: Upload a Build Artifact
@@ -51,24 +51,24 @@ jobs:
       with:
         name: wolvenmanager-${{steps.get-version.outputs.version}}
         path: ./publish/full
-
-    - name: zip
-      uses: papeloto/action-zip@v1
-      with:
-        files: ./publish/full
-        dest: wolvenmanager-${{steps.get-version.outputs.version}}.zip
-        
+      
     - name: Create Installer
-      run: ./WolvenManager.Installer/InnoSetup/ISCC/ISCC.exe /dMyAppBaseDir="../../publish/full/" ./WolvenManager.Installer/InnoSetup/installer.iss
-        
+      run: .\WolvenManager.Installer\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\..\publish\full\" .\WolvenManager.Installer\InnoSetup\installer.iss
+
+    - name: Publish manifest exe
+      run: dotnet publish .\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
+
+    - name: Create manifest.json
+      run: .\WolvenManager.Installer.exe manifest -a .\publish\full\WolvenManager.UI.exe -i .\publish -o .\publish
+
     - name: Upload App
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{needs.draft-release.outputs.upload_url }}
-        asset_path: ./wolvenmanager-${{steps.get-version.outputs.version}}.zip
-        asset_name: wolvenmanager-${{steps.get-version.outputs.version}}.zip
+        asset_path: ./publish/WolvenManager-${{steps.get-version.outputs.version}}.zip
+        asset_name: WolvenManager-${{steps.get-version.outputs.version}}.zip
         asset_content_type: application/zip
     - name: Upload Installer
       uses: actions/upload-release-asset@v1
@@ -76,6 +76,15 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{needs.draft-release.outputs.upload_url }}
-        asset_path: ./WolvenManager.Installer/InnoSetup/Output/WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
+        asset_path: ./publish/WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
         asset_name: WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
+        asset_content_type: application/zip
+    - name: Upload Manifest
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{needs.draft-release.outputs.upload_url }}
+        asset_path: ./publish/manifest.json
+        asset_name: manifest.json
         asset_content_type: application/zip

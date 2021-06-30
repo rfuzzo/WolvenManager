@@ -26,9 +26,9 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build .\WolvenManager.UI\WolvenManager.UI.csproj --no-restore
+      run: dotnet build ./WolvenManager.UI/WolvenManager.UI.csproj --no-restore
     - name: Publish
-      run: dotnet publish .\WolvenManager.UI\WolvenManager.UI.csproj -o publish\full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
+      run: dotnet publish ./WolvenManager.UI/WolvenManager.UI.csproj -o publish/full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
       
     - name: Test
       run: dotnet test --no-build --verbosity normal

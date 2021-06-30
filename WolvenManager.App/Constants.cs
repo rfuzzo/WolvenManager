@@ -14,5 +14,7 @@ namespace WolvenManager.App
             Settings
         }
 
+        public const string AssemblyName = "WolvenManager.UI.dll";
+
     }
 }

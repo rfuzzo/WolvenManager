@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using ReactiveUI;
@@ -15,7 +16,9 @@ using WolvenManager.App.Services;
 using WolvenManager.App.ViewModels.PageViewModels;
 using DynamicData;
 using ReactiveUI.Fody.Helpers;
+using WolvenKit.Common.Tools;
 using WolvenKit.Common.Tools.Oodle;
+using WolvenManager.App.Models;
 using WolvenManager.App.Utility;
 
 namespace WolvenManager.App.ViewModels
@@ -82,20 +85,23 @@ namespace WolvenManager.App.ViewModels
 
         }
 
-        private async Task CheckForUpdatesAsync()
+        private static async Task CheckForUpdatesAsync()
         {
             var http = new HttpClient();
-            var versionString = await http.GetStringAsync(new Uri("https://rfuzzo.github.io/Installer/latest.txt"));
-            var latestVersion = new Version(versionString);
+            var manifestJson = await http.GetStringAsync(new Uri("https://github.com/rfuzzo/WolvenManager/releases/latest/download/manifest.json"));
 
-            //get my own version to compare against latest.
-            var assembly = Assembly.GetExecutingAssembly();
-            var productName = ((AssemblyProductAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyProductAttribute), false))?.Product;
-            var myVersion = assembly.GetName().Version;
+            var manifest = JsonSerializer.Deserialize<Manifest>(manifestJson);
+            if (manifest == null)
+            {
+                return;
+            }
+
+            var latestVersion = new Version(manifest.Version);
+            var myVersion = CommonFunctions.GetAssemblyVersion(Constants.AssemblyName);
 
             if (latestVersion > myVersion)
             {
-                if (System.Windows.MessageBox.Show(
+                if (MessageBox.Show(
                     $"You've got version {myVersion} of WolvenManager. Would you like to update to the latest version {latestVersion}?",
                     "Update SecretStartup?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
@@ -119,8 +125,6 @@ namespace WolvenManager.App.ViewModels
         public RoutingState Router { get; }
 
         #endregion
-
-
 
         #region commands
 

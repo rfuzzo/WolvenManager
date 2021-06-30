@@ -23,6 +23,59 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "WolvenManager.sln",
+			"settings":
+			{
+				"buffer_size": 11625,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "_bat/create-installer.bat",
+			"settings":
+			{
+				"buffer_size": 172,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "_bat/publish.bat",
+			"settings":
+			{
+				"buffer_size": 222,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "_bat/fullpublish.bat",
+			"settings":
+			{
+				"buffer_size": 429,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "_bat/publishsinglefile.bat",
+			"settings":
+			{
+				"buffer_size": 242,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".github/workflows/release.yml",
+			"settings":
+			{
+				"buffer_size": 3131,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -172,10 +225,22 @@
 	},
 	"expanded_folders":
 	[
-		"/X/GitHub/WolvenManager"
+		"/X/GitHub/WolvenManager",
+		"/X/GitHub/WolvenManager/.github",
+		"/X/GitHub/WolvenManager/.github/workflows",
+		"/X/GitHub/WolvenManager/_bat"
 	],
 	"file_history":
 	[
+		"/X/GitHub/WolvenManager/.github/workflows/check.yml",
+		"/X/GitHub/WolvenManager/.gitignore",
+		"/X/GitHub/WolvenManager/fullpublish.bat",
+		"/X/GitHub/WolvenManager/create-installer.bat",
+		"/X/GitHub/WolvenManager/publish.bat",
+		"/X/GitHub/WolvenManager/create-manifest.bat",
+		"/X/GitHub/WolvenManager/.github/workflows/release.yml",
+		"/X/GitHub/WolvenManager/publishsinglefile.bat",
+		"/D/DATA/p/p.txt",
 		"/X/GitHub/WolvenKit/publishsinglefile.bat",
 		"/X/GitHub/WolvenKit/.github/workflows/Nightly.yml",
 		"/X/GitHub/WolvenKit/.github/workflows/draft_console.yml",
@@ -183,12 +248,9 @@
 		"/X/GitHub/WolvenKit/.github/workflows/main.yml",
 		"/X/cp77/nuget.txt",
 		"/X/GitHub/WolvenKit/publish.bat",
-		"/X/GitHub/WolvenManager/publish.bat",
-		"/X/GitHub/WolvenManager/publishsinglefile.bat",
 		"/X/GitHub/WolvenKit/.github/workflows/test.yml",
 		"/X/GitHub/WolvenKit/WolvenKit/App.xaml.cs",
 		"/X/GitHub/WolvenKit/.gitignore",
-		"/X/GitHub/WolvenManager/.gitignore",
 		"/X/GitHub/WolvenManager/log.txt",
 		"/X/lists.txt",
 		"/X/GitHub/rfuzzo.github.io/Installer/latest.txt",
@@ -297,13 +359,7 @@
 		"/C/Users/ghost/Downloads/dependencies_html/out.txt",
 		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmMain.cs",
 		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmMain.Designer.cs",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmCR2WDocument.cs",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmWelcome.Designer.cs",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmSettings.Designer.cs",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/WolvenKit.csproj",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmWelcome.cs",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmSettings.cs",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit.App/ViewModels/MainViewModel.cs"
+		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmCR2WDocument.cs"
 	],
 	"find":
 	{
@@ -314,6 +370,7 @@
 		"height": 113.0,
 		"where_history":
 		[
+			"X:\\GitHub\\WolvenManager\\.github\\workflows"
 		]
 	},
 	"find_state":
@@ -321,6 +378,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"inno",
+			"\\",
+			"publish"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -328,6 +388,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"/"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -338,8 +399,180 @@
 	"groups":
 	[
 		{
+			"selected": 5,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "WolvenManager.sln",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11625,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1164,
+								1164
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 440.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "_bat/create-installer.bat",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 172,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								172,
+								172
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Batch File/Batch File.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "_bat/publish.bat",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 222,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								222,
+								222
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Batch File/Batch File.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "_bat/fullpublish.bat",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 429,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Batch File/Batch File.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "_bat/publishsinglefile.bat",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 242,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18,
+								18
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Batch File/Batch File.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": ".github/workflows/release.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3131,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1920,
+								1945
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 856.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],

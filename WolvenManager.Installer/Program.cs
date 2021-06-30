@@ -9,6 +9,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Threading;
 
 namespace WolvenManager.Installer
 {
@@ -18,6 +19,7 @@ namespace WolvenManager.Installer
         {
             var rootCommand = new RootCommand
             {
+                new CreateCommand(),
                 new ManifestCommand()
 
             };
@@ -25,11 +27,101 @@ namespace WolvenManager.Installer
         }
     }
 
+    public class CreateCommand : Command
+    {
+
+        private new const string Description = "Create publish file from an assemby.";
+
+        private new const string Name = "create";
+
+
+
+        public CreateCommand() : base(Name, Description)
+        {
+            AddOption(new Option<FileInfo>(new[] {"--assembly", "-a"}, "Input Assembly.") {IsRequired = true});
+
+            AddOption(new Option<DirectoryInfo>(new[] {"--outpath", "-o"}, "Output path."));
+
+            AddOption(new Option<string>(new[] { "--version", "-v" }, "Version number."));
+
+            Handler = CommandHandler.Create<FileInfo, DirectoryInfo, string>(Action);
+        }
+
+        private void Action(FileInfo assembly, DirectoryInfo outpath, string version)
+        {
+            Console.WriteLine($"Starting ...");
+
+            if (assembly is not { Exists: true })
+            {
+                throw new FileNotFoundException(assembly.FullName);
+            }
+
+            var finalOutdir = System.Environment.CurrentDirectory;
+            if (outpath != null)
+            {
+                Directory.CreateDirectory(outpath.FullName);
+                if (!outpath.Exists)
+                {
+                    throw new DirectoryNotFoundException(outpath.FullName);
+                }
+                finalOutdir = outpath.FullName;
+            }
+
+            // get assemblyversion
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.FullName);
+            var assemblyversion = fvi.FileVersion;
+            var manifestversion = new Version(assemblyversion ?? throw new InvalidOperationException());
+
+            // get version
+            if (!string.IsNullOrEmpty(version))
+            {
+                try
+                {
+                    manifestversion = new Version(version);
+                }
+                catch (Exception)
+                {
+                    throw new VersionNotFoundException(version);
+                }
+            }
+            Console.WriteLine($"Assembly data found: {fvi.ProductName}-{manifestversion}");
+
+            // zip assembly folder
+            if (assembly.Directory == null)
+            {
+                throw new DirectoryNotFoundException(assembly.FullName);
+            }
+
+            var portableZip = new FileInfo(Path.Combine(finalOutdir, $"{fvi.ProductName}-{manifestversion}.zip"));
+            try
+            {
+                if (portableZip.Exists)
+                {
+                    portableZip.Delete();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            void CreatZip()
+            {
+                Console.WriteLine($"Zipping source {assembly.Directory.FullName} into target {portableZip.FullName} ...");
+                ZipFile.CreateFromDirectory(assembly.Directory.FullName, portableZip.FullName);
+            }
+
+            CreatZip();
+        }
+    }
+
+
     public class ManifestCommand : Command
     {
         #region Fields
 
-        private new const string Description = "Create a manifest file from an assemby and optionally include zip folders.";
+        private new const string Description = "Create a manifest file from an assemby and optionally hash additional files.";
         private new const string Name = "manifest";
 
         #endregion Fields
@@ -56,6 +148,8 @@ namespace WolvenManager.Installer
 
         private void Action(FileInfo assembly, DirectoryInfo installer, DirectoryInfo outpath, string version, FileInfo[] files)
         {
+            Console.WriteLine($"Starting ...");
+
             if (assembly is not {Exists: true})
             {
                 throw new FileNotFoundException(assembly.FullName);
@@ -97,35 +191,11 @@ namespace WolvenManager.Installer
                 throw new DirectoryNotFoundException(assembly.FullName);
             }
             
-            var portableZip = new FileInfo(Path.Combine(finalOutdir, $"{fvi.ProductName}-{manifestversion}.zip"));
-            try
-            {
-                if (portableZip.Exists)
-                {
-                    portableZip.Delete();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            Console.WriteLine($"Zipping source {assembly.Directory.FullName} into target {portableZip.FullName} ...");
-            ZipFile.CreateFromDirectory(assembly.Directory.FullName, portableZip.FullName);
-            if (!portableZip.Exists)
-            {
-                throw new FileNotFoundException(portableZip.Name);
-            }
-
 
             // SHA hashes
             var fileHashes = new Dictionary<string, string>();
             using (var mySha256 = SHA256.Create())
             {
-                // portable zip hash
-                var portableHash = HashFile(portableZip, mySha256);
-                fileHashes.Add(portableZip.Name, portableHash);
-
                 // installer hash
                 if (installer is {Exists: true})
                 {
@@ -166,6 +236,15 @@ namespace WolvenManager.Installer
                         }
                     }
                 }
+
+                // portable zip hash
+                var portableZip = new FileInfo(Path.Combine(finalOutdir, $"{fvi.ProductName}-{manifestversion}.zip"));
+                if (!portableZip.Exists)
+                {
+                    throw new FileNotFoundException(portableZip.Name);
+                }
+                var portableHash = HashFile(portableZip, mySha256);
+                fileHashes.Add(portableZip.Name, portableHash);
             }
 
             // write manifest

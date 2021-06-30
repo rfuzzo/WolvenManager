@@ -45,22 +45,23 @@ jobs:
       
     - name: Publish app
       run: dotnet publish ./WolvenManager.UI/WolvenManager.UI.csproj -o publish/full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
-      
+    - name: Publish manifest exe
+      run: dotnet publish .\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
+
+    - name: "create assets"
+      run: .\WolvenManager.Installer.exe create -a .\publish\full\WolvenManager.UI.exe -o .\publish
+
+    - name: Create Installer
+      run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss
+    
+    - name: Create manifest.json
+      run: .\WolvenManager.Installer.exe manifest -a .\publish\full\WolvenManager.UI.exe -i .\publish -o .\publish
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
         name: wolvenmanager-${{steps.get-version.outputs.version}}
         path: ./publish/full
-      
-    - name: Create Installer
-      run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss
-
-    - name: Publish manifest exe
-      run: dotnet publish .\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
-
-    - name: Create manifest.json
-      run: .\WolvenManager.Installer.exe manifest -a .\publish\full\WolvenManager.UI.exe -i .\publish -o .\publish
-
     - name: Upload App
       uses: actions/upload-release-asset@v1
       env:

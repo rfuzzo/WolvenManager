@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -57,8 +58,7 @@ namespace WolvenManager.Installer
         {
             if (assembly is not {Exists: true})
             {
-                Console.WriteLine("Input assembly not found");
-                return;
+                throw new FileNotFoundException(assembly.FullName);
             }
 
             var finalOutdir = System.Environment.CurrentDirectory;
@@ -67,8 +67,7 @@ namespace WolvenManager.Installer
                 Directory.CreateDirectory(outpath.FullName);
                 if (!outpath.Exists)
                 {
-                    Console.WriteLine("Outpath does not exist");
-                    return;
+                    throw new DirectoryNotFoundException(outpath.FullName);
                 }
                 finalOutdir = outpath.FullName;
             }
@@ -87,8 +86,7 @@ namespace WolvenManager.Installer
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Not a valid version number");
-                    return;
+                    throw new VersionNotFoundException(version);
                 }
             }
             Console.WriteLine($"Assembly data found: {fvi.ProductName}-{manifestversion}");
@@ -96,10 +94,9 @@ namespace WolvenManager.Installer
             // zip assembly folder
             if (assembly.Directory == null)
             {
-                // log error
-                return;
+                throw new DirectoryNotFoundException(assembly.FullName);
             }
-            Console.WriteLine($"Zipping {assembly.Directory.FullName} ...");
+            
             var portableZip = new FileInfo(Path.Combine(finalOutdir, $"{fvi.ProductName}-{manifestversion}.zip"));
             try
             {
@@ -113,7 +110,13 @@ namespace WolvenManager.Installer
                 Console.WriteLine(e);
                 throw;
             }
+            Console.WriteLine($"Zipping source {assembly.Directory.FullName} into target {portableZip.FullName} ...");
             ZipFile.CreateFromDirectory(assembly.Directory.FullName, portableZip.FullName);
+            if (!portableZip.Exists)
+            {
+                throw new FileNotFoundException(portableZip.Name);
+            }
+
 
             // SHA hashes
             var fileHashes = new Dictionary<string, string>();
@@ -192,7 +195,7 @@ namespace WolvenManager.Installer
                 var hashStr = "";
                 if (!fInfo.Exists)
                 {
-                    Console.WriteLine($"Tried to hashe {fInfo.FullName} but no such file exists");
+                    Console.WriteLine($"Tried to hash {fInfo.FullName} but no such file exists");
                     return "";
                 }
 

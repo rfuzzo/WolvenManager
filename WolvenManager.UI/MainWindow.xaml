@@ -21,7 +21,7 @@
     xmlns:converters="clr-namespace:WolvenManager.UI.Converters" 
     xmlns:views="clr-namespace:WolvenManager.UI.Views"
     d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel}"
-
+    Title="WolvenManager"
     PlaceTitleBarOverContent="False"
     IconVisibility="Visible"
     >
@@ -31,21 +31,7 @@
     </Window.Style>
 
 
-    <adonisControls:AdonisWindow.TitleBarContent>
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Left">
-            <Menu >
-                <MenuItem Header="View">
-                    <MenuItem Header="View Log"/>
-                </MenuItem>
-            </Menu>
-        </StackPanel>
-    </adonisControls:AdonisWindow.TitleBarContent>
-
     <Grid>
-        
-
-
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -214,7 +200,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </ItemsPanelTemplate>

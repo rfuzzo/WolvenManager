@@ -27,8 +27,8 @@
         <StackPanel Grid.Row="1">
             <GroupBox>
                 <StackPanel>
-                    <Label Grid.Column="0" Content="Game Directory"  Padding="1" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="0" Text="The main Cyberpunk 2077 game directory." Padding="1" VerticalAlignment="Center"/>
+                    <Label Grid.Column="0" Content="Game Executable"  Padding="1" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="The main Cyberpunk 2077 game executable (Cyberpunk2077.exe)" Padding="1" VerticalAlignment="Center"/>
 
                     <Grid>
                         <Grid.ColumnDefinitions>

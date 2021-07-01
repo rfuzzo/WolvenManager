@@ -60,8 +60,6 @@ jobs:
         name: manifest.json
         path: ./publish/manifest.json
         
-    - name: Create required package.json
-      run: test -f package.json || echo '{}' >package.json
     - name: Changelog
       uses: scottbrenner/generate-changelog-action@master
       id: Changelog

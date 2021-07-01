@@ -354,7 +354,7 @@ namespace WolvenManager.App.ViewModels
                 $"Update available. Restart?",
                 $"Update {Constants.ProductName}?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                var proc = Process.Start(path.FullName, @"/SILENT /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /NOCANCEL");
+                var proc = Process.Start(path.FullName, "/SILENT /NOCANCEL");
 
                 //System.Windows.Forms.Application.Restart();
                 System.Windows.Application.Current.Shutdown();

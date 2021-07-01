@@ -6,6 +6,7 @@
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <NoWarn>NU1701</NoWarn>
       <DebugType>embedded</DebugType>
+      <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 
   </PropertyGroup>
 

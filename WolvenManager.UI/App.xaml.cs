@@ -144,10 +144,10 @@ namespace WolvenManager.UI
             var mainWindow = _host.Services.GetService<IViewFor<AppViewModel>>();
             if (mainWindow is MainWindow window)
             {
-                if (Environment.OSVersion.Version.Major >= 6) // Windows Vista and above
-                {
-                    RegisterApplicationRestart("/restart", RestartRestrictions.None);
-                }
+                //if (Environment.OSVersion.Version.Major >= 6) // Windows Vista and above
+                //{
+                //    RegisterApplicationRestart("/restart", RestartRestrictions.None);
+                //}
 
 
                 window.Show();

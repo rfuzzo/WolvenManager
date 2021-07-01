@@ -64,9 +64,9 @@ jobs:
       uses: ncipollo/release-action@v1.8.6
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag_name: version-${{steps.get-version.outputs.version}}
+        tag_name: v-${{steps.get-version.outputs.version}}
         draft: true      
-        release_name: Release ${{ github.ref }}
+        release_name: WolvenManager - ${{steps.get-version.outputs.version}}
         artifacts: |
           "manifest.json", 
           "WolvenManager-installer-${{steps.get-version.outputs.version}}.exe", 

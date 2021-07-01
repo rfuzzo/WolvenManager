@@ -127,7 +127,7 @@ namespace WolvenManager.App.Services
         {
             var appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            var path = Path.Combine(appdata, "WolvenManager");
+            var path = Path.Combine(appdata, Constants.AppDataFolder, Constants.ProductName);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -140,6 +140,15 @@ namespace WolvenManager.App.Services
 
 
         public string GetAppData() => GetAppDataFolder();
+        public string GetTempDir()
+        {
+            var path = Path.Combine(GetAppDataFolder(), "Temp");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            return path;
+        }
 
 
         public string GetOodlePath() => string.IsNullOrEmpty(GetGameRootPath()) ? null : Path.Combine(GetGameRootPath(), "bin", "x64", "oo2ext_7_win64.dll");

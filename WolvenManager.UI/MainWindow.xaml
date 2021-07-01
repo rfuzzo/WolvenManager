@@ -144,12 +144,15 @@
                                 </MenuItem>
                             </Menu>-->
 
-                            <Button x:Name="SettingsButton"  Height="Auto" Click="SettingsButton_OnClick">
+                            <Button x:Name="SettingsButton"  Height="Auto" Click="SettingsButton_OnClick" >
                                 <Button.Content>
-                                    <iconPacks:PackIconCodicons Kind="SettingsGear"
+                                    <iconPacks:PackIconCodicons x:Name="SettingsIcon"
+                                                                Kind="SettingsGear"
                                                                 Width="40"
                                                                 Height="40"
-                                                                Padding="5"/>
+                                                                Padding="5"
+                                                        
+                                    />
                                 </Button.Content>
 
                                 <Button.ContextMenu>
@@ -205,6 +208,25 @@
             </Grid>
 
             <StatusBar Grid.Row="1" Background="DodgerBlue">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+
+                <StatusBarItem  Grid.Column="0">
+                    <syncfusion:SfLinearProgressBar x:Name="StatusBarProgressBar"/>
+                </StatusBarItem>
+
+                <StatusBarItem  Grid.Column="2">
+                    <Label x:Name="StatusBarVersionLabel" Content="VERSION"/>
+                </StatusBarItem>
 
             </StatusBar>
         </Grid>

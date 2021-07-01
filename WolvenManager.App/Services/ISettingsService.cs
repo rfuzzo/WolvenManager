@@ -27,12 +27,14 @@ namespace WolvenManager.App.Services
         string GetModsDirectoryPath();
         string GetArchiveDirectoryPath();
         string GetAppData();
+        string GetTempDir();
+
 
         string GetOodlePath();
 
         #endregion Methods
 
         IObservable<bool> IsValid { get; }
-        
+
     }
 }

@@ -58,7 +58,6 @@ namespace WolvenManager.App.Services
 
         public void Load()
         {
-            var archiveDir = Path.Combine(_settingsService.GetGameRootPath(), "archive", "pc", "content");
             var chachePath = Path.Combine(_settingsService.GetAppData(), "archives.bin");
 
             try
@@ -77,7 +76,7 @@ namespace WolvenManager.App.Services
                 else
                 {
                     ArchiveManager = new ArchiveManager(_hashService);
-                    ArchiveManager.LoadFromFolder(Path.GetDirectoryName(archiveDir));
+                    ArchiveManager.LoadAll(Path.GetDirectoryName(_settingsService.RED4ExecutablePath));
 
                     using var file = File.Create(chachePath);
                     Serializer.Serialize(file, ArchiveManager);
@@ -87,7 +86,7 @@ namespace WolvenManager.App.Services
             {
                 ArchiveManager = new ArchiveManager(_hashService);
                
-                ArchiveManager.LoadFromFolder(Path.GetDirectoryName(archiveDir));
+                ArchiveManager.LoadAll(Path.GetDirectoryName(_settingsService.RED4ExecutablePath));
 
                 using var file = File.Create(chachePath);
                 Serializer.Serialize(file, ArchiveManager);

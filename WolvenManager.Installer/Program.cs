@@ -190,10 +190,16 @@ namespace WolvenManager.Installer
             {
                 throw new DirectoryNotFoundException(assembly.FullName);
             }
-            
+
+            var manifest = new Manifest()
+            {
+                Version = manifestversion.ToString(),
+                AssemblyName = fvi.ProductName
+
+            };
 
             // SHA hashes
-            var fileHashes = new Dictionary<string, string>();
+            //var fileHashes = new Dictionary<string, string>();
             using (var mySha256 = SHA256.Create())
             {
                 // installer hash
@@ -209,7 +215,7 @@ namespace WolvenManager.Installer
                     }
 
                     var installerHash = HashFile(installerPath, mySha256);
-                    fileHashes.Add(installerPath.Name, installerHash);
+                    manifest.Installer = new KeyValuePair<string, string>(installerPath.Name, installerHash);
                 }
                 else
                 {
@@ -217,25 +223,25 @@ namespace WolvenManager.Installer
                 }
 
                 // hash additional files
-                if (files != null)
-                {
-                    Console.WriteLine($"Found {files.Length} to hash.");
-                    foreach (var fInfo in files)
-                    {
-                        if (!fInfo.Exists)
-                        {
-                            Console.WriteLine($"Could not find {fInfo.FullName} to hash.");
-                            continue;
-                        }
+                //if (files != null)
+                //{
+                //    Console.WriteLine($"Found {files.Length} to hash.");
+                //    foreach (var fInfo in files)
+                //    {
+                //        if (!fInfo.Exists)
+                //        {
+                //            Console.WriteLine($"Could not find {fInfo.FullName} to hash.");
+                //            continue;
+                //        }
 
-                        var hashStr = HashFile(fInfo, mySha256);
-                        var key = fInfo.Name;
-                        if (!fileHashes.ContainsKey(key))
-                        {
-                            fileHashes.Add(key, hashStr);
-                        }
-                    }
-                }
+                //        var hashStr = HashFile(fInfo, mySha256);
+                //        var key = fInfo.Name;
+                //        if (!fileHashes.ContainsKey(key))
+                //        {
+                //            fileHashes.Add(key, hashStr);
+                //        }
+                //    }
+                //}
 
                 // portable zip hash
                 var portableZip = new FileInfo(Path.Combine(finalOutdir, $"{fvi.ProductName}-{manifestversion}.zip"));
@@ -244,17 +250,12 @@ namespace WolvenManager.Installer
                     throw new FileNotFoundException(portableZip.Name);
                 }
                 var portableHash = HashFile(portableZip, mySha256);
-                fileHashes.Add(portableZip.Name, portableHash);
+                manifest.Portable = new KeyValuePair<string, string>(portableZip.Name, portableHash);
             }
 
             // write manifest
             Console.WriteLine($"Writing data to {finalOutdir} ...");
-            var manifest = new Manifest()
-            {
-                Version = manifestversion.ToString(),
-                AssemblyName = fvi.ProductName,
-                FileHashes = fileHashes
-            };
+            
 
             var jsonString = JsonSerializer.Serialize(manifest, new JsonSerializerOptions()
             {
@@ -263,13 +264,13 @@ namespace WolvenManager.Installer
             File.WriteAllText(Path.Combine(finalOutdir, "manifest.json"), jsonString);
 
 
-            // Display the byte array in a readable format.
+            // Display a byte array in a readable format.
             static string PrettyByteArray(IReadOnlyList<byte> array)
             {
                 return array.Aggregate("", (current, t) => current + $"{t:X2}");
             }
 
-            string HashFile(FileInfo fInfo, SHA256 mySha256)
+            static string HashFile(FileInfo fInfo, SHA256 mySha256)
             {
                 var hashStr = "";
                 if (!fInfo.Exists)

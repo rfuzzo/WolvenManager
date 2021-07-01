@@ -97,6 +97,21 @@ namespace WolvenManager.UI
                         viewModel => viewModel.CheckForUpdatesCommand,
                         view => view.CheckForUpdatesMenuItem)
                     .DisposeWith(disposables);
+                //this.OneWayBind(ViewModel,
+                //        viewModel => viewModel.SettingsIconName,
+                //        view => view.SettingsIcon.Kind)
+                //    .DisposeWith(disposables);
+                
+
+                // statusbar
+                this.OneWayBind(ViewModel,
+                        x => x.Progress,
+                        x => x.StatusBarProgressBar.Progress)
+                    .DisposeWith(disposables);
+                this.OneWayBind(ViewModel,
+                        x => x.Version,
+                        x => x.StatusBarVersionLabel.Content)
+                    .DisposeWith(disposables);
             });
 
 

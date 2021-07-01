@@ -14,9 +14,13 @@ namespace WolvenManager.App
             Settings
         }
 
+        public const string AppDataFolder = "REDModding";
+        public const string ProductName = "WolvenManager";
+
         public const string AssemblyName = "WolvenManager.UI.dll";
 
-        public const string GithubRepo = "https://github.com/rfuzzo/WolvenManager";
-        public const string RemoteManifest = GithubRepo + "/releases/latest/download/manifest.json";
+        public const string GithubRepo = "https://github.com/rfuzzo/WolvenManager/";
+        public const string LatestRelease = GithubRepo + "releases/latest/download/";
+        public const string RemoteManifest = LatestRelease + "manifest.json";
     }
 }

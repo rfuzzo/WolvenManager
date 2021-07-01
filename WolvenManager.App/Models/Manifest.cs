@@ -10,6 +10,8 @@ namespace WolvenManager.App.Models
     {
         public string Version { get; set; }
         public string AssemblyName { get; set; }
-        public Dictionary<string, string> FileHashes { get; set; }
+
+        public KeyValuePair<string, string> Installer { get; set; }
+        public KeyValuePair<string, string> Portable { get; set; }
     }
 }

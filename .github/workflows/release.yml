@@ -4,24 +4,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  draft-release:
+  
+  release:
     runs-on: windows-latest
     outputs:
-      upload_url: ${{ steps.draft-release.outputs.upload_url }}
-
-    steps:
-    - name: Create Release
-      id: draft-release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: commit-${{ github.sha }}
-        draft: true
-
-  release:
-    needs: draft-release
-    runs-on: windows-latest
+      version: ${{steps.get-version.outputs.version}}
 
     steps:
     - uses: actions/checkout@v2
@@ -57,35 +44,48 @@ jobs:
     - name: Create manifest.json
       run: .\WolvenManager.Installer.exe manifest -a .\publish\full\WolvenManager.UI.exe -i .\publish -o .\publish
 
-    - name: Upload a Build Artifact
+    - name: Upload Artifact App
       uses: actions/upload-artifact@v2
       with:
-        name: wolvenmanager-${{steps.get-version.outputs.version}}
-        path: ./publish/full
-    - name: Upload App
-      uses: actions/upload-release-asset@v1
+        name: WolvenManager-${{steps.get-version.outputs.version}}.zip
+        path: ./publish/WolvenManager-${{steps.get-version.outputs.version}}.zip
+    - name: Upload Artifact Installer
+      uses: actions/upload-artifact@v2
+      with:
+        name: WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
+        path: ./publish/WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
+    - name: Upload Artifact Manifest
+      uses: actions/upload-artifact@v2
+      with:
+        name: manifest.json
+        path: ./publish/manifest.json
+        
+        
+    - name: Changelog
+      uses: scottbrenner/generate-changelog-action@master
+      id: Changelog
+      env:
+        REPO: ${{ github.repository }}
+        
+    - name: Create Release
+      id: draft-release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{needs.draft-release.outputs.upload_url }}
-        asset_path: ./publish/WolvenManager-${{steps.get-version.outputs.version}}.zip
-        asset_name: WolvenManager-${{steps.get-version.outputs.version}}.zip
-        asset_content_type: application/zip
-    - name: Upload Installer
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{needs.draft-release.outputs.upload_url }}
-        asset_path: ./publish/WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
-        asset_name: WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
-        asset_content_type: application/zip
-    - name: Upload Manifest
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{needs.draft-release.outputs.upload_url }}
-        asset_path: ./publish/manifest.json
-        asset_name: manifest.json
-        asset_content_type: application/zip
+        tag_name: version-${{steps.get-version.outputs.version}}
+        draft: true      
+        release_name: Release ${{ github.ref }}
+        body: |
+            ${{ steps.Changelog.outputs.changelog }}
+        artifacts: |
+          "manifest.json", 
+          "WolvenManager-installer-${{steps.get-version.outputs.version}}.exe", 
+          "WolvenManager-${{steps.get-version.outputs.version}}.zip"
+        
+  
+  
+  
+  
+  
+  

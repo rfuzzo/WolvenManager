@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WolvenManager.UI": {
+      "commandName": "Project",
+      "commandLineArgs": "/restart"
+    }
+  }
+}

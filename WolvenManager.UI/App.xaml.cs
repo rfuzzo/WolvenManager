@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using ReactiveUI;
 using Splat;
 using WolvenKit.Common.Services;
@@ -19,6 +20,7 @@ using WolvenManager.UI.Implementations;
 using WolvenManager.UI.Services;
 using WolvenManager.UI.Views;
 using System.Windows;
+using Microsoft.WindowsAPICodePack.ApplicationServices;
 using ProtoBuf.Meta;
 using WolvenKit.Common;
 using WolvenKit.RED4.CR2W.Archive;
@@ -129,24 +131,39 @@ namespace WolvenManager.UI
             Container.UseMicrosoftDependencyResolver();
         }
 
-        private async void Application_Startup(object sender, StartupEventArgs e)
+        [DllImport("kernel32.dll")]
+        public static extern int RegisterApplicationRestart([MarshalAs(UnmanagedType.LPWStr)] string commandLineArgs, RestartRestrictions flags);
+
+        [DllImport("kernel32.dll")]
+        public static extern int UnregisterApplicationRestart();
+
+        protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
 
             var mainWindow = _host.Services.GetService<IViewFor<AppViewModel>>();
             if (mainWindow is MainWindow window)
             {
+                if (Environment.OSVersion.Version.Major >= 6) // Windows Vista and above
+                {
+                    RegisterApplicationRestart("/restart", RestartRestrictions.None);
+                }
+
+
                 window.Show();
             }
-            
+
+            base.OnStartup(e);
         }
 
-        private async void Application_Exit(object sender, ExitEventArgs e)
+        protected override async void OnExit(ExitEventArgs e)
         {
             using (_host)
             {
                 await _host.StopAsync(TimeSpan.FromSeconds(5));
             }
+
+            base.OnExit(e);
         }
     }
 }

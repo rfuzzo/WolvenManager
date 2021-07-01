@@ -33,29 +33,38 @@
 			}
 		},
 		{
-			"file": "_bat/create-installer.bat",
+			"file": "release.bat",
 			"settings":
 			{
-				"buffer_size": 172,
+				"buffer_size": 72,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "_bat/publish.bat",
-			"settings":
-			{
-				"buffer_size": 222,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "_bat/fullpublish.bat",
 			"settings":
 			{
-				"buffer_size": 429,
+				"buffer_size": 601,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Gog/Cyberpunk 2077/archive/pc/content/missinghashes.txt",
+			"settings":
+			{
+				"buffer_size": 2083,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/X/cp77/nuget.txt",
+			"settings":
+			{
+				"buffer_size": 1296,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
 			}
 		},
 		{
@@ -63,15 +72,6 @@
 			"settings":
 			{
 				"buffer_size": 242,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": ".github/workflows/release.yml",
-			"settings":
-			{
-				"buffer_size": 3131,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -225,20 +225,19 @@
 	},
 	"expanded_folders":
 	[
-		"/X/GitHub/WolvenManager",
-		"/X/GitHub/WolvenManager/.github",
-		"/X/GitHub/WolvenManager/.github/workflows",
-		"/X/GitHub/WolvenManager/_bat"
+		"/X/GitHub/WolvenManager"
 	],
 	"file_history":
 	[
+		"/X/GitHub/WolvenManager/.github/workflows/release.yml",
+		"/X/GitHub/WolvenManager/_bat/publish.bat",
+		"/X/GitHub/WolvenManager/_bat/create-installer.bat",
 		"/X/GitHub/WolvenManager/.github/workflows/check.yml",
 		"/X/GitHub/WolvenManager/.gitignore",
 		"/X/GitHub/WolvenManager/fullpublish.bat",
 		"/X/GitHub/WolvenManager/create-installer.bat",
 		"/X/GitHub/WolvenManager/publish.bat",
 		"/X/GitHub/WolvenManager/create-manifest.bat",
-		"/X/GitHub/WolvenManager/.github/workflows/release.yml",
 		"/X/GitHub/WolvenManager/publishsinglefile.bat",
 		"/D/DATA/p/p.txt",
 		"/X/GitHub/WolvenKit/publishsinglefile.bat",
@@ -357,13 +356,11 @@
 		"/C/Users/ghost/AppData/Roaming/Microsoft/VisualStudio/16.0_9245c1dc/ActivityLog.xml",
 		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit.CR2W/WolvenKit.CR2W.csproj",
 		"/C/Users/ghost/Downloads/dependencies_html/out.txt",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmMain.cs",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmMain.Designer.cs",
-		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmCR2WDocument.cs"
+		"/C/DATA/GitHub/Traderain/Wolven-kit/WolvenKit/Forms/frmMain.cs"
 	],
 	"find":
 	{
-		"height": 43.0
+		"height": 31.0
 	},
 	"find_in_files":
 	{
@@ -399,7 +396,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -433,75 +430,19 @@
 				},
 				{
 					"buffer": 1,
-					"file": "_bat/create-installer.bat",
+					"file": "release.bat",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 172,
+						"buffer_size": 72,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								172,
-								172
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Batch File/Batch File.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "_bat/publish.bat",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 222,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								222,
-								222
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Batch File/Batch File.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "_bat/fullpublish.bat",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 429,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
+								72,
+								72
 							]
 						],
 						"settings":
@@ -516,7 +457,91 @@
 					"type": "text"
 				},
 				{
+					"buffer": 2,
+					"file": "_bat/fullpublish.bat",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 601,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								27,
+								27
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Batch File/Batch File.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Gog/Cyberpunk 2077/archive/pc/content/missinghashes.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2083,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 2178.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
 					"buffer": 4,
+					"file": "/X/cp77/nuget.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1296,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								805,
+								994
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
 					"file": "_bat/publishsinglefile.bat",
 					"semi_transient": false,
 					"settings":
@@ -540,37 +565,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": ".github/workflows/release.yml",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3131,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1920,
-								1945
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/YAML/YAML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 856.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -637,12 +632,16 @@
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"",
+				"X:\\GitHub\\wolvenkit_sublime.sublime-project"
+			]
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"select_symbol":
 	{

@@ -4,8 +4,7 @@
              xmlns:local="clr-namespace:WolvenManager.UI"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
-             Startup="Application_Startup"
-             Exit="Application_Exit">
+             >
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -24,6 +24,7 @@ using WolvenKit.Common.Tools;
 using WolvenKit.Common.Tools.Oodle;
 using WolvenManager.App.Models;
 using WolvenManager.App.Utility;
+using Microsoft.Extensions.Hosting;
 
 namespace WolvenManager.App.ViewModels
 {
@@ -36,6 +37,7 @@ namespace WolvenManager.App.ViewModels
         private readonly INotificationService _notificationService;
         private readonly ILoggerService _loggerService;
         private readonly IArchiveService _archiveService;
+        private readonly IHostApplicationLifetime _appLifetime;
 
         
 
@@ -46,13 +48,15 @@ namespace WolvenManager.App.ViewModels
             ISettingsService settingsService,
             INotificationService notificationService,
             ILoggerService loggerService,
-            IArchiveService archiveService
+            IArchiveService archiveService,
+            IHostApplicationLifetime appLifetime
         )
         {
             _settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
             _notificationService = notificationService ?? Locator.Current.GetService<INotificationService>();
             _loggerService = loggerService ?? Locator.Current.GetService<ILoggerService>();
             _archiveService = archiveService;
+            _appLifetime = appLifetime;
 
             // routing
             Router = new RoutingState();
@@ -163,9 +167,6 @@ namespace WolvenManager.App.ViewModels
 
         private async void OnStartup()
         {
-            // Check for updates
-            await CheckForUpdatesAsync();
-
             // Once 
             _settingsService.IsValid.Subscribe(async isvalid =>
             {
@@ -181,6 +182,9 @@ namespace WolvenManager.App.ViewModels
 
                     // load managers
                     await Task.Run( () => _archiveService.Load());
+
+                    // Check for updates
+                    await CheckForUpdatesAsync();
                 }
             });
 
@@ -214,14 +218,10 @@ namespace WolvenManager.App.ViewModels
             {
                 IsUpdateAvailable = true;
 
-                if (MessageBox.Show(
-                    $"You've got version {myVersion} of {Constants.ProductName}. Would you like to update to the latest version {latestVersion}?",
-                    $"Update {Constants.ProductName}?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                // check if portable
+                // TODO
+
                 {
-                    // check if portable
-                    // TODO
-
-
                     // check if update already downloaded before
                     var physicalPath = new FileInfo(Path.Combine(_settingsService.GetTempDir(), manifest.Installer.Key));
                     if (physicalPath.Exists)
@@ -262,6 +262,17 @@ namespace WolvenManager.App.ViewModels
 
         private async Task DownloadUpdateAsync(Manifest manifest, string key)
         {
+            var latestVersion = new Version(manifest.Version);
+            var myVersion = CommonFunctions.GetAssemblyVersion(Constants.AssemblyName);
+            if (MessageBox.Show(
+                $"You've got version {myVersion} of {Constants.ProductName}. Would you like to update to the latest version {latestVersion}?",
+                $"Update {Constants.ProductName}?", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            {
+                return;
+            }
+
+
+
             using (var wc = new WebClient())
             {
                 var dlObservable = Observable.FromEventPattern<DownloadProgressChangedEventHandler, DownloadProgressChangedEventArgs>(
@@ -343,8 +354,10 @@ namespace WolvenManager.App.ViewModels
                 $"Update available. Restart?",
                 $"Update {Constants.ProductName}?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
+                var proc = Process.Start(path.FullName, @"/SILENT /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /NOCANCEL");
 
-
+                //System.Windows.Forms.Application.Restart();
+                System.Windows.Application.Current.Shutdown();
             }
 
             // run installer

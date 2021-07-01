@@ -76,7 +76,7 @@ namespace WolvenManager.App.Services
                 else
                 {
                     ArchiveManager = new ArchiveManager(_hashService);
-                    ArchiveManager.LoadAll(Path.GetDirectoryName(_settingsService.RED4ExecutablePath));
+                    ArchiveManager.LoadAll(new FileInfo(_settingsService.RED4ExecutablePath));
 
                     using var file = File.Create(chachePath);
                     Serializer.Serialize(file, ArchiveManager);
@@ -86,7 +86,7 @@ namespace WolvenManager.App.Services
             {
                 ArchiveManager = new ArchiveManager(_hashService);
                
-                ArchiveManager.LoadAll(Path.GetDirectoryName(_settingsService.RED4ExecutablePath));
+                ArchiveManager.LoadAll(new FileInfo(_settingsService.RED4ExecutablePath));
 
                 using var file = File.Create(chachePath);
                 Serializer.Serialize(file, ArchiveManager);
@@ -129,7 +129,7 @@ namespace WolvenManager.App.Services
         {
             ModArchiveManager = new ArchiveManager(_hashService);
             var dir = _settingsService.GetModsDirectoryPath();
-            ModArchiveManager.LoadFromFolder(dir);
+            ModArchiveManager.LoadFromFolder(new DirectoryInfo(dir));
         }
 
         private readonly SourceCache<Archive, string> _modArchiveCache;

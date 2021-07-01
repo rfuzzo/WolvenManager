@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DynamicData;
+using Microsoft.VisualBasic.Logging;
 using ProtoBuf;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -24,6 +25,11 @@ namespace WolvenManager.App.Services
         private readonly IHashService _hashService;
         private readonly ISettingsService _settingsService;
         private readonly INotificationService _notificationService;
+        private readonly ILoggerService _loggerService;
+
+        
+        
+
 
         [Reactive] public bool IsLoadedInternally { get; set; }
 
@@ -31,7 +37,8 @@ namespace WolvenManager.App.Services
         public ArchiveService(
             IHashService hashService,
             INotificationService notificationService,
-            ISettingsService settingsService
+            ISettingsService settingsService,
+            ILoggerService loggerService
             )
         {
             _hashService = hashService;
@@ -41,7 +48,7 @@ namespace WolvenManager.App.Services
             _fileCache = new SourceCache<FileEntry, ulong>(t => t.Key);
             _rootCache = new SourceCache<GameFileTreeNode, string>(t => t.FullPath);
             _modArchiveCache = new SourceCache<Archive, string>(t => t.ArchiveAbsolutePath);
-
+            _loggerService = loggerService;
         }
 
         public IObservable<bool> IsLoaded => this.WhenAnyValue(x => x.IsLoadedInternally, (b) => b == true);
@@ -129,7 +136,19 @@ namespace WolvenManager.App.Services
         {
             ModArchiveManager = new ArchiveManager(_hashService);
             var dir = _settingsService.GetModsDirectoryPath();
-            ModArchiveManager.LoadFromFolder(new DirectoryInfo(dir));
+            foreach (var file in Directory.GetFiles(dir, "*.archive"))
+            {
+                try
+                {
+                    ModArchiveManager.LoadArchive(file);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    _loggerService.Error($"Error loading mod: {Path.GetFileName(file)}");
+                }
+                
+            }
         }
 
         private readonly SourceCache<Archive, string> _modArchiveCache;

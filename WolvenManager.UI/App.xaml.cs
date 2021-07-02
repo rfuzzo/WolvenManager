@@ -27,6 +27,7 @@ using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Editors;
 using WolvenManager.App.ViewModels.Controls;
 using WolvenManager.Installer;
+using WolvenManager.Installer.Services;
 
 namespace WolvenManager.UI
 {

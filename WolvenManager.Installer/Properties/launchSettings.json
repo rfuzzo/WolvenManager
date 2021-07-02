@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "WolvenManager.Installer": {
-      "commandName": "Project",
-      "commandLineArgs": "manifest -a .\\publish\\full\\WolvenManager.UI.exe -i .\\publish -o .\\publish",
-      "workingDirectory": "X:\\GitHub\\WolvenManager"
-    }
-  }
-}

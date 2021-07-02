@@ -49,7 +49,7 @@
     <ProjectReference Include="..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
     <ProjectReference Include="..\WolvenKit\WolvenKit.Core\WolvenKit.Core.csproj" />
     <ProjectReference Include="..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
-    <ProjectReference Include="..\WolvenManager.Installer\WolvenManager.Installer.csproj" />
+    <ProjectReference Include="..\WolvenKit\WolvenManager.Installer\WolvenManager.Installer.csproj" />
   </ItemGroup>
 
 </Project>

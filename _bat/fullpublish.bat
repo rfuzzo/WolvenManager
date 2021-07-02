@@ -3,7 +3,7 @@
 call publish.bat
 
 echo "create manifest exe"
-dotnet publish .\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
+dotnet publish .\WolvenKit\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
 
 echo "create assets"
 .\WolvenManager.Installer.exe create -a .\publish\full\WolvenManager.UI.exe -o .\publish

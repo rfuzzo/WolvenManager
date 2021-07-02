@@ -1,16 +1,9 @@
 using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
-using System.Net.Http;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Reflection;
-using System.Reflection.Metadata;
-using System.Security.Cryptography;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using ReactiveUI;
@@ -18,13 +11,14 @@ using Splat;
 using WolvenKit.Common.Services;
 using WolvenManager.App.Services;
 using WolvenManager.App.ViewModels.PageViewModels;
-using DynamicData;
 using ReactiveUI.Fody.Helpers;
 using WolvenKit.Common.Tools;
 using WolvenKit.Common.Tools.Oodle;
 using WolvenManager.App.Utility;
 using Microsoft.Extensions.Hosting;
-using WolvenManager.Installer;
+using WolvenKit.Core;
+using WolvenManager.Installer.Commands;
+using WolvenManager.Installer.Services;
 
 namespace WolvenManager.App.ViewModels
 {
@@ -173,9 +167,40 @@ namespace WolvenManager.App.ViewModels
 
         private async void OnStartup()
         {
-            _updateService.Init(Constants.UpdateUrl, Constants.AssemblyName, delegate(FileInfo path)
+           
+
+            _updateService.Init(Constants.UpdateUrl, Constants.AssemblyName, delegate(FileInfo path, bool isManaged)
             {
-                var proc = Process.Start(path.FullName, "/SILENT /NOCANCEL");
+                if (isManaged)
+                {
+                    _ = Process.Start(path.FullName, "/SILENT /NOCANCEL");
+                }
+                else
+                {
+                    // move installer helper
+                    var basedir = new DirectoryInfo(Path.GetDirectoryName(System.AppContext.BaseDirectory));
+                    var shippedInstaller = new FileInfo(Path.Combine(basedir.FullName, "lib", Constants.UpdaterName));
+                    var newPath = Path.Combine(_settingsService.GetAppData(), Constants.UpdaterName);
+                    try
+                    {
+                        shippedInstaller.MoveTo(newPath, true);
+                    }
+                    catch (Exception)
+                    {
+                        _loggerService.Error("Could not initialize auto-installer.");
+                        return;
+                    }
+
+
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "CMD.EXE",
+                        Arguments = $"/K {newPath} install -i \"{path}\" -o \"{basedir.FullName}\" -r {Constants.AppName}"
+                    };
+                    var p = Process.Start(psi);
+
+                    //InstallCommand.Action(path, basedir, Constants.AppName);
+                }
 
                 Application.Current.Shutdown();
             });

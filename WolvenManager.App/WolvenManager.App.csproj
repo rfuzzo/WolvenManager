@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
 	  <UseWPF>true</UseWPF>
+      <RuntimeIdentifier>win-x64</RuntimeIdentifier>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <NoWarn>NU1701</NoWarn>
       <DebugType>embedded</DebugType>

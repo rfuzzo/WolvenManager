@@ -29,6 +29,8 @@ jobs:
       run: dotnet build ./WolvenManager.UI/WolvenManager.UI.csproj --no-restore
     - name: Publish
       run: dotnet publish ./WolvenManager.UI/WolvenManager.UI.csproj -o publish/full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
-      
+    - name: Publish manifest exe
+      run: dotnet publish .\WolvenKit\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
+ 
     - name: Test
       run: dotnet test --no-build --verbosity normal

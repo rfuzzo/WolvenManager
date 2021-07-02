@@ -33,7 +33,7 @@ jobs:
     - name: Publish app
       run: dotnet publish ./WolvenManager.UI/WolvenManager.UI.csproj -o publish/full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
     - name: Publish manifest exe
-      run: dotnet publish .\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
+      run: dotnet publish .\WolvenKit\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
 
     - name: "create assets"
       run: .\WolvenManager.Installer.exe create -a .\publish\full\WolvenManager.UI.exe -o .\publish

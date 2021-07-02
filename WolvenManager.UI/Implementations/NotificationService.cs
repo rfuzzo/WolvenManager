@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using HandyControl.Controls;
+using WolvenKit.Common.Services;
 using WolvenManager.App.Services;
 
 namespace WolvenManager.UI.Services
@@ -111,12 +112,27 @@ namespace WolvenManager.UI.Services
             }
         }
 
+        public void Ask(string message, Func<bool,bool> isConfirmedFunc)
+        {
+            switch (NotificationCategory)
+            {
+                case ENotificationCategory.App:
+                    AskInApp(message, isConfirmedFunc);
+                    break;
+                case ENotificationCategory.Desktop:
+                    AskInDesktop(message, isConfirmedFunc);
+                    break;
+            }
+            
+        }
+
+        private void AskInApp(string message, Func<bool, bool> func) => Growl.Ask(message, func);
+
+        private void AskInDesktop(string message, Func<bool, bool> func) => Growl.AskGlobal(message, func);
+
         public void ShowAppNotification(string message, ENotificationType type) => ShowNotificationInApp(message, type);
 
         public void ShowDesktopNotification(string message, ENotificationType type) => ShowNotificationInDesktop(message, type);
-
-        #endregion
-
 
         private static void ShowNotificationInDesktop(string message, ENotificationType type)
         {
@@ -145,5 +161,7 @@ namespace WolvenManager.UI.Services
             };
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
         }
+
+        #endregion
     }
 }

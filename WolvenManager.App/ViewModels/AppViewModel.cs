@@ -22,9 +22,9 @@ using DynamicData;
 using ReactiveUI.Fody.Helpers;
 using WolvenKit.Common.Tools;
 using WolvenKit.Common.Tools.Oodle;
-using WolvenManager.App.Models;
 using WolvenManager.App.Utility;
 using Microsoft.Extensions.Hosting;
+using WolvenManager.Installer;
 
 namespace WolvenManager.App.ViewModels
 {
@@ -38,8 +38,11 @@ namespace WolvenManager.App.ViewModels
         private readonly ILoggerService _loggerService;
         private readonly IArchiveService _archiveService;
         private readonly IHostApplicationLifetime _appLifetime;
+        private readonly IUpdateService _updateService;
 
         
+        
+
 
         #endregion
 
@@ -49,7 +52,8 @@ namespace WolvenManager.App.ViewModels
             INotificationService notificationService,
             ILoggerService loggerService,
             IArchiveService archiveService,
-            IHostApplicationLifetime appLifetime
+            IHostApplicationLifetime appLifetime,
+            IUpdateService updateService
         )
         {
             _settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
@@ -57,13 +61,16 @@ namespace WolvenManager.App.ViewModels
             _loggerService = loggerService ?? Locator.Current.GetService<ILoggerService>();
             _archiveService = archiveService;
             _appLifetime = appLifetime;
+            _updateService = updateService;
+
 
             // routing
             Router = new RoutingState();
 
             // versioning
-            var assembly = Assembly.GetExecutingAssembly();
-            var productName = ((AssemblyProductAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyProductAttribute), false))?.Product;
+            
+            var assembly = CommonFunctions.GetAssembly(Constants.AssemblyName);
+            var productName = assembly.GetName();
             Version = assembly.GetName().Version?.ToString();
             Title = $"{productName}-{Version}";
 
@@ -92,7 +99,7 @@ namespace WolvenManager.App.ViewModels
                 IsBottomContentVisible = !IsBottomContentVisible;
             });
 
-            CheckForUpdatesCommand = ReactiveCommand.CreateFromTask(CheckForUpdatesAsync);
+            CheckForUpdatesCommand = ReactiveCommand.CreateFromTask(_updateService.CheckForUpdatesAsync);
 
             
         }
@@ -101,13 +108,12 @@ namespace WolvenManager.App.ViewModels
 
         #region properties
 
-        [Reactive] public bool IsUpdateAvailable { get; set; }
-        [Reactive] public bool IsUpdateReadyToInstall { get; set; }
+        
         [Reactive] public double Progress { get; set; }
         [Reactive] public string Version { get; set; }
 
         [Reactive] public bool IsBottomContentVisible { get; set; } = true;
-        public string SettingsIconName => IsUpdateAvailable ? "CogRefresh" : "Cog";
+        public string SettingsIconName => _updateService.IsUpdateAvailable ? "CogRefresh" : "Cog";
 
         private string _title;
         public string Title
@@ -167,6 +173,13 @@ namespace WolvenManager.App.ViewModels
 
         private async void OnStartup()
         {
+            _updateService.Init(Constants.UpdateUrl, Constants.AssemblyName, delegate(FileInfo path)
+            {
+                var proc = Process.Start(path.FullName, "/SILENT /NOCANCEL");
+
+                Application.Current.Shutdown();
+            });
+
             // Once 
             _settingsService.IsValid.Subscribe(async isvalid =>
             {
@@ -184,7 +197,7 @@ namespace WolvenManager.App.ViewModels
                     await Task.Run( () => _archiveService.Load());
 
                     // Check for updates
-                    await CheckForUpdatesAsync();
+                    await _updateService.CheckForUpdatesAsync();
                 }
             });
 
@@ -200,169 +213,7 @@ namespace WolvenManager.App.ViewModels
             }
         }
 
-        private async Task CheckForUpdatesAsync()
-        {
-            var http = new HttpClient();
-            var manifestJson = await http.GetStringAsync(new Uri(Constants.RemoteManifest));
-
-            var manifest = JsonSerializer.Deserialize<Manifest>(manifestJson);
-            if (manifest == null)
-            {
-                return;
-            }
-
-            var latestVersion = new Version(manifest.Version);
-            var myVersion = CommonFunctions.GetAssemblyVersion(Constants.AssemblyName);
-
-            if (latestVersion > myVersion)
-            {
-                IsUpdateAvailable = true;
-
-                // check if portable
-                // TODO
-
-                {
-                    // check if update already downloaded before
-                    var physicalPath = new FileInfo(Path.Combine(_settingsService.GetTempDir(), manifest.Installer.Key));
-                    if (physicalPath.Exists)
-                    {
-                        using (var mySha256 = SHA256.Create())
-                        {
-                            var hash = CommonFunctions.HashFile(physicalPath, mySha256);
-                            if (manifest.Installer.Value.Equals(hash))
-                            {
-                                HandleUpdateFromFile(physicalPath);
-                            }
-                            else
-                            {
-                                // hash was not matching, redownload from remote
-                                try
-                                {
-                                    physicalPath.Delete();
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine(e);
-                                    throw;
-                                }
-                                finally
-                                {
-                                    await DownloadUpdateAsync(manifest, manifest.Installer.Key);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        await DownloadUpdateAsync(manifest, manifest.Installer.Key);
-                    }
-                }
-            }
-        }
-
-        private async Task DownloadUpdateAsync(Manifest manifest, string key)
-        {
-            var latestVersion = new Version(manifest.Version);
-            var myVersion = CommonFunctions.GetAssemblyVersion(Constants.AssemblyName);
-            if (MessageBox.Show(
-                $"You've got version {myVersion} of {Constants.ProductName}. Would you like to update to the latest version {latestVersion}?",
-                $"Update {Constants.ProductName}?", MessageBoxButton.YesNo) == MessageBoxResult.No)
-            {
-                return;
-            }
-
-
-
-            using (var wc = new WebClient())
-            {
-                var dlObservable = Observable.FromEventPattern<DownloadProgressChangedEventHandler, DownloadProgressChangedEventArgs>(
-                    handler => wc.DownloadProgressChanged += handler,
-                    handler => wc.DownloadProgressChanged -= handler);
-                var dlCompleteObservable = Observable.FromEventPattern<AsyncCompletedEventHandler, AsyncCompletedEventArgs>(
-                    handler => wc.DownloadFileCompleted += handler,
-                    handler => wc.DownloadFileCompleted -= handler);
-
-                _ = dlObservable
-                    .Select(_ => (double)_.EventArgs.ProgressPercentage)
-                    .Subscribe(d =>
-                    {
-                        Progress = d;
-                    });
-
-                _ = dlCompleteObservable
-                    .Select(_ => _.EventArgs)
-                    .Subscribe(c =>
-                    {
-                        OnDownloadCompletedCallback(c, manifest, key);
-                    });
-
-                var uri = new Uri(Constants.LatestRelease + key);
-                var physicalPath = Path.Combine(_settingsService.GetTempDir(), key);
-                wc.DownloadFileAsync(uri, physicalPath);
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private void OnDownloadCompletedCallback(AsyncCompletedEventArgs e, Manifest manifest, string key)
-        {
-            if (e.Cancelled)
-            {
-                _loggerService.Info("File download cancelled.");
-            }
-
-            if (e.Error != null)
-            {
-                _loggerService.Error(e.Error.ToString());
-            }
-
-            // check downloaded file
-            var physicalPath = new FileInfo(Path.Combine(_settingsService.GetTempDir(), manifest.Installer.Key));
-            if (physicalPath.Exists)
-            {
-                using (var mySha256 = SHA256.Create())
-                {
-                    var hash = CommonFunctions.HashFile(physicalPath, mySha256);
-                    if (manifest.Installer.Value.Equals(hash))
-                    {
-                        HandleUpdateFromFile(physicalPath);
-                    }
-                    else
-                    {
-                        _loggerService.Error("Downloaded file does not match expected file.");
-                    }
-                }
-            }
-            else
-            {
-                _loggerService.Error("File download failed.");
-            }
-        }
-
-        private void HandleUpdateFromFile(FileInfo path)
-        {
-            IsUpdateAvailable = false;
-            IsUpdateReadyToInstall = true;
-
-            // handle update
-            // TODO:portable
-
-            // installer
-
-            // ask user to restart
-            if (MessageBox.Show(
-                $"Update available. Restart?",
-                $"Update {Constants.ProductName}?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                var proc = Process.Start(path.FullName, "/SILENT /NOCANCEL");
-
-                //System.Windows.Forms.Application.Restart();
-                System.Windows.Application.Current.Shutdown();
-            }
-
-            // run installer
-
-        }
+        
 
         #endregion
     }

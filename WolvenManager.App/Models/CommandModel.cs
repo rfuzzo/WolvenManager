@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using ReactiveUI;
 using WolvenKit.Common;
 using WolvenKit.Common.DDS;
+using WolvenKit.Common.Services;
 using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Editors;
 using WolvenManager.App.Services;

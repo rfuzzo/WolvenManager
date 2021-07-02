@@ -26,6 +26,7 @@ using WolvenKit.Common;
 using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Editors;
 using WolvenManager.App.ViewModels.Controls;
+using WolvenManager.Installer;
 
 namespace WolvenManager.UI
 {
@@ -70,6 +71,7 @@ namespace WolvenManager.UI
                     services.AddSingleton(typeof(ISettingsService), SettingsService.Load());
                     services.AddSingleton<INotificationService, NotificationService>();
                     services.AddSingleton<IInteractionService, InteractionService>();
+                    services.AddSingleton<IUpdateService, UpdateService>();
 
 
                     // register your personal services here

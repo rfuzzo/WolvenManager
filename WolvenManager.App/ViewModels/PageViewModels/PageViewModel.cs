@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using ReactiveUI;
 using Splat;
+using WolvenKit.Common.Services;
 using WolvenManager.App.Attributes;
 using WolvenManager.App.Services;
 

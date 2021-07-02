@@ -19,8 +19,7 @@ namespace WolvenManager.App
 
         public const string AssemblyName = "WolvenManager.UI.dll";
 
-        public const string GithubRepo = "https://github.com/rfuzzo/WolvenManager/";
-        public const string LatestRelease = GithubRepo + "releases/latest/download/";
-        public const string RemoteManifest = LatestRelease + "manifest.json";
+        public const string UpdateUrl = "https://github.com/rfuzzo/WolvenManager/releases/latest/download/";
+
     }
 }

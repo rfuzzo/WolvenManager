@@ -23,6 +23,7 @@ using System.Windows;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using ProtoBuf.Meta;
 using WolvenKit.Common;
+using WolvenKit.Core.Services;
 using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Editors;
 using WolvenManager.App.ViewModels.Controls;
@@ -79,7 +80,7 @@ namespace WolvenManager.UI
                     services.AddSingleton<IHashService, HashService>();
                     services.AddSingleton<IArchiveService, ArchiveService>();
                     services.AddSingleton<ILoggerService, ReactiveLoggerService>();
-                    services.AddSingleton<IProgress<double>, PercentProgressService>();
+                    services.AddSingleton<IProgressService<double>, ProgressService<double>>();
 
                     
 

@@ -62,15 +62,6 @@ jobs:
       with:
         name: ${{env.MANIFEST}}
         path: ${{env.FINALOUT}}/${{env.MANIFEST}}
-
-    # Upload artifacts
-    - uses: actions/upload-artifact@v2
-      with:
-        name: my-artifact
-        path: |
-          ${{env.FINALOUT}}/${{env.PORTABLE}}
-          ${{env.FINALOUT}}/${{env.INSTALLER}}
-          ${{env.FINALOUT}}/${{env.MANIFEST}}
        
     # RELEASE
     - name: Release

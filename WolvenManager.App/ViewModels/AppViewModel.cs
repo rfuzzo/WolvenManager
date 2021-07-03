@@ -17,6 +17,7 @@ using WolvenKit.Common.Tools.Oodle;
 using WolvenManager.App.Utility;
 using Microsoft.Extensions.Hosting;
 using WolvenKit.Core;
+using WolvenKit.Core.Services;
 using WolvenManager.Installer.Commands;
 using WolvenManager.Installer.Services;
 
@@ -31,13 +32,13 @@ namespace WolvenManager.App.ViewModels
         private readonly INotificationService _notificationService;
         private readonly ILoggerService _loggerService;
         private readonly IArchiveService _archiveService;
-        private readonly IHostApplicationLifetime _appLifetime;
         private readonly IUpdateService _updateService;
+        private readonly IProgressService<double> _progressService;
 
         
         
 
-
+        
         #endregion
 
         #region ctor
@@ -46,17 +47,16 @@ namespace WolvenManager.App.ViewModels
             INotificationService notificationService,
             ILoggerService loggerService,
             IArchiveService archiveService,
-            IHostApplicationLifetime appLifetime,
-            IUpdateService updateService
+            IUpdateService updateService,
+            IProgressService<double> progressService
         )
         {
             _settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
             _notificationService = notificationService ?? Locator.Current.GetService<INotificationService>();
             _loggerService = loggerService ?? Locator.Current.GetService<ILoggerService>();
             _archiveService = archiveService;
-            _appLifetime = appLifetime;
             _updateService = updateService;
-
+            _progressService = progressService;
 
             // routing
             Router = new RoutingState();
@@ -67,7 +67,6 @@ namespace WolvenManager.App.ViewModels
             var productName = assembly.GetName();
             Version = assembly.GetName().Version?.ToString();
             Title = $"{productName}-{Version}";
-
 
             OnStartup();
 
@@ -95,18 +94,27 @@ namespace WolvenManager.App.ViewModels
 
             CheckForUpdatesCommand = ReactiveCommand.CreateFromTask(_updateService.CheckForUpdatesAsync);
 
-            
+            _ = Observable.FromEventPattern<EventHandler<double>, double>(
+                handler => _progressService.ProgressChanged += handler,
+                handler => _progressService.ProgressChanged -= handler)
+                .Select(_ => _.EventArgs * 100)
+                .ToProperty(this, x => x.Progress, out _progress);
         }
+
 
         #endregion
 
         #region properties
 
-        
-        [Reactive] public double Progress { get; set; }
+        private readonly ObservableAsPropertyHelper<double> _progress;
+        public double Progress => _progress.Value;
+
+
+
         [Reactive] public string Version { get; set; }
 
         [Reactive] public bool IsBottomContentVisible { get; set; } = true;
+
         public string SettingsIconName => _updateService.IsUpdateAvailable ? "CogRefresh" : "Cog";
 
         private string _title;
@@ -191,15 +199,13 @@ namespace WolvenManager.App.ViewModels
                         return;
                     }
 
-
+                    // start installer helper
                     var psi = new ProcessStartInfo
                     {
                         FileName = "CMD.EXE",
                         Arguments = $"/K {newPath} install -i \"{path}\" -o \"{basedir.FullName}\" -r {Constants.AppName}"
                     };
                     var p = Process.Start(psi);
-
-                    //InstallCommand.Action(path, basedir, Constants.AppName);
                 }
 
                 Application.Current.Shutdown();
@@ -223,6 +229,12 @@ namespace WolvenManager.App.ViewModels
 
                     // Check for updates
                     await _updateService.CheckForUpdatesAsync();
+
+                    // Cleanup temp folders
+                    var installerPath = Path.Combine(Path.GetTempPath(), $"{Constants.ProductName}-installer-{Version}.exe");
+                    TryFileDelete(installerPath);
+                    var portablePath = Path.Combine(Path.GetTempPath(), $"{Constants.ProductName}-{Version}.zip");
+                    TryFileDelete(installerPath);
                 }
             });
 
@@ -238,7 +250,22 @@ namespace WolvenManager.App.ViewModels
             }
         }
 
-        
+        private static void TryFileDelete(string installername)
+        {
+            if (!File.Exists(installername))
+            {
+                return;
+            }
+
+            try
+            {
+                File.Delete(installername);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
 
         #endregion
     }

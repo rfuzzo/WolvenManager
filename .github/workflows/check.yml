@@ -24,13 +24,27 @@ jobs:
       run: dotnet clean --configuration Release && dotnet nuget locals all --clear
     - name: Restore dependencies
       run: dotnet restore
-      
+
+    # environmental variables
+    - run: echo "PROJ=./WolvenManager.UI/WolvenManager.UI.csproj" >> $env:GITHUB_ENV
+    - run: echo "OUT=./publish/full" >> $env:GITHUB_ENV
+    - run: echo "NAME=WolvenManager" >> $env:GITHUB_ENV
+    - name: Get version
+      uses: naminodarie/get-net-sdk-project-versions-action@v1
+      id: get-version
+      with:
+        proj-path:  ${{env.PROJ}}
+    - run: echo "VERSION=${{steps.get-version.outputs.version}}" >> $env:GITHUB_ENV
+
+    # Test building an publishing
     - name: Build
-      run: dotnet build ./WolvenManager.UI/WolvenManager.UI.csproj --no-restore
+      run: dotnet build ${{env.PROJ}} --no-restore
     - name: Publish
-      run: dotnet publish ./WolvenManager.UI/WolvenManager.UI.csproj -o publish/full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
-    - name: Publish manifest exe
-      run: dotnet publish .\WolvenKit\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
- 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet publish ${{env.PROJ}} -o ${{env.OUT}} --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows 
+
+    # PORTABLE
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.NAME}}-${{env.VERSION}}.zip
+        path: ${{env.OUT}}
+

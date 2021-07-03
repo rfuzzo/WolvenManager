@@ -11,6 +11,7 @@ jobs:
       version: ${{steps.get-version.outputs.version}}
 
     steps:
+    # setup
     - uses: actions/checkout@v2
       with:
         submodules: recursive
@@ -23,54 +24,68 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       
+    # environmental variables
+    - run: echo "PROJ=./WolvenManager.UI/WolvenManager.UI.csproj" >> $env:GITHUB_ENV
+    - run: echo "OUT=./publish/full" >> $env:GITHUB_ENV
+    - run: echo "FINALOUT=./publish" >> $env:GITHUB_ENV
+    - run: echo "NAME=WolvenManager" >> $env:GITHUB_ENV
     - name: Get version
       uses: naminodarie/get-net-sdk-project-versions-action@v1
       id: get-version
       with:
-        proj-path: ./WolvenManager.UI/WolvenManager.UI.csproj
-    - run: echo "${{steps.get-version.outputs.version}}"
+        proj-path:  ${{env.PROJ}}
+    - run: echo "VERSION=${{steps.get-version.outputs.version}}" >> $env:GITHUB_ENV
+    - run: echo "PORTABLE=${{env.NAME}}-${{env.VERSION}}.zip" >> $env:GITHUB_ENV
+    - run: echo "INSTALLER=${{env.NAME}}-installer-${{env.VERSION}}.exe" >> $env:GITHUB_ENV
+    - run: echo "MANIFEST=manifest.json" >> $env:GITHUB_ENV
       
-    - name: Publish app
-      run: dotnet publish ./WolvenManager.UI/WolvenManager.UI.csproj -o publish/full --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
-    - name: Publish manifest exe
-      run: dotnet publish .\WolvenKit\WolvenManager.Installer\WolvenManager.Installer.csproj -o .\ -p:PublishSingleFile=true --no-self-contained -r win-x64 -c Release -f net5.0
+    # Publish app
+    - run: dotnet publish ${{env.PROJ}} -o ${{env.OUT}} --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
 
-    - name: "create assets"
-      run: .\WolvenManager.Installer.exe create -a .\publish\full\WolvenManager.UI.exe -o .\publish
+    # Create assets
+    - run: ${{env.OUT}}/WolvenManager.Installer.exe create -a ${{env.OUT}}\WolvenManager.UI.exe -o .\publish
+    - run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss
+    - run: ${{env.OUT}}/WolvenManager.Installer.exe manifest -a ${{env.OUT}}\WolvenManager.UI.exe -i .\publish -o .\publish
 
-    - name: Create Installer
-      run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss
-    
-    - name: Create manifest.json
-      run: .\WolvenManager.Installer.exe manifest -a .\publish\full\WolvenManager.UI.exe -i .\publish -o .\publish
+    # PORTABLE
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.PORTABLE}}
+        path: ${{env.FINALOUT}}/${{env.PORTABLE}}
+    # INSTALLER
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.INSTALLER}}
+        path: ${{env.FINALOUT}}/${{env.INSTALLER}}
+    # MANIFEST
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{env.MANIFEST}}
+        path: ${{env.FINALOUT}}/${{env.MANIFEST}}
 
-    - name: Upload Artifact App
-      uses: actions/upload-artifact@v2
+    # Upload artifacts
+    - uses: actions/upload-artifact@v2
       with:
-        name: WolvenManager-${{steps.get-version.outputs.version}}.zip
-        path: ./publish/WolvenManager-${{steps.get-version.outputs.version}}.zip
-    - name: Upload Artifact Installer
-      uses: actions/upload-artifact@v2
+        name: my-artifact
+        path: |
+          ${{env.FINALOUT}}/${{env.PORTABLE}}
+          ${{env.FINALOUT}}/${{env.INSTALLER}}
+          ${{env.FINALOUT}}/${{env.MANIFEST}}
+       
+    # RELEASE
+    - name: Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
-        path: ./publish/WolvenManager-installer-${{steps.get-version.outputs.version}}.exe
-    - name: Upload Artifact Manifest
-      uses: actions/upload-artifact@v2
-      with:
-        name: manifest.json
-        path: ./publish/manifest.json
-        
-    - name: Create Release
-      uses: ncipollo/release-action@v1.8.6
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag_name: v-${{steps.get-version.outputs.version}}
-        draft: true      
-        release_name: WolvenManager - ${{steps.get-version.outputs.version}}
-        artifacts: |
-          "manifest.json", 
-          "WolvenManager-installer-${{steps.get-version.outputs.version}}.exe", 
-          "WolvenManager-${{steps.get-version.outputs.version}}.zip"
+        body_path: ./CHANGELOG.md
+        files: |
+          ${{env.FINALOUT}}/${{env.PORTABLE}}
+          ${{env.FINALOUT}}/${{env.INSTALLER}}
+          ${{env.FINALOUT}}/${{env.MANIFEST}}
+        draft: true
+        name: ${{env.NAME}} v${{env.VERSION}}
+        tag_name: "${{env.VERSION}}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
   
   

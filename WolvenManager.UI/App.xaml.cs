@@ -9,7 +9,6 @@ using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Microsoft.Extensions.Logging;
 using CP77.CR2W;
 using CP77Tools.Tasks;
-using WolvenKit.Common.Model.Arguments;
 using WolvenKit.Modkit.RED4;
 using WolvenKit.Modkit.RED4.RigFile;
 using WolvenKit.RED4.CR2W;
@@ -25,9 +24,7 @@ using ProtoBuf.Meta;
 using WolvenKit.Common;
 using WolvenKit.Core.Services;
 using WolvenKit.RED4.CR2W.Archive;
-using WolvenManager.App.Editors;
 using WolvenManager.App.ViewModels.Controls;
-using WolvenManager.Installer;
 using WolvenManager.Installer.Services;
 
 namespace WolvenManager.UI

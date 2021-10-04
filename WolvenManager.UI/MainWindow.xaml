@@ -142,7 +142,7 @@
                                 </Button.Content>
 
                                 <Button.ContextMenu>
-                                    <ContextMenu x:Name="SettingsContextMenu">
+                                    <ContextMenu x:Name="SettingsContextMenu"  >
                                         <MenuItem Header="Settings" x:Name="SettingsMenuItem"/>
                                         <MenuItem Header="Check for Updates..." x:Name="CheckForUpdatesMenuItem"/>
 

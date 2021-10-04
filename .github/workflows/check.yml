@@ -13,17 +13,16 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    # setup  
+    - name: checkout
+      uses: actions/checkout@v2
       with:
         submodules: recursive
-    - name: Setup .NET
+    - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: dotnet clean
-      run: dotnet clean --configuration Release && dotnet nuget locals all --clear
-    - name: Restore dependencies
-      run: dotnet restore
+    - uses: microsoft/setup-msbuild@v1.0.2
 
     # environmental variables
     - run: echo "PROJ=./WolvenManager.UI/WolvenManager.UI.csproj" >> $env:GITHUB_ENV
@@ -37,11 +36,8 @@ jobs:
     - run: echo "VERSION=${{steps.get-version.outputs.version}}" >> $env:GITHUB_ENV
 
     # Test building an publishing
-    - name: Build
-      run: dotnet build ${{env.PROJ}} --no-restore
-    - name: Publish
-      run: dotnet publish ${{env.PROJ}} -o ${{env.OUT}} --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows 
-
+    - run: msbuild ${{env.PROJ}} -t:restore -t:Build -t:Publish /p:PublishDir=".${{env.OUT}}" /p:InformationalVersion="${{env.VERSION}}" /p:Configuration=Release /p:Platform=x64 /p:SelfContained=False /p:PublishReadyToRun=False /p:PublishTrimmed=False
+    
     # PORTABLE
     - uses: actions/upload-artifact@v2
       with:

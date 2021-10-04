@@ -596,7 +596,7 @@ namespace WolvenManager.Models
 
         [Category("Optional")]
         [Description("Use optional serialization format. Options are json and xml")]
-        public ESerializeFormat format { get; set; }
+        public ETextConvertFormat format { get; set; }
 
         public override async Task ExecuteAsync(IConsoleFunctions consoleFunctions) =>
             await Task.Run(() =>

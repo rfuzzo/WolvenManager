@@ -8,20 +8,22 @@ using WolvenManager.App.Attributes;
 using WolvenManager.App.Services;
 using System.Reactive.Linq;
 using DynamicData;
+using WolvenKit.Common;
+using WolvenKit.RED4.CR2W.Archive;
 
 namespace WolvenManager.App.ViewModels.PageViewModels
 {
     [RoutingUrl(Constants.RoutingIDs.Mods)]
     public class ModListViewModel : PageViewModel
     {
-        private readonly IArchiveService _archiveService;
+        private readonly IArchiveManager _archiveService;
 
 
         private readonly ReadOnlyObservableCollection<ArchiveViewModel> _modArchiveCollection;
         public ReadOnlyObservableCollection<ArchiveViewModel> ModArchiveCollection => _modArchiveCollection;
 
         public ModListViewModel(
-            IArchiveService archiveService
+            IArchiveManager archiveService
         ) : base(typeof(ModListViewModel))
         {
             _archiveService = archiveService;
@@ -32,8 +34,8 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             //    IsSideBarVisible = !IsSideBarVisible;
             //});
 
-            var disposable = _archiveService.ConnectModArchives()
-                .Transform(_ => new ArchiveViewModel(_))
+            var disposable = _archiveService.ModArchives.Connect()
+                .Transform(x => new ArchiveViewModel(x as Archive))
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out _modArchiveCollection)
                 .Subscribe();

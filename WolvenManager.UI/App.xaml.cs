@@ -21,7 +21,9 @@ using WolvenManager.UI.Views;
 using System.Windows;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using ProtoBuf.Meta;
+using Semver;
 using WolvenKit.Common;
+using WolvenKit.Common.Interfaces;
 using WolvenKit.Core.Services;
 using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.ViewModels.Controls;
@@ -75,19 +77,16 @@ namespace WolvenManager.UI
 
                     // register your personal services here
                     services.AddSingleton<IHashService, HashService>();
-                    services.AddSingleton<IArchiveService, ArchiveService>();
                     services.AddSingleton<ILoggerService, ReactiveLoggerService>();
                     services.AddSingleton<IProgressService<double>, ProgressService<double>>();
 
-                    
-
-
                     services.AddSingleton<Red4ParserService>();
-                    services.AddSingleton<TargetTools>();      //Cp77FileService
-                    services.AddSingleton<RIG>();              //Cp77FileService
+
+                    services.AddSingleton<IArchiveManager, ArchiveManager>();   // IHashService
+                    services.AddSingleton<RIG>();              // Red4ParserService
                     services.AddSingleton<MeshTools>();        //RIG, Cp77FileService
 
-                    services.AddSingleton<ModTools>();         //Cp77FileService, ILoggerService, IProgress, IHashService, Mesh, Target
+                    services.AddSingleton<IModTools, ModTools>();         //Cp77FileService, ILoggerService, IProgress, IHashService, Mesh, Target
 
                     services.AddSingleton<IConsoleFunctions, ConsoleFunctions>();
 

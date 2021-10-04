@@ -18,6 +18,7 @@ using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeGrid;
 using Syncfusion.UI.Xaml.TreeView;
 using WolvenKit.Common;
+using WolvenKit.Common.Model;
 using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.ViewModels.PageViewModels;
 using SelectionChangedEventArgs = System.Windows.Controls.SelectionChangedEventArgs;
@@ -61,62 +62,25 @@ namespace WolvenManager.UI.Views
 
         }
 
-        private void SfTreeView_OnSelectionChanged(object sender, ItemSelectionChangedEventArgs e)
-        {
-            if (!e.AddedItems.Any())
-            {
-                return;
-            }
+        //private void SfTreeView_OnSelectionChanged(object sender, ItemSelectionChangedEventArgs e)
+        //{
+        //    if (!e.AddedItems.Any())
+        //    {
+        //        return;
+        //    }
 
-            if (ViewModel == null)
-            {
-                return;
-            }
+        //    if (ViewModel == null)
+        //    {
+        //        return;
+        //    }
 
-            if (e.AddedItems.First() is GameFileTreeNode model)
-            {
-                ViewModel.SelectedFiles = model.Files.Values.SelectMany(_ => _)
-                    .Select(_ => new FileEntryViewModel(_ as FileEntry));
-            }
-        }
-
-        private void LeftNavigation_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var list = e.AddedItems.ToList<GameFileTreeNode>().ToList();
-
-            if (!list.Any())
-            {
-                return;
-            }
-
-            if (ViewModel == null)
-            {
-                return;
-            }
-
-            var model = list.First();
-            ViewModel.SelectedFiles = model.Files.Values.SelectMany(_ => _)
-                .Select(_ => new FileEntryViewModel(_ as FileEntry));
-        }
-
-        private void LeftNavigation_OnSelectionChanged(object sender, GridSelectionChangedEventArgs e)
-        {
-            if (!e.AddedItems.Any())
-            {
-                return;
-            }
-
-            if (ViewModel == null)
-            {
-                return;
-            }
-
-            if (e.AddedItems.First() is TreeGridRowInfo {RowData: GameFileTreeNode model})
-            {
-                ViewModel.SelectedFiles = model.Files.Values.SelectMany(_ => _)
-                    .Select(_ => new FileEntryViewModel(_ as FileEntry));
-            }
-        }
+        //    if (e.AddedItems.First() is RedFileSystemModel model)
+        //    {
+        //        ViewModel.SelectedFiles = model.Files
+        //            .Select(_ => )
+        //            .Select(_ => new FileEntryViewModel(_ as FileEntry));
+        //    }
+        //}
 
         private void LeftNavigation_OnSelectionChanged(object sender, ItemSelectionChangedEventArgs e)
         {
@@ -130,11 +94,17 @@ namespace WolvenManager.UI.Views
                 return;
             }
 
-            if (e.AddedItems.First() is GameFileTreeNode model )
+            if (e.AddedItems.First() is RedFileSystemModel model )
             {
-                ViewModel.SelectedFiles = model.Files.Values.SelectMany(_ => _)
-                    .Select(_ => new FileEntryViewModel(_ as FileEntry));
+                //ViewModel.SelectedFiles = model.Files
+                //    .Select(_ => new FileEntryViewModel(_ as FileEntry));
             }
+        }
+
+        private void dbg()
+        {
+            float z = 13.5f;
+            bool sign = (BitConverter.GetBytes(z).First() & 1) == 1;
         }
     }
 }

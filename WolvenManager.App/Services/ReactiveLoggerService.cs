@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -21,7 +21,7 @@ namespace WolvenManager.App.Services
 
         public void LogString(string msg, Logtype type)
         {
-            var x = new LogEntry(msg, type);
+            var x = new LogEntry(msg, type, DateTime.Now);
             if (_log.Count > Limit)
             {
                 _log.RemoveAt(0);
@@ -41,6 +41,14 @@ namespace WolvenManager.App.Services
         public void Warning(string s) => LogString(s, Logtype.Error);
 
         public void Error(string msg) => LogString(msg, Logtype.Error);
+        public void Error(Exception exception)
+        {
+            var msg =
+                $"========================\r\n" +
+                $"{exception.ToString()}" +
+                $"\r\n========================";
+            Error(msg);
+        }
     }
     
 }

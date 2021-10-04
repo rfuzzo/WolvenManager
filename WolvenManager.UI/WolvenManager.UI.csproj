@@ -14,32 +14,32 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AdonisUI" Version="1.17.0" />
-    <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.0" />
-    <PackageReference Include="HandyControls" Version="3.3.7" />
-    <PackageReference Include="MahApps.Metro.IconPacks.BootstrapIcons" Version="4.8.0" />
-    <PackageReference Include="MahApps.Metro.IconPacks.Codicons" Version="4.8.0" />
-    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.8.0" />
+    <PackageReference Include="AdonisUI" Version="1.17.1" />
+    <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
+    <PackageReference Include="HandyControls" Version="3.3.8" />
+    <PackageReference Include="MahApps.Metro.IconPacks.BootstrapIcons" Version="4.10.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Codicons" Version="4.10.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.10.0" />
     
-    <PackageReference Include="ReactiveUI" Version="14.1.1" />
-    <PackageReference Include="ReactiveUI.Events.WPF" Version="14.1.1" />
-    <PackageReference Include="ReactiveUI.Fody" Version="14.1.1" />
-    <PackageReference Include="ReactiveUI.WPF" Version="14.1.1" />
-    <PackageReference Include="Splat" Version="11.1.1" />
+    <PackageReference Include="ReactiveUI" Version="16.2.6" />
+    <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="16.2.6" />
+    <PackageReference Include="ReactiveUI.WPF" Version="16.2.6" />
+    <PackageReference Include="Splat" Version="13.1.22" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
-    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="11.1.1" />
-    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="11.1.1" />
+    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="13.1.22" />
+    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="13.1.22" />
     
-    <PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="19.2.0.49" />
-    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="19.2.0.49" />
-    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="19.2.0.49" />
-    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="19.2.0.49" />
-    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="19.2.0.49" />
-    <PackageReference Include="Syncfusion.SfTreeNavigator.WPF" Version="19.2.0.49" />
-    <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="19.2.0.49" />
-    <PackageReference Include="Syncfusion.Themes.MaterialDark.WPF" Version="19.2.0.49" />
-    <PackageReference Include="Syncfusion.Tools.WPF" Version="19.2.0.49" />
+    <PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="19.3.0.43" />
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="19.3.0.43" />
+    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="19.3.0.43" />
+    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="19.3.0.43" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="19.3.0.43" />
+    <PackageReference Include="Syncfusion.SfTreeNavigator.WPF" Version="19.3.0.43" />
+    <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="19.3.0.43" />
+    <PackageReference Include="Syncfusion.Themes.MaterialDark.WPF" Version="19.3.0.43" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="19.3.0.43" />
   </ItemGroup>
 
   <ItemGroup>

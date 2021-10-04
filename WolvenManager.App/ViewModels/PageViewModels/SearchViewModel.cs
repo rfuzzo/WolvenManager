@@ -16,6 +16,7 @@ using DynamicData.Binding;
 using Splat;
 using Syncfusion.Windows.PropertyGrid;
 using WolvenKit.Common;
+using WolvenKit.Common.Model;
 using WolvenKit.Common.Services;
 using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Services;
@@ -28,23 +29,23 @@ namespace WolvenManager.App.ViewModels.PageViewModels
     {
         private readonly IConsoleFunctions _consoleFunctions;
         private readonly ILoggerService _loggerService;
-        private readonly IArchiveService _archiveService;
+        private readonly IArchiveManager _archiveService;
 
 #pragma warning disable 649
         private readonly ReadOnlyObservableCollection<FileEntryViewModel> _bindingData;
 #pragma warning restore 649
         public ReadOnlyObservableCollection<FileEntryViewModel> BindingData => _bindingData;
 
-        private readonly ReadOnlyObservableCollection<GameFileTreeNode> _bindingHData;
-        [Reactive] public ObservableCollection<GameFileTreeNode> BindingHData { get; set; } = new();
+        private readonly ReadOnlyObservableCollection<RedFileSystemModel> _bindingHData;
+        [Reactive] public ObservableCollection<RedFileSystemModel> BindingHData { get; set; } = new();
 
-        [Reactive] public GameFileTreeNode SelectedItem { get; set; }
+        [Reactive] public RedFileSystemModel SelectedItem { get; set; }
         [Reactive] public IEnumerable<FileEntryViewModel> SelectedFiles { get; set; }
 
         public SearchViewModel(
             IConsoleFunctions consoleFunctions, 
             ILoggerService loggerService,
-            IArchiveService archiveService
+            IArchiveManager archiveService
             ) : base(typeof(ModkitViewModel))
         {
             _consoleFunctions = consoleFunctions;
@@ -59,19 +60,16 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             //    .Bind(out _bindingData)
             //    .Subscribe();
 
-            var disposable = _archiveService.ConnectHierarchy()
+            var disposable = _archiveService.ConnectGameRoot()
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out _bindingHData)
-                .Subscribe(OnNext);
+                .Subscribe();
         }
-
-        private void OnNext(IChangeSet<GameFileTreeNode, string> obj)
+        private void OnNext(IChangeSet<RedFileSystemModel, string> obj)
         {
-            BindingHData = new ObservableCollection<GameFileTreeNode>(_bindingHData);
+            BindingHData = new ObservableCollection<RedFileSystemModel>(_bindingHData);
         }
     }
-
-
 
 
     public class FileEntryViewModel : ReactiveObject

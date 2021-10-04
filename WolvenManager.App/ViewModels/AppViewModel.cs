@@ -16,6 +16,7 @@ using WolvenKit.Common.Tools;
 using WolvenKit.Common.Tools.Oodle;
 using WolvenManager.App.Utility;
 using Microsoft.Extensions.Hosting;
+using WolvenKit.Common;
 using WolvenKit.Core;
 using WolvenKit.Core.Services;
 using WolvenManager.Installer.Commands;
@@ -31,7 +32,7 @@ namespace WolvenManager.App.ViewModels
         private readonly ISettingsService _settingsService;
         private readonly INotificationService _notificationService;
         private readonly ILoggerService _loggerService;
-        private readonly IArchiveService _archiveService;
+        private readonly IArchiveManager _archiveService;
         private readonly IUpdateService _updateService;
         private readonly IProgressService<double> _progressService;
 
@@ -46,7 +47,7 @@ namespace WolvenManager.App.ViewModels
             ISettingsService settingsService,
             INotificationService notificationService,
             ILoggerService loggerService,
-            IArchiveService archiveService,
+            IArchiveManager archiveService,
             IUpdateService updateService,
             IProgressService<double> progressService
         )
@@ -137,7 +138,8 @@ namespace WolvenManager.App.ViewModels
 
         public ReactiveCommand<Unit, Unit> CheckForUpdatesCommand { get; }
         public ReactiveCommand<Unit, Unit> RoutingModsCommand { get; }
-        private IObservable<bool> CanExecuteRoutingToMods => _archiveService.IsLoaded.ObserveOn(RxApp.MainThreadScheduler);
+
+        private IObservable<bool> CanExecuteRoutingToMods => _archiveService.WhenAny(x => x.IsManagerLoaded, b => b.Value == true);
 
         public ReactiveCommand<Unit, Unit> RoutingSearchCommand { get; }
         public ReactiveCommand<Constants.RoutingIDs, Unit> RoutingCommand { get; }
@@ -177,7 +179,7 @@ namespace WolvenManager.App.ViewModels
         {
            
 
-            _updateService.Init(Constants.UpdateUrl, Constants.AssemblyName, delegate(FileInfo path, bool isManaged)
+            _updateService.Init(new string[] {Constants.UpdateUrl}, Constants.AssemblyName, delegate(FileInfo path, bool isManaged)
             {
                 if (isManaged)
                 {
@@ -225,7 +227,7 @@ namespace WolvenManager.App.ViewModels
                     OodleLoadLib.Load(oodlePath);
 
                     // load managers
-                    await Task.Run( () => _archiveService.Load());
+                    await Task.Run( () => _archiveService.LoadFromFolder(new DirectoryInfo(_settingsService.GetArchiveDirectoryPath())));
 
                     // Check for updates
                     await _updateService.CheckForUpdatesAsync();

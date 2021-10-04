@@ -11,18 +11,16 @@ jobs:
       version: ${{steps.get-version.outputs.version}}
 
     steps:
-    # setup
-    - uses: actions/checkout@v2
+    # setup  
+    - name: checkout
+      uses: actions/checkout@v2
       with:
         submodules: recursive
-    - name: Setup .NET
+    - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: dotnet clean
-      run: dotnet clean --configuration Release && dotnet nuget locals all --clear
-    - name: Restore dependencies
-      run: dotnet restore
+    - uses: microsoft/setup-msbuild@v1.0.2
       
     # environmental variables
     - run: echo "PROJ=./WolvenManager.UI/WolvenManager.UI.csproj" >> $env:GITHUB_ENV
@@ -40,8 +38,8 @@ jobs:
     - run: echo "MANIFEST=manifest.json" >> $env:GITHUB_ENV
       
     # Publish app
-    - run: dotnet publish ${{env.PROJ}} -o ${{env.OUT}} --no-self-contained --no-restore -r win-x64 -c Release -f net5.0-windows
-
+    - run: msbuild ${{env.PROJ}} -t:restore -t:Build -t:Publish /p:PublishDir=".${{env.OUT}}" /p:InformationalVersion="${{env.VERSION}}" /p:Configuration=Release /p:Platform=x64 /p:SelfContained=False /p:PublishReadyToRun=False /p:PublishTrimmed=False
+    
     # Create assets
     - run: ${{env.OUT}}/WolvenManager.Installer.exe create -a ${{env.OUT}}\WolvenManager.UI.exe -o .\publish
     - run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss

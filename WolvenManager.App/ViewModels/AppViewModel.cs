@@ -211,7 +211,7 @@ namespace WolvenManager.App.ViewModels
                 }
 
                 Application.Current.Shutdown();
-            });
+            }, _notificationService.AskInApp);
 
             // Once 
             _settingsService.IsValid.Subscribe(async isvalid =>

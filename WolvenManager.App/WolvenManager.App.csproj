@@ -28,7 +28,8 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="Octokit.Reactive" Version="0.47.0" />
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21216.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
+    <PackageReference Include="WolvenInstaller" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,7 +53,6 @@
     <ProjectReference Include="..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
     <ProjectReference Include="..\WolvenKit\WolvenKit.Core\WolvenKit.Core.csproj" />
     <ProjectReference Include="..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
-    <ProjectReference Include="..\WolvenKit\WolvenManager.Installer\WolvenManager.Installer.csproj" />
   </ItemGroup>
 
 </Project>

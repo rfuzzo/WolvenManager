@@ -14,6 +14,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="lib\WolvenManager.Installer.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="lib\WolvenManager.Installer.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AdonisUI" Version="1.17.1" />
     <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
     <PackageReference Include="HandyControls" Version="3.3.8" />

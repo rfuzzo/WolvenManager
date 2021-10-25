@@ -41,7 +41,7 @@ jobs:
     - run: msbuild ${{env.PROJ}} -t:restore -t:Build -t:Publish /p:PublishDir=".${{env.OUT}}" /p:InformationalVersion="${{env.VERSION}}" /p:Configuration=Release /p:Platform=x64 /p:SelfContained=False /p:PublishReadyToRun=False /p:PublishTrimmed=False
     
     # Create assets
-    - run: ${{env.OUT}}/WolvenManager.Installer.exe create -a ${{env.OUT}}\WolvenManager.UI.exe -o .\publish
+    - run: ${{env.OUT}}/lib/WolvenManager.Installer.exe create -a ${{env.OUT}}\WolvenManager.UI.exe -o .\publish
     - run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss
     - run: ${{env.OUT}}/lib/WolvenManager.Installer.exe manifest -a ${{env.OUT}}\WolvenManager.UI.exe -i .\publish -o .\publish
 

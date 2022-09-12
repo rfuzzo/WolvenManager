@@ -168,14 +168,13 @@ namespace WolvenManager.App.ViewModels
                 }
                 else
                 {
-                    // load oodle
                     if (!Oodle.Load())
                     {
                         throw new FileNotFoundException($"oo2ext_7_win64.dll not found.");
                     }
 
                     // load managers
-                    await Task.Run(() => _archiveService.LoadFromFolder(new DirectoryInfo(_settingsService.GetArchiveDirectoryPath())));
+                    await Observable.Start(() => _archiveService.LoadFromFolder(new DirectoryInfo(_settingsService.GetArchiveDirectoryPath())), RxApp.MainThreadScheduler);
 
                     // Cleanup temp folders
                     var installerPath = Path.Combine(Path.GetTempPath(), $"{Constants.ProductName}-installer-{Version}.exe");

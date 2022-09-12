@@ -4,7 +4,7 @@ on:
   push:
     tags:
     - '*'
-    
+
 jobs:
   
   release:
@@ -21,8 +21,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
-    - uses: microsoft/setup-msbuild@v1.0.2
+        dotnet-version: 6.x
       
     # environmental variables
     - run: echo "PROJ=./WolvenManager.UI/WolvenManager.UI.csproj" >> $env:GITHUB_ENV
@@ -40,7 +39,7 @@ jobs:
     - run: echo "MANIFEST=manifest.json" >> $env:GITHUB_ENV
       
     # Publish app
-    - run: dotnet publish ${{env.PROJ}} -o ${{env.OUT}} -c Release
+    - run: dotnet publish -o ${{env.OUT}} -c Release
 
     # instalelr
     - run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss

@@ -26,4 +26,4 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./WolvenManager.UI/WolvenManager.UI.csproj
     - name: Build
-      run: dotnet build ./WolvenManager.UI/WolvenManager.UI.csproj --no-restore
+      run: dotnet build

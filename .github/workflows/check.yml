@@ -24,6 +24,6 @@ jobs:
         dotnet-version: 6.x
 
     - name: Restore dependencies
-      run: dotnet restore ./WolvenManager.UI/WolvenManager.UI.csproj
+      run: dotnet restore
     - name: Build
       run: dotnet build

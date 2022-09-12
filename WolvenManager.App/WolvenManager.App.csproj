@@ -46,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
+    <ProjectReference Include="..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
   </ItemGroup>
 
 

@@ -21,10 +21,10 @@
     <PackageReference Include="MahApps.Metro.IconPacks.Codicons" Version="4.11.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
     
-    <PackageReference Include="ReactiveUI" Version="18.3.1" />
+    <PackageReference Include="ReactiveUI" Version="18.2.9" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
-    <PackageReference Include="ReactiveUI.Fody" Version="18.3.1" />
-    <PackageReference Include="ReactiveUI.WPF" Version="18.3.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="18.2.9" />
+    <PackageReference Include="ReactiveUI.WPF" Version="18.2.9" />
     <PackageReference Include="Splat" Version="14.4.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />

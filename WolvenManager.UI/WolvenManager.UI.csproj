@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
       <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>TaskBarIcon.ico</ApplicationIcon>
@@ -53,7 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
     <ProjectReference Include="..\WolvenManager.App\WolvenManager.App.csproj" />
   </ItemGroup>
 

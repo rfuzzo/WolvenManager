@@ -6,41 +6,29 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using ReactiveUI;
-using Splat;
-using WolvenKit.Common.Services;
-using WolvenManager.App.Services;
-using WolvenManager.App.ViewModels.PageViewModels;
-using ReactiveUI.Fody.Helpers;
-using WolvenKit.Common.Tools;
-using WolvenKit.Common.Tools.Oodle;
-using WolvenManager.App.Utility;
 using Microsoft.Extensions.Hosting;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Splat;
 using WolvenKit.Common;
+using WolvenKit.Common.Services;
 using WolvenKit.Core;
+using WolvenKit.Core.Compression;
 using WolvenKit.Core.Services;
-using WolvenManager.Installer.Commands;
-using WolvenManager.Installer.Services;
+using WolvenManager.App.Services;
+using WolvenManager.App.Utility;
+using WolvenManager.App.ViewModels.PageViewModels;
 
 namespace WolvenManager.App.ViewModels
 {
 
     public class AppViewModel : MainViewModel, IScreen
     {
-        #region fields
-
         private readonly ISettingsService _settingsService;
         private readonly INotificationService _notificationService;
         private readonly ILoggerService _loggerService;
         private readonly IArchiveManager _archiveService;
-        private readonly IUpdateService _updateService;
         private readonly IProgressService<double> _progressService;
-
-        
-        
-
-        
-        #endregion
 
         #region ctor
         public AppViewModel(
@@ -48,7 +36,6 @@ namespace WolvenManager.App.ViewModels
             INotificationService notificationService,
             ILoggerService loggerService,
             IArchiveManager archiveService,
-            IUpdateService updateService,
             IProgressService<double> progressService
         )
         {
@@ -56,14 +43,13 @@ namespace WolvenManager.App.ViewModels
             _notificationService = notificationService ?? Locator.Current.GetService<INotificationService>();
             _loggerService = loggerService ?? Locator.Current.GetService<ILoggerService>();
             _archiveService = archiveService;
-            _updateService = updateService;
             _progressService = progressService;
 
             // routing
             Router = new RoutingState();
 
             // versioning
-            
+
             var assembly = CommonFunctions.GetAssembly(Constants.AssemblyName);
             var productName = assembly.GetName();
             Version = assembly.GetName().Version?.ToString();
@@ -72,7 +58,7 @@ namespace WolvenManager.App.ViewModels
             OnStartup();
 
             // commands
-            RoutingSettingsCommand = ReactiveCommand.Create(delegate()
+            RoutingSettingsCommand = ReactiveCommand.Create(delegate ()
             {
                 Router.Navigate.Execute(Locator.Current.GetService<SettingsViewModel>());
             }, CanExecuteRouting);
@@ -87,13 +73,10 @@ namespace WolvenManager.App.ViewModels
             RoutingCommand = ReactiveCommand.Create<Constants.RoutingIDs>(ExecuteSidebar,
                 CanExecuteRouting);
 
-
-            ToggleBottomBarCommand = ReactiveCommand.Create(() =>
+            ToggleBottomBarCommand = ReactiveCommand.Create(delegate ()
             {
                 IsBottomContentVisible = !IsBottomContentVisible;
             });
-
-            CheckForUpdatesCommand = ReactiveCommand.CreateFromTask(_updateService.CheckForUpdatesAsync);
 
             _ = Observable.FromEventPattern<EventHandler<double>, double>(
                 handler => _progressService.ProgressChanged += handler,
@@ -116,7 +99,7 @@ namespace WolvenManager.App.ViewModels
 
         [Reactive] public bool IsBottomContentVisible { get; set; } = true;
 
-        public string SettingsIconName => _updateService.IsUpdateAvailable ? "CogRefresh" : "Cog";
+        public string SettingsIconName => "Cog";
 
         private string _title;
         public string Title
@@ -136,7 +119,6 @@ namespace WolvenManager.App.ViewModels
 
         public ReactiveCommand<Unit, Unit> RoutingSettingsCommand { get; }
 
-        public ReactiveCommand<Unit, Unit> CheckForUpdatesCommand { get; }
         public ReactiveCommand<Unit, Unit> RoutingModsCommand { get; }
 
         private IObservable<bool> CanExecuteRoutingToMods => _archiveService.WhenAny(x => x.IsManagerLoaded, b => b.Value == true);
@@ -168,7 +150,7 @@ namespace WolvenManager.App.ViewModels
             }
 
 
-            
+
         }
 
         #endregion
@@ -177,42 +159,6 @@ namespace WolvenManager.App.ViewModels
 
         private async void OnStartup()
         {
-           
-
-            _updateService.Init(new string[] {Constants.UpdateUrl}, Constants.AssemblyName, delegate(FileInfo path, bool isManaged)
-            {
-                if (isManaged)
-                {
-                    _ = Process.Start(path.FullName, "/SILENT /NOCANCEL");
-                }
-                else
-                {
-                    // move installer helper
-                    var basedir = new DirectoryInfo(Path.GetDirectoryName(System.AppContext.BaseDirectory));
-                    var shippedInstaller = new FileInfo(Path.Combine(basedir.FullName, "lib", Constants.UpdaterName));
-                    var newPath = Path.Combine(_settingsService.GetAppData(), Constants.UpdaterName);
-                    try
-                    {
-                        shippedInstaller.MoveTo(newPath, true);
-                    }
-                    catch (Exception)
-                    {
-                        _loggerService.Error("Could not initialize auto-installer.");
-                        return;
-                    }
-
-                    // start installer helper
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = "CMD.EXE",
-                        Arguments = $"/K {newPath} install -i \"{path}\" -o \"{basedir.FullName}\" -r {Constants.AppName}"
-                    };
-                    var p = Process.Start(psi);
-                }
-
-                Application.Current.Shutdown();
-            }, _notificationService.AskInApp);
-
             // Once 
             _settingsService.IsValid.Subscribe(async isvalid =>
             {
@@ -223,14 +169,13 @@ namespace WolvenManager.App.ViewModels
                 else
                 {
                     // load oodle
-                    var oodlePath = _settingsService.GetOodlePath();
-                    OodleLoadLib.Load(oodlePath);
+                    if (!Oodle.Load())
+                    {
+                        throw new FileNotFoundException($"oo2ext_7_win64.dll not found.");
+                    }
 
                     // load managers
-                    await Task.Run( () => _archiveService.LoadFromFolder(new DirectoryInfo(_settingsService.GetArchiveDirectoryPath())));
-
-                    // Check for updates
-                    await _updateService.CheckForUpdatesAsync();
+                    await Task.Run(() => _archiveService.LoadFromFolder(new DirectoryInfo(_settingsService.GetArchiveDirectoryPath())));
 
                     // Cleanup temp folders
                     var installerPath = Path.Combine(Path.GetTempPath(), $"{Constants.ProductName}-installer-{Version}.exe");

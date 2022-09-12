@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System.Windows.Media;
 
 namespace WolvenManager.App.ViewModels.Dialogs
 {
@@ -73,25 +72,25 @@ namespace WolvenManager.App.ViewModels.Dialogs
             };
 
 
-        public SolidColorBrush ValidIconBrush =>
-            IsDirectory switch
-            {
-                true => new SolidColorBrush(Colors.Transparent),
-                _ => IsValid switch
-                {
-                    EFileValidState.Unknown => new SolidColorBrush(Colors.CornflowerBlue),
-                    EFileValidState.Invalid => new SolidColorBrush(Colors.Red),
-                    EFileValidState.Valid => new SolidColorBrush(Colors.LawnGreen),
-                    _ => throw new ArgumentOutOfRangeException()
-                }
-            };
+        //public SolidColorBrush ValidIconBrush =>
+        //    IsDirectory switch
+        //    {
+        //        true => new SolidColorBrush(Colors.Transparent),
+        //        _ => IsValid switch
+        //        {
+        //            EFileValidState.Unknown => new SolidColorBrush(Colors.CornflowerBlue),
+        //            EFileValidState.Invalid => new SolidColorBrush(Colors.Red),
+        //            EFileValidState.Valid => new SolidColorBrush(Colors.LawnGreen),
+        //            _ => throw new ArgumentOutOfRangeException()
+        //        }
+        //    };
 
         public string IconPath =>
             IsDirectory
                 ? Children.Any() ? "FolderOpened" : "Folder"
                 : "File";
 
-        
+
 
         public FileViewModel(string path, bool isDirectory)
         {
@@ -99,7 +98,7 @@ namespace WolvenManager.App.ViewModels.Dialogs
             IsDirectory = isDirectory;
             FullName = path;
 
-            
+
         }
     }
 }

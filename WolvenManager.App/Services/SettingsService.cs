@@ -5,16 +5,15 @@ using System.Linq;
 using System.Reactive;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using System.Xml;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
-using WolvenKit.Common.Tools.Oodle;
 using WolvenManager.Models;
 
 namespace WolvenManager.App.Services
@@ -209,7 +208,7 @@ namespace WolvenManager.App.Services
             }
 
             var fi = new FileInfo(RED4ExecutablePath);
-            return fi.Directory is {Parent: {Parent: { }}} ? Path.Combine(fi.Directory.Parent.Parent.FullName) : null;
+            return fi.Directory is { Parent.Parent: { } } ? Path.Combine(fi.Directory.Parent.Parent.FullName) : null;
         }
 
 
@@ -233,7 +232,7 @@ namespace WolvenManager.App.Services
             }
             catch (Exception)
             {
-                
+
             }
 
             // defaults
@@ -245,7 +244,7 @@ namespace WolvenManager.App.Services
             return config;
         }
 
-        
+
 
 
         public IObservable<bool> IsValid =>
@@ -297,7 +296,7 @@ namespace WolvenManager.App.Services
 
         public SettingsDto()
         {
-            
+
         }
 
         public SettingsDto(SettingsService settings)

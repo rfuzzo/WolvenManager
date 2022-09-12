@@ -4,16 +4,14 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using WolvenManager.App.Attributes;
 using CP77Tools.Tasks;
 using DynamicData;
 using DynamicData.Binding;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Splat;
-using Syncfusion.Windows.PropertyGrid;
 using WolvenKit.Common.Services;
+using WolvenManager.App.Attributes;
 using WolvenManager.App.Services;
 using WolvenManager.Models;
 
@@ -62,10 +60,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
         }
 
-        private async Task RunAsync()
-        {
-            await SelectedItem.ExecuteAsync(_consoleFunctions);
-        }
+        private async Task RunAsync() => await SelectedItem.ExecuteAsync(_consoleFunctions);
 
 
         #region properties
@@ -83,7 +78,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
             get => _selectedItem;
             set
             {
-                this.RaiseAndSetIfChanged(ref this._selectedItem, value);
+                this.RaiseAndSetIfChanged(ref _selectedItem, value);
                 this.RaisePropertyChanged(nameof(TextBlockText));
             }
         }

@@ -1,15 +1,16 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
+using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using WolvenKit.Common;
+using WolvenKit.RED4.Archive;
+using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Attributes;
 using WolvenManager.App.Services;
-using System.Reactive.Linq;
-using DynamicData;
-using WolvenKit.Common;
-using WolvenKit.RED4.CR2W.Archive;
 
 namespace WolvenManager.App.ViewModels.PageViewModels
 {
@@ -56,11 +57,7 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
         public ReactiveCommand<Unit, Unit> RefreshModCommand { get; }
 
-        private Task Refresh()
-        {
-
-            return Task.CompletedTask;
-        }
+        private Task Refresh() => Task.CompletedTask;
 
         #endregion
 

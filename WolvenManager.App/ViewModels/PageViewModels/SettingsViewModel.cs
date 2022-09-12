@@ -38,13 +38,14 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
         private void BrowseFolderExecute(string param)
         {
-            var dlg = new OpenFileDialog()
+            var dlg = new CommonOpenFileDialog()
             {
                 Multiselect = false,
-                Filter = "Cyberpunk2077.exe (Cyberpunk2077.exe)|Cyberpunk2077.exe"
+                //Filter = "Cyberpunk2077.exe (Cyberpunk2077.exe)|Cyberpunk2077.exe"
             };
+            dlg.Filters.Add(new CommonFileDialogFilter("Cyberpunk2077.exe (Cyberpunk2077.exe)", "Cyberpunk2077.exe"));
 
-            if (dlg.ShowDialog() != true)
+            if (dlg.ShowDialog() != CommonFileDialogResult.Ok)
             {
                 return;
             }

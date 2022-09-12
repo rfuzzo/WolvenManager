@@ -38,24 +38,28 @@ namespace WolvenManager.App.ViewModels.PageViewModels
 
         private void BrowseFolderExecute(string param)
         {
-            var dlg = new OpenFileDialog()
+            var dlg = new CommonOpenFileDialog()
             {
                 Multiselect = false,
-                Filter = "Cyberpunk2077.exe (Cyberpunk2077.exe)|Cyberpunk2077.exe"
             };
+            dlg.Filters.Add(new CommonFileDialogFilter("Cyberpunk2077.exe (Cyberpunk2077.exe)", ".exe"));
 
-            if (dlg.ShowDialog() != true)
+            if (dlg.ShowDialog() != CommonFileDialogResult.Ok)
             {
                 return;
             }
 
-            var dir = dlg.FileNames.FirstOrDefault();
-            if (string.IsNullOrEmpty(dir))
+            var pickedName = dlg.FileNames.FirstOrDefault();
+            if (string.IsNullOrEmpty(pickedName))
+            {
+                return;
+            }
+            if (!Path.GetFileName(pickedName).Equals("Cyberpunk2077.exe", System.StringComparison.Ordinal))
             {
                 return;
             }
 
-            _settingsService.RED4ExecutablePath = dir;
+            _settingsService.RED4ExecutablePath = pickedName;
         }
 
         #endregion

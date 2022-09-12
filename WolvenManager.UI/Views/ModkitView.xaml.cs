@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -16,7 +17,12 @@ using System.Windows.Shapes;
 using ReactiveUI;
 using Syncfusion.UI.Xaml.NavigationDrawer;
 using Syncfusion.Windows.PropertyGrid;
+using WolvenKit.Common;
+using WolvenKit.RED4.Archive;
+using WolvenManager.App.Services;
 using WolvenManager.App.ViewModels.PageViewModels;
+using WolvenManager.Models;
+using WolvenManager.UI.Editors;
 
 namespace WolvenManager.UI.Views
 {
@@ -71,6 +77,37 @@ namespace WolvenManager.UI.Views
                 nameof(ReactiveObject.Changing))
             {
                 e.Cancel = true;
+            }
+
+            // Generate special editors for the properties for which default is not ok
+            if (e.OriginalSource is PropertyItem { } propertyItem)
+            {
+                switch (propertyItem.DisplayName)
+                {
+                    case nameof(OodleCommandCommandModel.File):
+                        propertyItem.Editor = new SingleFilePathEditor();
+                        break;
+                    case nameof(ExportCommandCommandModel.Files):
+                    case nameof(UnbundleCommandModel.Archives):
+                        propertyItem.Editor = new MultiFilePathEditor();
+                        break;
+                    case nameof(UnbundleCommandModel.Outpath):
+                    case nameof(UncookCommandCommandModel.RawOutputDirectory):
+                        propertyItem.Editor = new SingleFolderPathEditor();
+                        break;
+                    case nameof(UnbundleCommandModel.Folders):
+                        propertyItem.Editor = new MultiFolderPathEditor();
+                        break;
+                    case nameof(UnbundleCommandModel.Extensions):
+                        propertyItem.Editor = new EnumArrayEditor<ERedExtension>();
+                        break;
+                    case nameof(UnbundleCommandModel.VanillaArchives):
+                        propertyItem.Editor = new EnumArrayEditor<EVanillaArchives>();
+                        break;
+                    case nameof(UncookCommandCommandModel.Forcebuffers):
+                        propertyItem.Editor = new EnumArrayEditor<ECookedFileFormat>();
+                        break;
+                }
             }
         }
     }

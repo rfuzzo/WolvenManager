@@ -1,33 +1,34 @@
 using System;
 using System.Runtime.InteropServices;
-using ReactiveUI;
-using Splat;
-using WolvenKit.Common.Services;
+using System.Windows;
+using CP77Tools.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.WindowsAPICodePack.ApplicationServices;
+using ProtoBuf.Meta;
+using ReactiveUI;
+using Semver;
+using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Microsoft.Extensions.Logging;
-using CP77.CR2W;
-using CP77Tools.Tasks;
+using WolvenKit.Common;
+using WolvenKit.Common.Interfaces;
+using WolvenKit.Common.Services;
+using WolvenKit.Core.Interfaces;
+using WolvenKit.Core.Services;
 using WolvenKit.Modkit.RED4;
 using WolvenKit.Modkit.RED4.RigFile;
+using WolvenKit.Modkit.RED4.Tools;
+using WolvenKit.RED4.Archive;
 using WolvenKit.RED4.CR2W;
+using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Services;
 using WolvenManager.App.ViewModels;
+using WolvenManager.App.ViewModels.Controls;
 using WolvenManager.App.ViewModels.PageViewModels;
 using WolvenManager.UI.Implementations;
 using WolvenManager.UI.Services;
 using WolvenManager.UI.Views;
-using System.Windows;
-using Microsoft.WindowsAPICodePack.ApplicationServices;
-using ProtoBuf.Meta;
-using Semver;
-using WolvenKit.Common;
-using WolvenKit.Common.Interfaces;
-using WolvenKit.Core.Services;
-using WolvenKit.RED4.CR2W.Archive;
-using WolvenManager.App.ViewModels.Controls;
-using WolvenManager.Installer.Services;
 
 namespace WolvenManager.UI
 {
@@ -51,7 +52,7 @@ namespace WolvenManager.UI
         public IServiceProvider Container { get; private set; }
         private IHost _host;
 
-        void Init()
+        private void Init()
         {
             _host = Host
                 .CreateDefaultBuilder()
@@ -62,18 +63,13 @@ namespace WolvenManager.UI
                     resolver.InitializeSplat();
                     resolver.InitializeReactiveUI();
                 })
-                .ConfigureLogging(logging =>
-                {
-                    logging.AddSplat();
-                })
+                .ConfigureLogging(logging => logging.AddSplat())
                 .ConfigureServices((hostContext, services) =>
                 {
                     // local services
                     services.AddSingleton(typeof(ISettingsService), SettingsService.Load());
                     services.AddSingleton<INotificationService, NotificationService>();
                     services.AddSingleton<IInteractionService, InteractionService>();
-                    services.AddSingleton<IUpdateService, UpdateService>();
-
 
                     // register your personal services here
                     services.AddSingleton<IHashService, HashService>();
@@ -104,7 +100,7 @@ namespace WolvenManager.UI
                     // register views
                     services.AddSingleton<ModkitViewModel>();
                     services.AddSingleton<IViewFor<ModkitViewModel>, ModkitView>();
-                    
+
                     services.AddSingleton<ModListViewModel>();
                     services.AddSingleton<IViewFor<ModListViewModel>, ModListView>();
 
@@ -120,7 +116,7 @@ namespace WolvenManager.UI
                     services.AddSingleton<ModIntegrationViewModel>();
                     services.AddSingleton<IViewFor<ModIntegrationViewModel>, ModIntegrationView>();
 
-                   
+
                 })
                 .UseEnvironment(Environments.Development)
                 .Build();

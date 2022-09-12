@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
       <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>TaskBarIcon.ico</ApplicationIcon>
@@ -26,34 +26,33 @@
   <ItemGroup>
     <PackageReference Include="AdonisUI" Version="1.17.1" />
     <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
-    <PackageReference Include="HandyControls" Version="3.3.8" />
-    <PackageReference Include="MahApps.Metro.IconPacks.BootstrapIcons" Version="4.10.0" />
-    <PackageReference Include="MahApps.Metro.IconPacks.Codicons" Version="4.10.0" />
-    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.10.0" />
+    <PackageReference Include="HandyControls" Version="3.4.2" />
+    <PackageReference Include="MahApps.Metro.IconPacks.BootstrapIcons" Version="4.11.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Codicons" Version="4.11.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
     
-    <PackageReference Include="ReactiveUI" Version="16.2.6" />
+    <PackageReference Include="ReactiveUI" Version="18.3.1" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
-    <PackageReference Include="ReactiveUI.Fody" Version="16.2.6" />
-    <PackageReference Include="ReactiveUI.WPF" Version="16.2.6" />
-    <PackageReference Include="Splat" Version="13.1.22" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
-    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="13.1.22" />
-    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="13.1.22" />
+    <PackageReference Include="ReactiveUI.Fody" Version="18.3.1" />
+    <PackageReference Include="ReactiveUI.WPF" Version="18.3.1" />
+    <PackageReference Include="Splat" Version="14.4.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="14.4.1" />
+    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="14.4.1" />
     
-    <PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="19.3.0.43" />
-    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="19.3.0.43" />
-    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="19.3.0.43" />
-    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="19.3.0.43" />
-    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="19.3.0.43" />
-    <PackageReference Include="Syncfusion.SfTreeNavigator.WPF" Version="19.3.0.43" />
-    <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="19.3.0.43" />
-    <PackageReference Include="Syncfusion.Themes.MaterialDark.WPF" Version="19.3.0.43" />
-    <PackageReference Include="Syncfusion.Tools.WPF" Version="19.3.0.43" />
+    <PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="20.2.0.48" />
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="20.2.0.48" />
+    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="20.2.0.48" />
+    <PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="20.2.0.48" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="20.2.0.48" />
+    <PackageReference Include="Syncfusion.SfTreeNavigator.WPF" Version="20.2.0.48" />
+    <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.2.0.48" />
+    <PackageReference Include="Syncfusion.Themes.MaterialDark.WPF" Version="20.2.0.48" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.48" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
     <ProjectReference Include="..\WolvenManager.App\WolvenManager.App.csproj" />
   </ItemGroup>
 

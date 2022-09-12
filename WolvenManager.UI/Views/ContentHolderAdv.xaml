@@ -1,34 +1,37 @@
-<UserControl x:Class="WolvenManager.UI.Views.ContentHolderAdv"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WolvenManager.UI.Views"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+<UserControl
+    x:Class="WolvenManager.UI.Views.ContentHolderAdv"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:WolvenManager.UI.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <Grid>
 
-        
 
-        <syncfusion:TabControlExt Background="{DynamicResource Background}" Name="tabControl"
-                                  CloseButtonType="Hide"
-                                  >
-            <syncfusion:TabItemExt Header="ERROR LOG" >
-                <local:LogView/>
+
+        <syncfusion:TabControlExt
+            Name="tabControl"
+            Background="{DynamicResource Background}"
+            CloseButtonType="Hide">
+            <syncfusion:TabItemExt Header="ERROR LOG">
+                <local:LogView />
             </syncfusion:TabItemExt>
-            <syncfusion:TabItemExt Header="MOD INTEGRATION" >
-                <local:ModIntegrationView/>
+            <syncfusion:TabItemExt Header="MOD INTEGRATION">
+                <local:ModIntegrationView />
             </syncfusion:TabItemExt>
         </syncfusion:TabControlExt>
 
         <Button
             x:Name="CloseButton"
             Height="Auto"
-            VerticalAlignment="Top" HorizontalAlignment="Right"
-            >
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top">
             <Button.Content>
                 <iconPacks:PackIconCodicons
                     Width="10"

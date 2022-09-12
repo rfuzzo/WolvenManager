@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
-	  <UseWPF>true</UseWPF>
+    <TargetFramework>net6.0</TargetFramework>
+	  
       <RuntimeIdentifier>win-x64</RuntimeIdentifier>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <NoWarn>NU1701</NoWarn>
@@ -12,24 +12,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="protobuf-net" Version="3.0.101" />
-    <PackageReference Include="protobuf-net.Core" Version="3.0.101" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="protobuf-net" Version="3.1.17" />
+    <PackageReference Include="protobuf-net.Core" Version="3.1.17" />
     
-    <PackageReference Include="ReactiveUI" Version="16.2.6" />
-    <PackageReference Include="ReactiveUI.Fody" Version="16.2.6" />
-    <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
-    <PackageReference Include="ReactiveUI.WPF" Version="16.2.6" />
+    <PackageReference Include="ReactiveUI" Version="18.3.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="18.3.1" />
+    <PackageReference Include="ReactiveUI.Validation" Version="3.0.1" />
     
-    <PackageReference Include="SharpCompress" Version="0.30.0" />
-    <PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="19.3.0.43" />
-    <PackageReference Include="Syncfusion.SfInput.WPF" Version="19.3.0.43" />
+    <PackageReference Include="SharpCompress" Version="0.32.2" />
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Octokit" Version="0.50.0" />
-    <PackageReference Include="Octokit.Reactive" Version="0.47.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Octokit" Version="2.0.1" />
+    <PackageReference Include="Octokit.Reactive" Version="2.0.1" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
-    <PackageReference Include="WolvenInstaller" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,9 +46,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WolvenKit\WolvenKit.Common\WolvenKit.Common.csproj" />
-    <ProjectReference Include="..\WolvenKit\WolvenKit.Core\WolvenKit.Core.csproj" />
-    <ProjectReference Include="..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
+    <ProjectReference Include="..\..\WolvenKit\WolvenKit.Modkit\WolvenKit.Modkit.csproj" />
   </ItemGroup>
+
 
 </Project>

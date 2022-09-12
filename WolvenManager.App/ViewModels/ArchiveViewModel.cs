@@ -8,6 +8,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using WolvenKit.Common.Services;
+using WolvenKit.RED4.Archive;
 using WolvenKit.RED4.CR2W.Archive;
 using WolvenManager.App.Services;
 

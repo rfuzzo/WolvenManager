@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reactive.Joins;
-using System.Security.RightsManagement;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,8 +16,8 @@ using ReactiveUI;
 using WolvenKit.Common;
 using WolvenKit.Common.DDS;
 using WolvenKit.Common.Services;
+using WolvenKit.RED4.Archive;
 using WolvenKit.RED4.CR2W.Archive;
-using WolvenManager.App.Editors;
 using WolvenManager.App.Services;
 
 namespace WolvenManager.Models
@@ -28,7 +27,7 @@ namespace WolvenManager.Models
         protected readonly ISettingsService _settingsService;
         private readonly INotificationService _notificationService;
 
-        
+
         public CommandModel(ISettingsService settingsService,
             INotificationService notificationService)
         {
@@ -51,7 +50,7 @@ namespace WolvenManager.Models
             List<string> result = new();
             result = inputs
                 .Aggregate(result, (current, list) => current.Concat(list.Split(';'))
-                .Where(_ => !string.IsNullOrEmpty(_) && !string.IsNullOrWhiteSpace(_) )
+                .Where(_ => !string.IsNullOrEmpty(_) && !string.IsNullOrWhiteSpace(_))
                 .Select(_ => _.TrimStart('\"').TrimEnd('\"'))
                 .ToList());
 
@@ -62,11 +61,11 @@ namespace WolvenManager.Models
     }
 
 
-    [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
-    [Editor(nameof(Archives), typeof(MultiFilePathEditor))]
-    [Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
-    [Editor(nameof(Extensions), typeof(EnumArrayEditor<ERedExtension>))]
-    [Editor(nameof(VanillaArchives), typeof(EnumArrayEditor<EVanillaArchives>))]
+    //[Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
+    //[Editor(nameof(Archives), typeof(MultiFilePathEditor))]
+    //[Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
+    //[Editor(nameof(Extensions), typeof(EnumArrayEditor<ERedExtension>))]
+    //[Editor(nameof(VanillaArchives), typeof(EnumArrayEditor<EVanillaArchives>))]
     public class UnbundleCommandModel : CommandModel
     {
         public UnbundleCommandModel(ISettingsService settingsService, INotificationService notificationService) : base(
@@ -150,7 +149,7 @@ namespace WolvenManager.Models
 
                 Regex = $"^{innerRegex.TrimEnd('|')}$";
             }
-            
+
 
             await Task.Run(() =>
                 consoleFunctions.UnbundleTask(inputs.ToArray(), GetPathArg(Outpath), Hash, Pattern, Regex,
@@ -159,13 +158,13 @@ namespace WolvenManager.Models
 
     }
 
-    [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
-    [Editor(nameof(Archives), typeof(MultiFilePathEditor))]
-    [Editor(nameof(OutputDirectory), typeof(SingleFolderPathEditor))]
-    [Editor(nameof(RawOutputDirectory), typeof(SingleFolderPathEditor))]
-    [Editor(nameof(Forcebuffers), typeof(EnumArrayEditor<ECookedFileFormat>))]
-    [Editor(nameof(VanillaArchives), typeof(EnumArrayEditor<EVanillaArchives>))]
-    [Editor(nameof(Extensions), typeof(EnumArrayEditor<ERedExtension>))]
+    //[Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
+    //[Editor(nameof(Archives), typeof(MultiFilePathEditor))]
+    //[Editor(nameof(OutputDirectory), typeof(SingleFolderPathEditor))]
+    //[Editor(nameof(RawOutputDirectory), typeof(SingleFolderPathEditor))]
+    //[Editor(nameof(Forcebuffers), typeof(EnumArrayEditor<ECookedFileFormat>))]
+    //[Editor(nameof(VanillaArchives), typeof(EnumArrayEditor<EVanillaArchives>))]
+    //[Editor(nameof(Extensions), typeof(EnumArrayEditor<ERedExtension>))]
     public class UncookCommandCommandModel : CommandModel
     {
         private string _outputDirectory;
@@ -283,7 +282,7 @@ namespace WolvenManager.Models
 
             await Task.Run(() =>
                 consoleFunctions.UncookTask(inputs.ToArray(), OutputDirectory, GetPathArg(RawOutputDirectory), uext, flip, Hash, Pattern, Regex,
-                    unbundle, GetEnumArgs<ECookedFileFormat>(Forcebuffers)));
+                    unbundle, GetEnumArgs<ECookedFileFormat>(Forcebuffers), null));
         }
 
         public UncookCommandCommandModel(ISettingsService settingsService, INotificationService notificationService) :
@@ -298,10 +297,10 @@ namespace WolvenManager.Models
         }
     }
 
-    [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
-    [Editor(nameof(Files), typeof(MultiFilePathEditor))]
-    [Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
-    [Editor(nameof(forcebuffers), typeof(EnumArrayEditor<ECookedFileFormat>))]
+    //[Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
+    //[Editor(nameof(Files), typeof(MultiFilePathEditor))]
+    //[Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
+    //[Editor(nameof(forcebuffers), typeof(EnumArrayEditor<ECookedFileFormat>))]
     public class ExportCommandCommandModel : CommandModel
     {
         public override string Name => "export";
@@ -360,9 +359,9 @@ namespace WolvenManager.Models
         }
     }
 
-    [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
-    [Editor(nameof(Files), typeof(MultiFilePathEditor))]
-    [Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
+    //[Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
+    //[Editor(nameof(Files), typeof(MultiFilePathEditor))]
+    //[Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
     public class ImportCommandCommandModel : CommandModel
     {
         public override string Name => "import";
@@ -436,8 +435,8 @@ namespace WolvenManager.Models
         }
     }
 
-    [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
-    [Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
+    //[Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
+    //[Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
     public class PackCommandCommandModel : CommandModel
     {
         public override string Name => "pack";
@@ -479,9 +478,9 @@ namespace WolvenManager.Models
         }
     }
 
-    [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
-    [Editor(nameof(Archives), typeof(MultiFilePathEditor))]
-    [Editor(nameof(VanillaArchives), typeof(EnumArrayEditor<EVanillaArchives>))]
+    //[Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
+    //[Editor(nameof(Archives), typeof(MultiFilePathEditor))]
+    //[Editor(nameof(VanillaArchives), typeof(EnumArrayEditor<EVanillaArchives>))]
     public class ArchiveCommandModel : CommandModel
     {
         public ArchiveCommandModel(ISettingsService settingsService, INotificationService notificationService) : base(settingsService, notificationService) { }
@@ -539,9 +538,9 @@ namespace WolvenManager.Models
         }
     }
 
-    [Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
-    [Editor(nameof(Files), typeof(MultiFilePathEditor))]
-    [Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
+    //[Editor(nameof(Folders), typeof(MultiFolderPathEditor))]
+    //[Editor(nameof(Files), typeof(MultiFilePathEditor))]
+    //[Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
     public class CR2WCommandCommandModel : CommandModel
     {
         public override string Name => "cr2w";
@@ -611,8 +610,8 @@ namespace WolvenManager.Models
         }
     }
 
-    [Editor(nameof(File), typeof(SingleFilePathEditor))]
-    [Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
+    //[Editor(nameof(File), typeof(SingleFilePathEditor))]
+    //[Editor(nameof(Outpath), typeof(SingleFolderPathEditor))]
     public class OodleCommandCommandModel : CommandModel
     {
         public override string Name => "oodle";

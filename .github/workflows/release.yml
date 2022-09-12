@@ -38,7 +38,6 @@ jobs:
         draft: true
         generateReleaseNotes: true
         artifacts: "WolvenManager.zip"
-        bodyFile: "RELEASE.md"
         token: ${{ secrets.GITHUB_TOKEN }}
         
   

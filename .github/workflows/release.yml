@@ -23,37 +23,13 @@ jobs:
       with:
         dotnet-version: 6.x
       
-    # environmental variables
-    - run: echo "PROJ=./WolvenManager.UI/WolvenManager.UI.csproj" >> $env:GITHUB_ENV
-    - run: echo "OUT=./publish/full" >> $env:GITHUB_ENV
-    - run: echo "FINALOUT=./publish" >> $env:GITHUB_ENV
-    - run: echo "NAME=WolvenManager" >> $env:GITHUB_ENV
-    - name: Get version
-      uses: naminodarie/get-net-sdk-project-versions-action@v1
-      id: get-version
-      with:
-        proj-path:  ${{env.PROJ}}
-    - run: echo "VERSION=${{steps.get-version.outputs.version}}" >> $env:GITHUB_ENV
-    - run: echo "PORTABLE=${{env.NAME}}-${{env.VERSION}}.zip" >> $env:GITHUB_ENV
-    - run: echo "INSTALLER=${{env.NAME}}-installer-${{env.VERSION}}.exe" >> $env:GITHUB_ENV
-    - run: echo "MANIFEST=manifest.json" >> $env:GITHUB_ENV
       
     # Publish app
-    - run: dotnet publish -o ${{env.OUT}} -c Release
+    - run: dotnet publish -o .\publish -c Release
+    - run: Compress-Archive -Path .\publish\* -DestinationPath .\WolvenManager.zip
 
-    # instalelr
-    - run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss
-
-    # PORTABLE
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ${{env.PORTABLE}}
-        path: ${{env.FINALOUT}}/${{env.PORTABLE}}
-    # INSTALLER
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ${{env.INSTALLER}}
-        path: ${{env.FINALOUT}}/${{env.INSTALLER}}
+    # installer
+    # - run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss
 
     # RELEASE
     - name: Release
@@ -61,7 +37,7 @@ jobs:
       with:
         draft: true
         generateReleaseNotes: true
-        artifacts: "${{ env.FINALOUT }}/*.zip"
+        artifacts: ".\WolvenManager.zip"
         bodyFile: "RELEASE.md"
         token: ${{ secrets.GITHUB_TOKEN }}
         

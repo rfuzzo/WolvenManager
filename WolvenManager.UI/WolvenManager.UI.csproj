@@ -6,11 +6,12 @@
       <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>TaskBarIcon.ico</ApplicationIcon>
-      <Version>1.3</Version>
+      <Version>1.4</Version>
       <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
       <DebugType>embedded</DebugType>
       <Product>WolvenManager</Product>
+      <PublishSingleFile>false</PublishSingleFile>
   </PropertyGroup>
 
   <ItemGroup>

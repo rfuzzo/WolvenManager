@@ -27,7 +27,7 @@ namespace WolvenManager.UI
         }
 
 
-        
+
 
         #endregion
 
@@ -63,8 +63,8 @@ namespace WolvenManager.UI
 
 
                 // routing
-                this.OneWayBind(ViewModel, 
-                        x => x.Router, 
+                this.OneWayBind(ViewModel,
+                        x => x.Router,
                         x => x.RoutedViewHost.Router)
                     .DisposeWith(disposables);
 
@@ -79,15 +79,11 @@ namespace WolvenManager.UI
                         viewModel => viewModel.RoutingSettingsCommand,
                         view => view.SettingsMenuItem)
                     .DisposeWith(disposables);
-                this.BindCommand(ViewModel,
-                        viewModel => viewModel.CheckForUpdatesCommand,
-                        view => view.CheckForUpdatesMenuItem)
-                    .DisposeWith(disposables);
                 //this.OneWayBind(ViewModel,
                 //        viewModel => viewModel.SettingsIconName,
                 //        view => view.SettingsIcon.Kind)
                 //    .DisposeWith(disposables);
-                
+
 
                 // statusbar
                 this.OneWayBind(ViewModel,

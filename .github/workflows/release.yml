@@ -38,12 +38,10 @@ jobs:
     - run: echo "MANIFEST=manifest.json" >> $env:GITHUB_ENV
       
     # Publish app
-    - run: msbuild ${{env.PROJ}} -t:restore -t:Build -t:Publish /p:PublishDir=".${{env.OUT}}" /p:InformationalVersion="${{env.VERSION}}" /p:Configuration=Release /p:Platform=x64 /p:SelfContained=False /p:PublishReadyToRun=False /p:PublishTrimmed=False
-    
-    # Create assets
-    - run: ${{env.OUT}}/lib/WolvenManager.Installer.exe create -a ${{env.OUT}}\WolvenManager.UI.exe -o .\publish
+    - run: dotnet publish ${{env.PROJ}} -o ${{env.OUT}} -c Release
+
+    # instalelr
     - run: .\InnoSetup\ISCC\ISCC.exe /O"publish" /dMyAppBaseDir="..\publish\full\" .\InnoSetup\installer.iss
-    - run: ${{env.OUT}}/lib/WolvenManager.Installer.exe manifest -a ${{env.OUT}}\WolvenManager.UI.exe -i .\publish -o .\publish
 
     # PORTABLE
     - uses: actions/upload-artifact@v2
@@ -55,26 +53,16 @@ jobs:
       with:
         name: ${{env.INSTALLER}}
         path: ${{env.FINALOUT}}/${{env.INSTALLER}}
-    # MANIFEST
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ${{env.MANIFEST}}
-        path: ${{env.FINALOUT}}/${{env.MANIFEST}}
-       
+
     # RELEASE
     - name: Release
-      uses: softprops/action-gh-release@v1
+      uses: ncipollo/release-action@v1
       with:
-        body_path: ./CHANGELOG.md
-        files: |
-          ${{env.FINALOUT}}/${{env.PORTABLE}}
-          ${{env.FINALOUT}}/${{env.INSTALLER}}
-          ${{env.FINALOUT}}/${{env.MANIFEST}}
         draft: true
-        name: ${{env.NAME}} v${{env.VERSION}}
-        tag_name: "${{env.VERSION}}"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        generateReleaseNotes: true
+        artifacts: "${{ env.FINALOUT }}/*.zip"
+        bodyFile: "RELEASE.md"
+        token: ${{ secrets.GITHUB_TOKEN }}
         
   
   

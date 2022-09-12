@@ -21,26 +21,9 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
-    - uses: microsoft/setup-msbuild@v1.0.2
+        dotnet-version: 6.x
 
-    # environmental variables
-    - run: echo "PROJ=./WolvenManager.UI/WolvenManager.UI.csproj" >> $env:GITHUB_ENV
-    - run: echo "OUT=./publish/full" >> $env:GITHUB_ENV
-    - run: echo "NAME=WolvenManager" >> $env:GITHUB_ENV
-    - name: Get version
-      uses: naminodarie/get-net-sdk-project-versions-action@v1
-      id: get-version
-      with:
-        proj-path:  ${{env.PROJ}}
-    - run: echo "VERSION=${{steps.get-version.outputs.version}}" >> $env:GITHUB_ENV
-
-    # Test building an publishing
-    - run: msbuild ${{env.PROJ}} -t:restore -t:Build -t:Publish /p:PublishDir=".${{env.OUT}}" /p:InformationalVersion="${{env.VERSION}}" /p:Configuration=Release /p:Platform=x64 /p:SelfContained=False /p:PublishReadyToRun=False /p:PublishTrimmed=False
-    
-    # PORTABLE
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ${{env.NAME}}-${{env.VERSION}}.zip
-        path: ${{env.OUT}}
-
+    - name: Restore dependencies
+      run: dotnet restore ./WolvenManager.UI/WolvenManager.UI.csproj
+    - name: Build
+      run: dotnet build ./WolvenManager.UI/WolvenManager.UI.csproj --no-restore
